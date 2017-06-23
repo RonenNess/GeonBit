@@ -1,12 +1,13 @@
 ﻿#region LICENSE
-/**
- * For the purpose of making video games only, GeonBit is distributed under the MIT license.
- * to use this source code or GeonBit as a whole for any other purpose, please seek written 
- * permission from the library author.
- * 
- * Copyright (c) 2017 Ronen Ness [ronenness@gmail.com].
- * You may not remove this license notice.
- */
+//-----------------------------------------------------------------------------
+// For the purpose of making video games, educational projects or gamification,
+// GeonBit is distributed under the MIT license and is totally free to use.
+// To use this source code or GeonBit as a whole for other purposes, please seek 
+// permission from the library author, Ronen Ness.
+// 
+// Copyright (c) 2017 Ronen Ness [ronenness@gmail.com].
+// Do not remove this license notice.
+//-----------------------------------------------------------------------------
 #endregion
 #region File Description
 //-----------------------------------------------------------------------------

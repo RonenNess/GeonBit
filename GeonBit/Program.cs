@@ -1,7 +1,5 @@
-﻿/**
- * This file shows an example of a Program.cs file and allow us to execute GeonBit as binary.
- * This project should be build as a lib, this file is for testing only.
- */
+﻿// This file shows an example of a Program.cs file and allow us to execute GeonBit as binary.
+// This project should be build as a lib, this file is for testing only.
 using System;
 using Microsoft.Xna.Framework;
 
