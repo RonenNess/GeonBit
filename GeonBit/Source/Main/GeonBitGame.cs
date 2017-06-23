@@ -25,13 +25,13 @@ using GeonBit.Managers;
 namespace GeonBit
 {
     /// <summary>
-    /// Base 'Game' class with GeonBit integrated, plus few helper functions.
-    /// You can inherit from this class instead of the native MonoGame 'Game' class, and have
-    /// GeonBit properly initialized and updated without extra work.
+    /// GeonBit's basic 'Game' class, that replaces MonoGame 'Game'.
+    /// To use GeonBit, you need to implement a type of this class and implement your Draw(), Initialize() and Update() functions.
+    /// Note: since GeonBit already handles rendering and main loop internally, usually you only need to implement Initialize() and
+    /// let the components do all the logic.
     /// 
-    /// To use this class simply inherit from it, and implement DoDraw(), DoUpdate() and DoInitialize().
-    /// You don't need to call GeonBitMain.Initialize() / Update() / Draw(), it happens automatically.
-    /// In addition, you have all the managers available with the 'Managers' directive.
+    /// After creating your GeonBitGame class, use it from your Program file like this:
+    /// GeonBitMain.Instance.Run(new EmptyGeonBitMain());
     /// </summary>
     abstract public class GeonBitGame
     {

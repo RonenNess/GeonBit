@@ -43,7 +43,8 @@ namespace GeonBit
     }
 
     /// <summary>
-    /// The main class.
+    /// Program to execute GeonBit as a binary file, for test purposes.
+    /// Don't use this class.
     /// </summary>
     public static class Program
     {

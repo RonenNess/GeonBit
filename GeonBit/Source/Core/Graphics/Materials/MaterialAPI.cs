@@ -25,6 +25,14 @@ using Microsoft.Xna.Framework.Graphics;
 namespace GeonBit.Core.Graphics.Materials
 {
     /// <summary>
+    /// GeonBit.Core.Graphics.Materials contain all the built-in materials.
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc
+    {
+    }
+
+    /// <summary>
     /// A callback to call per technique pass when using material iterate.
     /// </summary>
     /// <param name="pass">Current pass.</param>

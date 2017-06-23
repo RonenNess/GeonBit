@@ -21,6 +21,14 @@
 namespace GeonBit.Core.Physics.CollisionShapes
 {
     /// <summary>
+    /// GeonBit.Core.Physics.CollisionShapes contain all the physical shapes we can use for rigid bodies.
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc
+    {
+    }
+
+    /// <summary>
     /// The interface of a physical collision shape.
     /// </summary>
     public class ICollisionShape
