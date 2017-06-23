@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+	<id>GeonBit</id>
+	<version>0.0.0.1</version>
+	<authors>Ronen Ness</authors>
+	<owners>RonenNess</owners>
+	<title>GeonBit.Core</title>
+	<summary>GeonBit is a 3D Entity-Component-System engine, powered by MonoGame for C# games..</summary>
+	<licenseUrl>https://github.com/RonenNess/GeonBit/LICENSE</licenseUrl>
+	<projectUrl>https://github.com/RonenNess/GeonBit</projectUrl>
+	<iconUrl>https://raw.githubusercontent.com/RonenNess/GeonBit/master/GeonBit/logo/nuget.png</iconUrl>
+	<requireLicenseAcceptance>true</requireLicenseAcceptance>
+	<releaseNotes>First stable release.</releaseNotes>
+	<description>ECS game engine in MonoGame and C#.</description>
+	<tags></tags>
+	<dependencies>
+	</dependencies>
+  </metadata>
+  <files>
+	<file src="readme.txt" target="" />
+	<file src="GeonBit.UI\bin\DesktopGL\AnyCPU\Release\DataTypes.dll" target="lib\geonbitui\DataTypes.dll"/>
+	<file src="GeonBit.UI\bin\DesktopGL\AnyCPU\Release\GeonBit.UI.dll" target="lib\geonbitui\GeonBit.UI.dll"/>
+	<file src="Help\Documentation.chm" target="Documentation.chm"/>
+	<file src="GeonBit.UI\Content\GeonBit.UI\**\*.*" target="content\Content\GeonBit.UI" /> 
+  </files>
+</package>

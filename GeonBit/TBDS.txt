@@ -1,0 +1,21 @@
+﻿TBD BEFORE RELEASE:
+
+1. fix GPU skinned animated model.
+2. the GetMaterials() and GetMaterial in resources manager - should be model extending function.
+3. Extended math - maybe we can put it inside the regular MonoGame math.
+4. ModelUtils - can be removed completely, and functions moved to be inside Model (extending it)
+5. finish cookbook and examples.
+6. finish template.
+
+NOT NOW:
+1. GPU particles.
+2. Solve the GPU meshed animation.
+4. Add to readme chapter about a "cookbook" eg "how to do stuff" - how to use sprites, how to use materials, how to create animated object, etc.
+5. Spritesheet animations?
+
+Maybes:
+1. Lights!
+
+Nope:
+3. Create a 'framework' namespace with proxies to vector, effect, etc. <-- ??
+no can do, its all sealed types.

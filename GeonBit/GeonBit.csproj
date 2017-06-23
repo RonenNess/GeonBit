@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{860733A2-BD20-48E2-9263-622F0D3EA248}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GeonBit</RootNamespace>
+    <AssemblyName>GeonBit</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;LINUX</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;LINUX</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;LINUX</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;LINUX</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;LINUX</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;LINUX</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\Core\CoreManager.cs" />
+    <Compile Include="Source\Core\Graphics\Entities\BaseRenderableEntity.cs" />
+    <Compile Include="Source\Core\Graphics\Entities\SpriteEntity.cs" />
+    <Compile Include="Source\Core\Graphics\Entities\BoundingBoxEntity.cs" />
+    <Compile Include="Source\Core\Graphics\Entities\IEntity.cs" />
+    <Compile Include="Source\Core\Graphics\Entities\MeshEntity.cs" />
+    <Compile Include="Source\Core\Graphics\Entities\CompositeModelEntity.cs" />
+    <Compile Include="Source\Core\Graphics\Entities\MaterialOverrides.cs" />
+    <Compile Include="Source\Core\Graphics\Entities\SimpleModelEntity.cs" />
+    <Compile Include="Source\Core\Graphics\Entities\ModelEntity.cs" />
+    <Compile Include="Source\Core\Graphics\Entities\SkinnedModelEntity.cs" />
+    <Compile Include="Source\Core\Graphics\GraphicsManager.cs" />
+    <Compile Include="Source\Core\Graphics\Materials\MaterialAPI.cs" />
+    <Compile Include="Source\Core\Graphics\Materials\DefaultMaterialsFactory.cs" />
+    <Compile Include="Source\Core\Graphics\Materials\SkyboxMaterial.cs" />
+    <Compile Include="Source\Core\Graphics\Materials\AlphaTestMaterial.cs" />
+    <Compile Include="Source\Core\Graphics\Materials\SpriteMaterial.cs" />
+    <Compile Include="Source\Core\Graphics\Materials\BasicMaterial.cs" />
+    <Compile Include="Source\Core\Graphics\Materials\SkinnedMaterial.cs" />
+    <Compile Include="Source\Core\Graphics\Misc\Camera.cs" />
+    <Compile Include="Source\Core\Graphics\Misc\ModelUtils.cs" />
+    <Compile Include="Source\Core\Graphics\Nodes\NodesManager.cs" />
+    <Compile Include="Source\Core\Graphics\Nodes\OctreeCullingNode.cs" />
+    <Compile Include="Source\Core\Graphics\Nodes\ParticlesNode.cs" />
+    <Compile Include="Source\Core\Graphics\Nodes\BoundingSphereCullingNode.cs" />
+    <Compile Include="Source\Core\Graphics\Nodes\BoundingBoxCullingNode.cs" />
+    <Compile Include="Source\Core\Graphics\Nodes\CullingNode.cs" />
+    <Compile Include="Source\Core\Graphics\Nodes\Node.cs" />
+    <Compile Include="Source\Core\Graphics\RenderingQueues.cs" />
+    <Compile Include="Source\Core\Input\GameKeys.cs" />
+    <Compile Include="Source\Core\Input\Keys.cs" />
+    <Compile Include="Source\Core\Input\Mouse.cs" />
+    <Compile Include="Source\Core\Physics\CollisionShapes\CollisionTriangle.cs" />
+    <Compile Include="Source\Core\Physics\CollisionShapes\CollisionCylinder.cs" />
+    <Compile Include="Source\Core\Physics\CollisionShapes\CollisionConvexHull.cs" />
+    <Compile Include="Source\Core\Physics\CollisionShapes\CollisionCone.cs" />
+    <Compile Include="Source\Core\Physics\CollisionShapes\CollisionCapsule.cs" />
+    <Compile Include="Source\Core\Physics\CollisionShapes\CollisionBox2d.cs" />
+    <Compile Include="Source\Core\Physics\CollisionShapes\CollisionBox.cs" />
+    <Compile Include="Source\Core\Physics\CollisionShapes\CollisionEndlessPlane.cs" />
+    <Compile Include="Source\Core\Physics\CollisionShapes\CollisionSphere.cs" />
+    <Compile Include="Source\Core\Physics\CollisionShapes\ICollisionShape.cs" />
+    <Compile Include="Source\Core\Physics\Convert.cs" />
+    <Compile Include="Source\Core\Physics\DebugDrawer.cs" />
+    <Compile Include="Source\Core\Physics\PhysicalBody.cs" />
+    <Compile Include="Source\Core\Physics\World.cs" />
+    <Compile Include="Source\Core\Resources\ResourcesManager.cs" />
+    <Compile Include="Source\Core\Sound\SoundPlayer.cs" />
+    <Compile Include="Source\Core\Transformations\Transformations.cs" />
+    <Compile Include="Source\Core\Utils\ExtendedMath.cs" />
+    <Compile Include="Source\ECS\Components\BaseComponent.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Backgrounds\SceneBackground.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Backgrounds\SkyBox.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Camera.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Renderers\BaseRenderer.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Renderers\SpriteRenderer.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Renderers\BillboardRenderer.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Renderers\BoundingBoxRenderer.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Renderers\ModelMeshRenderer.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Renderers\ModelRenderer.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Renderers\SimpleModelRenderer.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Renderers\CompositeModelRenderer.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Renderers\ShapeRenderer.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Renderers\SkinnedModelRenderer.cs" />
+    <Compile Include="Source\ECS\Components\IComponent.cs" />
+    <Compile Include="Source\ECS\Components\Misc\CameraEditorController.cs" />
+    <Compile Include="Source\ECS\Components\Misc\TileMap.cs" />
+    <Compile Include="Source\ECS\Components\Misc\TimeToLive.cs" />
+    <Compile Include="Source\ECS\Components\Particles\Animators\AnimatorUtils.cs" />
+    <Compile Include="Source\ECS\Components\Particles\Animators\BaseAnimator.cs" />
+    <Compile Include="Source\ECS\Components\Particles\Animators\Color.cs" />
+    <Compile Include="Source\ECS\Components\Particles\Animators\Fade.cs" />
+    <Compile Include="Source\ECS\Components\Particles\Animators\Motion.cs" />
+    <Compile Include="Source\ECS\Components\Particles\Animators\Rotation.cs" />
+    <Compile Include="Source\ECS\Components\Particles\Animators\Scale.cs" />
+    <Compile Include="Source\ECS\Components\Particles\Animators\SpawnRandomizer.cs" />
+    <Compile Include="Source\ECS\Components\Particles\ParticleSystem.cs" />
+    <Compile Include="Source\ECS\Components\Physics\BodyShapesInfo.cs" />
+    <Compile Include="Source\ECS\Components\Physics\CollisionGroups.cs" />
+    <Compile Include="Source\ECS\Components\Physics\PhysicalBody.cs" />
+    <Compile Include="Source\ECS\Components\Sound\BackgroundMusic.cs" />
+    <Compile Include="Source\ECS\Components\Sound\SoundEffect.cs" />
+    <Compile Include="Source\ECS\GameObject.cs" />
+    <Compile Include="Source\ECS\GameScene.cs" />
+    <Compile Include="Source\Main\GeonBitGame.cs" />
+    <Compile Include="Source\Main\GeonBitMain.cs" />
+    <Compile Include="Source\Managers\Application.cs" />
+    <Compile Include="Source\Managers\ConfigStorage.cs" />
+    <Compile Include="Source\Managers\Diagnostic.cs" />
+    <Compile Include="Source\Managers\GameFiles.cs" />
+    <Compile Include="Source\Managers\SoundManager.cs" />
+    <Compile Include="Source\Managers\GameInput.cs" />
+    <Compile Include="Source\Managers\GraphicsManager.cs" />
+    <Compile Include="Source\Managers\IManager.cs" />
+    <Compile Include="Source\Managers\Plugins.cs" />
+    <Compile Include="Source\Managers\Prototypes.cs" />
+    <Compile Include="Source\Managers\EasyManagersGetters.cs" />
+    <Compile Include="Source\Managers\TimeManager.cs" />
+    <Compile Include="Source\Main\MonoGameWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="BulletSharp, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BulletSharp.0.9\lib\net40-client\BulletSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DataTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GeonBit.UI.3.0.0.1\lib\geonbitui\DataTypes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GeonBit.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GeonBit.UI.3.0.0.1\lib\geonbitui\GeonBit.UI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icon.ico" />
+    <EmbeddedResource Include="Icon.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x86\SDL2.dll">
+      <Link>x86\SDL2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x64\SDL2.dll">
+      <Link>x64\SDL2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x86\soft_oal.dll">
+      <Link>x86\soft_oal.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x64\soft_oal.dll">
+      <Link>x64\soft_oal.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x86\libSDL2-2.0.so.0">
+      <Link>x86\libSDL2-2.0.so.0</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x64\libSDL2-2.0.so.0">
+      <Link>x64\libSDL2-2.0.so.0</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x86\libopenal.so.1">
+      <Link>x86\libopenal.so.1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x64\libopenal.so.1">
+      <Link>x64\libopenal.so.1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libSDL2-2.0.0.dylib">
+      <Link>libSDL2-2.0.0.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libopenal.1.dylib">
+      <Link>libopenal.1.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll.config">
+      <Link>MonoGame.Framework.dll.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="app.manifest" />
+    <None Include="packages.config" />
+    <None Include="Source\Core\README.md" />
+    <None Include="Source\ECS\README.md" />
+    <None Include="Source\Managers\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TBDS.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Libs\Content.Pipeline\AnimationImporters\AnimationImporters.csproj">
+      <Project>{fd368063-9bb7-457f-9994-b5aaa88cd4a6}</Project>
+      <Name>AnimationImporters</Name>
+    </ProjectReference>
+    <ProjectReference Include="Libs\Content.Pipeline\GraphicsImporters\GraphicsImporters.csproj">
+      <Project>{7451da40-4f7b-4675-9999-5ab5efef3b86}</Project>
+      <Name>GraphicsImporters</Name>
+    </ProjectReference>
+    <ProjectReference Include="Libs\Extend\Animations\Animations.csproj">
+      <Project>{775b85f8-1a9a-4766-9b1b-db3f1da33631}</Project>
+      <Name>Animations</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+  <Import Project="..\packages\BulletSharp.0.9\build\net40-client\BulletSharp.targets" Condition="Exists('..\packages\BulletSharp.0.9\build\net40-client\BulletSharp.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\BulletSharp.0.9\build\net40-client\BulletSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\BulletSharp.0.9\build\net40-client\BulletSharp.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
