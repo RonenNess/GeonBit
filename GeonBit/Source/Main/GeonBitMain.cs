@@ -37,6 +37,9 @@ namespace GeonBit
     /// </summary>
     public class GeonBitMain : Managers.EasyManagersGetters
     {
+        /// <summary>Current GeonBit version identifier.</summary>
+        public const string VERSION = "1.0.0.0";
+
         // singleton instance
         static GeonBitMain _instance;
 
