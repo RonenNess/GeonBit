@@ -1603,9 +1603,9 @@ To do so please use the ```GeonBitPluginInitializer``` Initialize() function.
 ## TBDS
 
 - GPU particles system.
-- Spritesheet animations.
+- Spritesheet animation clips.
 - More built-in materials, including with real lights.
-- Physical material - maybe.
+- Physical material - maybe?
 
 ## Credits
 
