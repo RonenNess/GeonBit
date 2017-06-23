@@ -23,6 +23,14 @@ using System.Collections.Generic;
 namespace GeonBit.Core.Graphics
 {
     /// <summary>
+    /// GeonBit.Core.Graphics implement all the core graphic entities.
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc
+    {
+    }
+
+    /// <summary>
     /// A callback to generate the default materials all loaded meshes will recieve.
     /// </summary>
     /// <param name="mgEffect">MonoGame effect loaded by the mesh loader. You can use it to extract data.</param>

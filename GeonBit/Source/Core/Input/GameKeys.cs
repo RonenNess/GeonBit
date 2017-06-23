@@ -22,6 +22,14 @@
 namespace GeonBit.Input
 {
     /// <summary>
+    /// GeonBit.Input implement input methods and utils.
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc
+    {
+    }
+
+    /// <summary>
     /// Different game keys, eg keyboard keys that active things in game.
     /// You can map different input method to game keys.
     /// </summary>

@@ -26,6 +26,15 @@ using Microsoft.Xna.Framework;
 namespace GeonBit.ECS
 {
     /// <summary>
+    /// GeonBit.ECS implements the Entity-Component-System part of the GeonBit engine.
+    /// This is the namespace you will use most of the time; all the components and game objects are defined here.
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc
+    {
+    }
+
+    /// <summary>
     /// 
     /// </summary>
     public enum SceneNodeType

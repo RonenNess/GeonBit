@@ -24,6 +24,14 @@ using System.Collections.Generic;
 namespace GeonBit
 {
     /// <summary>
+    /// GeonBit root namespace.
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc
+    {
+    }
+
+    /// <summary>
     /// GeonBit engine main manager.
     /// This singleton class contains misc configuration for GeonBit, the main Initialize function,
     /// and Draw() / Update() functions that roll the entire engine.
@@ -38,7 +46,7 @@ namespace GeonBit
     public class GeonBitMain : Managers.EasyManagersGetters
     {
         /// <summary>Current GeonBit version identifier.</summary>
-        public const string VERSION = "1.0.0.0";
+        public const string VERSION = "0.0.0.1";
 
         // singleton instance
         static GeonBitMain _instance;

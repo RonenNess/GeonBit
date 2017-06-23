@@ -22,6 +22,14 @@ using Microsoft.Xna.Framework.Audio;
 namespace GeonBit.Core.Sound
 {
     /// <summary>
+    /// GeonBit.Core.Sound implement sound effects and music related stuff.
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc
+    {
+    }
+
+    /// <summary>
     /// Play a sound effect.
     /// </summary>
     public class SoundPlayer

@@ -21,6 +21,14 @@
 namespace GeonBit.ECS.Components
 {
     /// <summary>
+    /// GeonBit.ECS.Components contain the built-in components you can attach to Game Objects.
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc
+    {
+    }
+
+    /// <summary>
     /// A GameObject component API.
     /// A component is basically something you can attach to a GameObject, like physics, collision, sound effects, model, etc.
     /// </summary>

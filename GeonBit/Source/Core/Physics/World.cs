@@ -21,6 +21,14 @@ using Microsoft.Xna.Framework;
 namespace GeonBit.Core.Physics
 {
     /// <summary>
+    /// GeonBit.Core.Physics implement physics related stuff.
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc
+    {
+    }
+
+    /// <summary>
     /// Data provided to physics collision callbacks.
     /// </summary>
     public class CollisionData

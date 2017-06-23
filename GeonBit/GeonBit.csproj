@@ -7,7 +7,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{860733A2-BD20-48E2-9263-622F0D3EA248}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GeonBit</RootNamespace>
     <AssemblyName>GeonBit</AssemblyName>
@@ -138,6 +138,7 @@
     <Compile Include="Source\ECS\Components\Graphics\Backgrounds\SceneBackground.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Backgrounds\SkyBox.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Camera.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Docs.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Renderers\BaseRenderer.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Renderers\SpriteRenderer.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Renderers\BillboardRenderer.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="Source\ECS\Components\Graphics\Renderers\SkinnedModelRenderer.cs" />
     <Compile Include="Source\ECS\Components\IComponent.cs" />
     <Compile Include="Source\ECS\Components\Misc\CameraEditorController.cs" />
+    <Compile Include="Source\ECS\Components\Misc\Docs.cs" />
     <Compile Include="Source\ECS\Components\Misc\TileMap.cs" />
     <Compile Include="Source\ECS\Components\Misc\TimeToLive.cs" />
     <Compile Include="Source\ECS\Components\Particles\Animators\AnimatorUtils.cs" />
@@ -160,11 +162,14 @@
     <Compile Include="Source\ECS\Components\Particles\Animators\Rotation.cs" />
     <Compile Include="Source\ECS\Components\Particles\Animators\Scale.cs" />
     <Compile Include="Source\ECS\Components\Particles\Animators\SpawnRandomizer.cs" />
+    <Compile Include="Source\ECS\Components\Particles\Docs.cs" />
     <Compile Include="Source\ECS\Components\Particles\ParticleSystem.cs" />
     <Compile Include="Source\ECS\Components\Physics\BodyShapesInfo.cs" />
     <Compile Include="Source\ECS\Components\Physics\CollisionGroups.cs" />
+    <Compile Include="Source\ECS\Components\Physics\Docs.cs" />
     <Compile Include="Source\ECS\Components\Physics\PhysicalBody.cs" />
     <Compile Include="Source\ECS\Components\Sound\BackgroundMusic.cs" />
+    <Compile Include="Source\ECS\Components\Sound\Docs.cs" />
     <Compile Include="Source\ECS\Components\Sound\SoundEffect.cs" />
     <Compile Include="Source\ECS\GameObject.cs" />
     <Compile Include="Source\ECS\GameScene.cs" />

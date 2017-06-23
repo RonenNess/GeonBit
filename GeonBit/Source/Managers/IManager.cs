@@ -23,6 +23,14 @@ using Microsoft.Xna.Framework;
 namespace GeonBit.Managers
 {
     /// <summary>
+    /// GeonBit.Managers contains all the built-in GeonBit manager classes.
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc
+    {
+    }
+
+    /// <summary>
     /// API for a public manager class.
     /// </summary>
     public interface IManager

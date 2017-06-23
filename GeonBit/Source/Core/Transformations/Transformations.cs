@@ -22,14 +22,6 @@ using Microsoft.Xna.Framework;
 namespace GeonBit.Core
 {
     /// <summary>
-    /// MonoGameSceneGraph is the main namespace that contains all the MonoGame-SceneGraph entities.
-    /// </summary>
-    [System.Runtime.CompilerServices.CompilerGenerated]
-    class NamespaceDoc
-    {
-    }
-
-    /// <summary>
     /// How to apply rotation (euler vs quaternion).
     /// </summary>
     public enum RotationType

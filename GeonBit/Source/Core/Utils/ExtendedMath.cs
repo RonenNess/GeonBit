@@ -23,6 +23,14 @@ using Microsoft.Xna.Framework;
 namespace GeonBit.Core.Utils
 {
     /// <summary>
+    /// GeonBit.Core.Utils provide general helper classes for the core layer.
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc
+    {
+    }
+
+    /// <summary>
     /// Contain different math utils and vector-related helper functions.
     /// </summary>
     public static class ExtendedMath

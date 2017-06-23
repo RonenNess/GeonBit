@@ -27,6 +27,7 @@ namespace GeonBit.Core
 {
     /// <summary>
     /// Manage loadable resources (textures / sound / models / etc..).
+    /// This class replaces MonoGame's Content Manager. 
     /// </summary>
     public class ResourcesManager
     {
