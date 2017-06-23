@@ -1,4 +1,6 @@
-﻿ECS stands for "Entity–component–system" (https://en.wikipedia.org/wiki/Entity%E2%80%93component%E2%80%93system).
+﻿# ECS
+
+ECS stands for "Entity–component–system" (https://en.wikipedia.org/wiki/Entity%E2%80%93component%E2%80%93system).
 
 Basically, every object in the game is a GameObject (aka entity), on which we can add or remove "Components" at runtime.
 A Component can be anything, from sound effect, physics behavior, drawing a model, or scripting.

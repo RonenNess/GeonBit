@@ -1,4 +1,6 @@
-﻿'Core' contains all the basic stuff used to implement different Components. You can think of this as the "driver" layer.
+﻿# Core
+
+'Core' contains all the basic stuff used to implement different Components. You can think of this as the "driver" layer.
 For example, it contains basic nodes and entities to draw stuff, or basic physics and collision entities. Then the "Component" layer uses this Core for its internal implementation:
 
 GameObject:
