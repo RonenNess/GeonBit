@@ -1,4 +1,4 @@
-﻿namespace GeonBit.Source.ECS.Components.Misc
+﻿namespace GeonBit.ECS.Components.Misc
 {
     /// <summary>
     /// GeonBit.ECS.Components.Misc contain misc components.

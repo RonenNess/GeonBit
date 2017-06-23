@@ -1,4 +1,4 @@
-﻿namespace GeonBit.Source.ECS.Components.Physics
+﻿namespace GeonBit.ECS.Components.Physics
 {
     /// <summary>
     /// GeonBit.ECS.Components.Physics contain physics and collision-related components.

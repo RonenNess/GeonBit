@@ -1,4 +1,4 @@
-﻿namespace GeonBit.Source.ECS.Components.Sound
+﻿namespace GeonBit.ECS.Components.Sound
 {
     /// <summary>
     /// GeonBit.ECS.Components.Sound contain sound and music related components.
