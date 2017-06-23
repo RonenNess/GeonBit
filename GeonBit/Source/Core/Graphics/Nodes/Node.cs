@@ -186,9 +186,9 @@ namespace GeonBit.Core.Graphics
         }
 
         /// <summary>
-        /// Add a link to another node.
+        /// Other nodes this node is linked to.
+        /// This mechanism is used to connect nodes internally.
         /// </summary>
-        /// <param name="node"></param>
         internal List<Node> LinkedNodes
         {
             get

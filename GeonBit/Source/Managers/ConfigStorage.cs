@@ -151,7 +151,7 @@ namespace GeonBit.Managers
         /// </summary>
         /// <param name="key">Config key.</param>
         /// <param name="value">Config value.</param>
-        /// <param name="forceFormat">If provided, will use this file format instead of the currently set 'FilesFormat'.</param>
+        /// <param name="format">If provided, will use this file format instead of the currently set 'FilesFormat'.</param>
         protected virtual void WriteToFile<T>(string key, T value, GameFiles.FileFormats? format = null)
         {
             GameFiles.Instance.WriteToFile(format ?? FilesFormat, key, value);
@@ -161,7 +161,7 @@ namespace GeonBit.Managers
         /// Read value from persistent file.
         /// </summary>
         /// <param name="key">Config key.</param>
-        /// <param name="forceFormat">If provided, will use this file format instead of the currently set 'FilesFormat'.</param>
+        /// <param name="format">If provided, will use this file format instead of the currently set 'FilesFormat'.</param>
         protected virtual T ReadFromFile<T>(string key, GameFiles.FileFormats? format = null)
         {
             return GameFiles.Instance.ReadFromFile<T>(format ?? FilesFormat, key);

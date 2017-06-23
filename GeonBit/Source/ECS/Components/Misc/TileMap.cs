@@ -211,7 +211,7 @@ namespace GeonBit.ECS.Components.Misc
         /// Note: the reason we don't create and return new points and use private members to store this data instead is to reduce
         /// garbage when creating huge tilemaps.
         /// </summary>
-        /// <param name="index">Tile index to get batch index for.</param>
+        /// <param name="tileIndex">Tile index to get batch index for.</param>
         void CalcBatchIndexAndRelativeIndex(Point tileIndex)
         {
             // calc batch index

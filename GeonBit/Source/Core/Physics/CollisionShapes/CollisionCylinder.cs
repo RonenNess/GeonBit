@@ -50,7 +50,7 @@ namespace GeonBit.Core.Physics.CollisionShapes
         /// Create the collision cylinder.
         /// </summary>
         /// <param name="halfExtent">Half extent on X, Y and Z of the cylinder.</param>
-        /// <param name="height">Cylinder axis direction.</param>
+        /// <param name="axis">Cylinder axis direction.</param>
         public CollisionCylinder(Vector3 halfExtent, CylinderDirectionAxis axis = CylinderDirectionAxis.Y)
         {
             switch (axis)

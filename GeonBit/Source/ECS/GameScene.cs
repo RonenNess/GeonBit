@@ -29,7 +29,8 @@ namespace GeonBit.ECS
         /// <summary>
         /// Create the root game object.
         /// </summary>
-        /// <param name="scene"></param>
+        /// <param name="scene">Parent scene instance.</param>
+        /// <param name="nodeType">Node type to use for this game object.</param>
         public RootGameObject(GameScene scene, SceneNodeType nodeType) : base("root", nodeType)
         {
             _parentScene = scene;

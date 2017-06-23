@@ -51,7 +51,7 @@ namespace GeonBit.Core.Physics.CollisionShapes
         /// </summary>
         /// <param name="radius">Cone radius.</param>
         /// <param name="height">Cone height.</param>
-        /// <param name="height">Cone axis direction.</param>
+        /// <param name="axis">Cone axis direction.</param>
         public CollisionCone(float radius = 1f, float height = 1f, ConeDirectionAxis axis = ConeDirectionAxis.Y)
         {
             switch (axis)

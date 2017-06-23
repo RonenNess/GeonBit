@@ -121,7 +121,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// <summary>
         /// Set spritesheet step from string identifier.
         /// </summary>
-        /// <param name="identifier">Step identifier (must be set in spriteshet).</param>
+        /// <param name="identifier">Step identifier to set.</param>
         public void SetStep(string identifier)
         {
             _entity.SetStep(identifier);
@@ -130,7 +130,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// <summary>
         /// Set spritesheet step from index.
         /// </summary>
-        /// <param name="identifier">Step index (must be set in spriteshet).</param>
+        /// <param name="index">Step index to set.</param>
         public void SetStep(int index)
         {
             _entity.SetStep(index);

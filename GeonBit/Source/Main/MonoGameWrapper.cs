@@ -47,10 +47,7 @@ namespace GeonBit
         /// <summary>
         /// Create the Game wrapper class.
         /// </summary>
-        /// <param name="_game">If true, will enable vsync (limit to ~60 fps).</param>
-        /// <param name="debugMode">If true, will run in debug mode.</param>
-        /// <param name="uiTheme">Which UI theme to use. Note: using null will disable GeonBit.UI (use if you want to use external UI system).</param>
-        /// <param name="recordDiagnosticData">If true, will record diagnostic data you can later fetch from the diagnostics manager.</param>
+        /// <param name="game">GeonBit game instance (provided by the user).</param>
         public MonoGameGameWrapper(GeonBitGame game)
         {
             // store game class and set this pointer

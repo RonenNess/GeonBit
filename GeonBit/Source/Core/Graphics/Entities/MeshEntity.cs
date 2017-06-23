@@ -97,7 +97,7 @@ namespace GeonBit.Core.Graphics
         /// Set alternative array of materials for this mesh.
         /// Will replace mesh original materials.
         /// </summary>
-        /// <param name="material">Materials array to set.</param>
+        /// <param name="materials">Materials array to set.</param>
         public void SetMaterials(Materials.MaterialAPI[] materials)
         {
             _materials = materials;

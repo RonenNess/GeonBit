@@ -51,7 +51,7 @@ namespace GeonBit.Core.Physics.CollisionShapes
         /// </summary>
         /// <param name="radius">Capsule radius.</param>
         /// <param name="height">Capsule height.</param>
-        /// <param name="height">Capsule axis direction.</param>
+        /// <param name="axis">Capsule axis direction.</param>
         public CollisionCapsule(float radius = 1f, float height = 1f, CapsuleDirectionAxis axis = CapsuleDirectionAxis.Y)
         {
             switch (axis)

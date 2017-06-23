@@ -158,7 +158,7 @@ namespace GeonBit.ECS.Components.Physics
         /// <summary>
         /// Create the physical body.
         /// </summary>
-        /// <param name="info">Body shape info.</param>
+        /// <param name="shapeInfo">Body shape info.</param>
         /// <param name="mass">Body mass (0 for static).</param>
         /// <param name="inertia">Body inertia (0 for static).</param>
         /// <param name="friction">Body friction.</param>

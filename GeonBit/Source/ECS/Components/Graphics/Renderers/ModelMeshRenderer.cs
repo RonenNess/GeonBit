@@ -83,6 +83,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// Create the model renderer component.
         /// </summary>
         /// <param name="model">Model to draw.</param>
+        /// <param name="mesh">Mesh to draw.</param>
         public ModelMeshRenderer(Model model, ModelMesh mesh)
         {
             _entity = new Core.Graphics.MeshEntity(model, mesh);
@@ -92,6 +93,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// Create the mesh renderer component.
         /// </summary>
         /// <param name="model">Path of the model asset to draw.</param>
+        /// <param name="meshName">Which mesh to draw from model.</param>
         public ModelMeshRenderer(string model, string meshName)
         {
             Model modelInstance = Resources.GetModel(model);
@@ -103,6 +105,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// Create the mesh renderer component.
         /// </summary>
         /// <param name="model">Path of the model asset to draw.</param>
+        /// <param name="meshIndex">Which mesh to draw from model.</param>
         public ModelMeshRenderer(string model, int meshIndex)
         {
             Model modelInstance = Resources.GetModel(model);

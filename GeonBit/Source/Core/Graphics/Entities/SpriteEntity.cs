@@ -80,7 +80,7 @@ namespace GeonBit.Core.Graphics
         /// <summary>
         /// Get spritesheet step by string identifier (if set).
         /// </summary>
-        /// <param name="index">Step index to get.</param>
+        /// <param name="identifier">Step index to get.</param>
         /// <returns>Spritesheet step.</returns>
         public SpriteSheetStep GetStep(string identifier)
         {
@@ -92,6 +92,7 @@ namespace GeonBit.Core.Graphics
         /// </summary>
         /// <param name="position">Position in spritesheet texture, in percents (eg values range from 0 to 1).</param>
         /// <param name="size">Size in spritesheet texture, in percents (eg values range from 0 to 1).</param>
+        /// <param name="identifier">Optional step string identifier.</param>
         public void AddStep(Vector2 position, Vector2 size, string identifier = null)
         {
             // create the step
@@ -187,7 +188,9 @@ namespace GeonBit.Core.Graphics
     /// </summary>
     public class SpriteEntity : BaseRenderableEntity
     {
-        // spritesheet this entity uses
+        /// <summary>
+        /// Get the spritesheet this sprite entity currently uses.
+        /// </summary>
         public SpriteSheet Spritesheet { get; private set; }
 
         // current spritesheet step
@@ -322,7 +325,7 @@ namespace GeonBit.Core.Graphics
         /// <summary>
         /// Set spritesheet step from index.
         /// </summary>
-        /// <param name="identifier">Step index (must be set in spriteshet).</param>
+        /// <param name="index">Step index to set.</param>
         public void SetStep(int index)
         {
             _spritesheetStep = Spritesheet.GetStep(index);

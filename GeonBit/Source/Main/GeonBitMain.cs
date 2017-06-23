@@ -72,7 +72,9 @@ namespace GeonBit
         // indicate if Initialize() was already called or not.
         bool _wasInit = false;
 
-        // are we using the built-in GeonBit.UI system?
+        /// <summary>
+        /// Get if the built-in UI system currently enabled.
+        /// </summary>
         public bool UiEnabled { get; private set; } = true;
 
         /// <summary>
