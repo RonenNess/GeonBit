@@ -269,9 +269,6 @@
     <None Include="Source\Managers\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TBDS.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="Libs\Content.Pipeline\AnimationImporters\AnimationImporters.csproj">
       <Project>{fd368063-9bb7-457f-9994-b5aaa88cd4a6}</Project>
       <Name>AnimationImporters</Name>

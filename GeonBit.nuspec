@@ -2,18 +2,19 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
 	<id>GeonBit</id>
-	<version>0.0.0.1</version>
+	<version>0.0.0.2</version>
 	<authors>Ronen Ness</authors>
 	<owners>RonenNess</owners>
 	<title>GeonBit.Core</title>
 	<summary>GeonBit is a 3D Entity-Component-System engine, powered by MonoGame for C# games.</summary>
-	<licenseUrl>https://github.com/RonenNess/GeonBit/LICENSE</licenseUrl>
+	<licenseUrl>https://github.com/RonenNess/GeonBit/blob/master/LICENSE</licenseUrl>
 	<projectUrl>https://github.com/RonenNess/GeonBit</projectUrl>
-	<iconUrl>https://raw.githubusercontent.com/RonenNess/GeonBit/master/GeonBit/logo/nuget.png</iconUrl>
+	<iconUrl>https://raw.githubusercontent.com/RonenNess/GeonBit/master/GeonBit/Logo/nuget.png</iconUrl>
+	<copyright>Ronen Ness</copyright>
 	<requireLicenseAcceptance>true</requireLicenseAcceptance>
 	<releaseNotes>First stable release.</releaseNotes>
 	<description>ECS game engine in MonoGame and C#.</description>
-	<tags></tags>
+	<tags>monogame gamedev game-engine games ecs entity-component</tags>
 	<dependencies>
 		<dependency id="BulletSharp" version="0.9.0" />
 		<dependency id="GeonBit.UI" version="3.0.0.1" />	
@@ -21,7 +22,7 @@
   </metadata>
   <files>
 	<file src="readme.txt" target="" />
-	<file src="GeonBit\bin\DesktopGL\AnyCPU\Release\GeonBit.dll" target="lib\geonbit\GeonBit.Core.dll"/>
+	<file src="GeonBit\bin\DesktopGL\AnyCPU\Release\GeonBit.dll" target="lib\geonbit\GeonBit.dll"/>
 	<file src="GeonBit\bin\DesktopGL\AnyCPU\Release\AnimationImporters.dll" target="lib\geonbit\AnimationImporters.dll"/>
 	<file src="GeonBit\bin\DesktopGL\AnyCPU\Release\Animations.dll" target="lib\geonbit\Animations.dll"/>
 	<file src="GeonBit\bin\DesktopGL\AnyCPU\Release\GraphicsImporters.dll" target="lib\geonbit\GraphicsImporters.dll"/>

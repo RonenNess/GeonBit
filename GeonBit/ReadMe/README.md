@@ -218,7 +218,7 @@ Its git and installation instructions can be found [here](https://github.com/Ron
 After the UI is setup, install the *GeonBit* NuGet package with the following command:
 
 ```
-Install-Package GeonBit.Core
+Install-Package GeonBit
 ```
 
 This will also install the required dependencies.
