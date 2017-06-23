@@ -1,6 +1,8 @@
-For the purpose of making games, and making games only, GeonBit is distributed under the MIT license and is completely free for commercial and non commercial usage (see MIT license below). 
+For the purpose of making games GeonBit is distributed under the MIT license and is completely free for commercial and non commercial usage (see MIT license below). 
 
-If you want to use GeonBit or its source code for anything that's not a video game, please ask for written permission from the library author (Ronen Ness, ronenness@gmail.com). 
+Note that educational games, gambling, apps with gamification & graphics are considered as games and are OK to use. In addition creating plugins for GeonBit is also permitted, but not a graphical editor or something that can be considered as a game engine based on GeonBit.
+
+If you want to use GeonBit or its source code for anything that's not permitted by default, please ask for written permission from the library author (Ronen Ness, ronenness@gmail.com).
 
 MIT License - for making games with GeonBit
 

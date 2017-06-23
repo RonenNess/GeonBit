@@ -6,7 +6,7 @@
 
 # License
 
-*For the purpose of making games only*, GeonBit is distributed under the MIT license and is totally free for commercial and non commercial projects.
+*For the purpose of making games, educational projects, or apps with gamification properties*, GeonBit is distributed under the **MIT license** and is completely free for commercial and non commercial use.
 
 For other type of projects please see the [license file](LICENSE "license file") in this repo.
 
