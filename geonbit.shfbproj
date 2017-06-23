@@ -14,21 +14,21 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
-    <OutputPath>.\Help\</OutputPath>
+    <OutputPath>Help\</OutputPath>
     <HtmlHelpName>Documentation</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="GeonBit.UI\bin\DesktopGL\AnyCPU\Release\GeonBit.UI.dll" />
-<DocumentationSource sourceFile="GeonBit.UI\bin\DesktopGL\AnyCPU\Release\GeonBit.UI.xml" /></DocumentationSources>
+      <DocumentationSource sourceFile="GeonBit\bin\DesktopGL\AnyCPU\Release\GeonBit.dll" />
+<DocumentationSource sourceFile="GeonBit\bin\DesktopGL\AnyCPU\Release\GeonBit.xml" /></DocumentationSources>
     <TocParentId>-1</TocParentId>
     <TocParentVersion>100</TocParentVersion>
     <TopicVersion>100</TopicVersion>
     <TocOrder>-1</TocOrder>
-    <ProductTitle>GeonBit.UI</ProductTitle>
+    <ProductTitle>GeonBit</ProductTitle>
     <MSHelpViewerSdkLinkType>Msdn</MSHelpViewerSdkLinkType>
     <CatalogVersion>100</CatalogVersion>
     <CatalogProductId>VS</CatalogProductId>
-    <ProjectSummary>GeonBit.UI is part of the GeonBit project, and provide a simple yet extensive UI framework for MonoGame based projects.</ProjectSummary>
+    <ProjectSummary>GeonBit is a 3D Entity-Component-System engine, powered by MonoGame for C# games.</ProjectSummary>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="GeonBit.UI" isDocumented="True" />
       <NamespaceSummaryItem name="GeonBit.UI.Entities" isDocumented="True" />
@@ -41,13 +41,13 @@
     <NamespaceGrouping>False</NamespaceGrouping>
     <SyntaxFilters>C#</SyntaxFilters>
     <SdkLinkTarget>Blank</SdkLinkTarget>
-    <RootNamespaceTitle>GeonBit.UI</RootNamespaceTitle>
+    <RootNamespaceTitle>GeonBit</RootNamespaceTitle>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <PresentationStyle>VS2013</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>MemberName</NamingMethod>
-    <HelpTitle>GeonBit.UI Documentation</HelpTitle>
-    <FooterText>GeonBit.UI is part of the GeonBit project. By Ronen Ness, 2016.</FooterText>
+    <HelpTitle>GeonBit Documentation</HelpTitle>
+    <FooterText>GeonBit ECS game Engine. By Ronen Ness, 2017.</FooterText>
     <FeedbackEMailLinkText>ronenness%40gmail.com</FeedbackEMailLinkText>
     <FeedbackEMailAddress>ronenness%40gmail.com</FeedbackEMailAddress>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
@@ -59,6 +59,7 @@
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
     <VendorName>GeonBit</VendorName>
+    <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->
