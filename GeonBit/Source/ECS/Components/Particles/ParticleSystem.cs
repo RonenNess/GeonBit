@@ -80,6 +80,15 @@ namespace GeonBit.ECS.Components.Particles
             MaxParticlesPerSpawn = maxCountPerSpawn;
             FrequencyChange = frequencyChange;
         }
+
+        /// <summary>
+        /// Clone particle type.
+        /// </summary>
+        /// <returns>Cloned particle type.</returns>
+        public ParticleType Clone()
+        {
+            return new ParticleType(ParticlePrototype, Frequency, MinParticlesPerSpawn, MaxParticlesPerSpawn, FrequencyChange);
+        }
     }
 
     /// <summary>
@@ -233,6 +242,10 @@ namespace GeonBit.ECS.Components.Particles
             ret.Interval = Interval;
             ret.SpawningSpeedFactor = SpawningSpeedFactor;
             ret.AddParticlesToRoot = AddParticlesToRoot;
+            foreach (var particleType in _particles)
+            {
+                ret._particles.Add(particleType.Clone());
+            }
             return ret;
         }
     }
