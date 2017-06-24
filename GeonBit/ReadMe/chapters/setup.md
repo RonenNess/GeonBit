@@ -13,6 +13,8 @@ To use GeonBit template, follow these steps:
 2. Install it on Visual Studio (most simple way is to copy it to VS templates folder, for example: ```C:\Users\<USERNAME>\Documents\Visual Studio 2015\Templates\ProjectTemplates```).
 3. Create a new project from the GeonBit template.
 
+![Template Window](../assets/template-window.png "Template Window")
+
 When executing the new project, you should see something like this:
 
 ![GeonBit Template](../assets/template-project.png "GeonBit Template")
