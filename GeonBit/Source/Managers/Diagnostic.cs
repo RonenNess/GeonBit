@@ -132,7 +132,7 @@ namespace GeonBit.Managers
             builder.Append("Nodes with entities drawn: ").Append(_renderedNodesWithEntities.ToString()).Append("\n");
             builder.Append("Nodes updated: ").Append(_transformUpdated.ToString()).Append("\n");
             builder.Append("Objects Alive: ").Append(ECS.GameObject.Count.ToString()).Append("\n");
-            builder.Append("Components Alive: ").Append(ECS.Components.BaseComponent.Count.ToString()).Append("\n");
+            builder.Append("Components Alive: ").Append(ECS.Components.BaseComponent.Count.ToString());
             return builder.ToString();
         }
 
