@@ -50,7 +50,7 @@ for i in out_chapters:
     toc += "[%s](%s)\n\n" % (i[0], i[1])
 
 # create TOC file
-with open("table_of_content.md", 'w') as outfile:
+with open("index.md", 'w') as outfile:
     outfile.write("""![GeonBit](assets/GeonBit-sm.png "GeonBit")
 
 # GeonBit
