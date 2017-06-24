@@ -1,4 +1,4 @@
-![GeonBit](GeonBit/ReadMe/assets/GeonBit-sm.png "GeonBit")
+![GeonBit](docs/assets/GeonBit-sm.png "GeonBit")
 
 # GeonBit
 
@@ -12,10 +12,10 @@ For other type of projects please see the [license file](LICENSE "license file")
 
 # Documentation
 
-GeonBit docs are available [by chapters](GeonBit/ReadMe/table_of_content.md) or [as a single file](GeonBit/ReadMe/README.md).
+GeonBit docs are available [by chapters](docs/table_of_content.md) or [as a single file](docs/README.md).
 
 In addition, complete API docs can be found online [here](TBD).
 
 # Changelog
 
-Versions changelog can be found [here](GeonBit/ReadMe/changes.md).
+Versions changelog can be found [here](docs/changes.md).

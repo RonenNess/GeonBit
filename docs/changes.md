@@ -6,6 +6,7 @@ First stable version release, which includes the following features / classes:
 
 - UI
 - - GeonBit.UI v3.0.0.1
+- GeonBitGame
 - Managers
 - - Application
 - - ConfigStorage
@@ -17,6 +18,7 @@ First stable version release, which includes the following features / classes:
 - - Prototypes
 - - Sounds
 - - GameTime
+- Resources Manager
 - Graphics
 - - Background
 - - Skybox
