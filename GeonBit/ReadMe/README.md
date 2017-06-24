@@ -231,9 +231,9 @@ Once the all the NuGet packages are successfully installed, follow these steps:
 
 1. Add all the Content that comes with the package (under the ```Content/GeonBit/``` folder).
 2. Instead of implementing ```MonoGame``` 'Game' class, inherit and implement a ```GeonBit.GeonBitGame``` class, and implement the following functions:
-    1. ```Draw()``` to add extra drawing logic.
-    2. ```Update()``` to add extra update logic.
-    3. ```Initialize()``` to create your scene and initialize stuff.
+	1. ```Draw()``` to add extra drawing logic.
+	2. ```Update()``` to add extra update logic.
+	3. ```Initialize()``` to create your scene and initialize stuff.
 3. From your program's ```Main()``` function, Run *GeonBit* with your GeonBitGame class: ```GeonBitMain.Instance.Run(new MyGeonBitGame());```
 
 
@@ -259,70 +259,70 @@ using GeonBit.ECS.Components.Sound;
 
 namespace GeonBit_Desktop_Application
 {
-    /// <summary>
-    /// Your main game class!
-    /// </summary>
-    internal class Game1 : GeonBitGame
-    {
-        /// <summary>
-        /// Initialize your GeonBitGame properties here.
-        /// </summary>
-        public Game1()
-        {
-            UiTheme = "hd";
-            DebugMode = true;
-            EnableVsync = true;
-        }
+	/// <summary>
+	/// Your main game class!
+	/// </summary>
+	internal class Game1 : GeonBitGame
+	{
+		/// <summary>
+		/// Initialize your GeonBitGame properties here.
+		/// </summary>
+		public Game1()
+		{
+			UiTheme = "hd";
+			DebugMode = true;
+			EnableVsync = true;
+		}
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        override public void Update(GameTime gameTime)
-        {
-            /// exit application on escape
-            if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Escape))
-            {
-                Exit();
-            }
+		/// <summary>
+		/// Allows the game to run logic such as updating the world,
+		/// checking for collisions, gathering input, and playing audio.
+		/// </summary>
+		/// <param name="gameTime">Provides a snapshot of timing values.</param>
+		override public void Update(GameTime gameTime)
+		{
+			/// exit application on escape
+			if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Escape))
+			{
+				Exit();
+			}
 			
-            /// TBD add any custom Update functionality here.
-        }
+			/// TBD add any custom Update functionality here.
+		}
 
-        /// <summary>
-        /// Initialize to implement per main type.
-        /// </summary>
-        override public void Initialize()
-        {
-            /// TBD create your scene, components and init resources here.
-            /// The code below contains a simple example of how to use UI, camera, and basic entity renderer.
+		/// <summary>
+		/// Initialize to implement per main type.
+		/// </summary>
+		override public void Initialize()
+		{
+			/// TBD create your scene, components and init resources here.
+			/// The code below contains a simple example of how to use UI, camera, and basic entity renderer.
 
-            /// Example 1: create UI text
-            ActiveScene.UserInterface.AddEntity(new GeonBit.UI.Entities.Paragraph("Welcome to GeonBit! Here's a sphere:"));
+			/// Example 1: create UI text
+			ActiveScene.UserInterface.AddEntity(new GeonBit.UI.Entities.Paragraph("Welcome to GeonBit! Here's a sphere:"));
 
-            /// Example 2: create camera and add to scene
-            GameObject cameraObject = new GameObject("camera");
-            cameraObject.AddComponent(new Camera());
-            cameraObject.SceneNode.PositionZ = 5;
-            cameraObject.Parent = ActiveScene.Root;
+			/// Example 2: create camera and add to scene
+			GameObject cameraObject = new GameObject("camera");
+			cameraObject.AddComponent(new Camera());
+			cameraObject.SceneNode.PositionZ = 5;
+			cameraObject.Parent = ActiveScene.Root;
 
-            /// Example 3: add 3d shape to scene
-            GameObject shapeObject = new GameObject("shape");
-            shapeObject.AddComponent(new ShapeRenderer(ShapeMeshes.Sphere));
-            shapeObject.Parent = ActiveScene.Root;
-        }
+			/// Example 3: add 3d shape to scene
+			GameObject shapeObject = new GameObject("shape");
+			shapeObject.AddComponent(new ShapeRenderer(ShapeMeshes.Sphere));
+			shapeObject.Parent = ActiveScene.Root;
+		}
 
-        /// <summary>
-        /// Draw function to implement per main type.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        override public void Draw(GameTime gameTime)
-        {
-            /// TBD add any custom drawing functionality here.
-            /// Note: since GeonBit handle its own drawing internally, usually you don't need to do anything here.
-        }
-    }
+		/// <summary>
+		/// Draw function to implement per main type.
+		/// </summary>
+		/// <param name="gameTime">Provides a snapshot of timing values.</param>
+		override public void Draw(GameTime gameTime)
+		{
+			/// TBD add any custom drawing functionality here.
+			/// Note: since GeonBit handle its own drawing internally, usually you don't need to do anything here.
+		}
+	}
 }
 
 ```
@@ -383,57 +383,57 @@ using GeonBit.ECS.Components.Graphics;
 
 namespace GeonBitExamples
 {
-    /// <summary>
-    /// Main for the game itself.
-    /// </summary>
-    public class MyGame : GeonBitGame
-    {
-        /// <summary>
-        /// Create the game class.
-        /// </summary>
-        public MyGame()
-        { 
+	/// <summary>
+	/// Main for the game itself.
+	/// </summary>
+	public class MyGame : GeonBitGame
+	{
+		/// <summary>
+		/// Create the game class.
+		/// </summary>
+		public MyGame()
+		{ 
 			// optional settings:
 			EnableVsync = true;
 			DebugMode = true;
 			UiTheme = "hd";
 		}
 
-        /// <summary>
-        /// Override this to implement Update() function for your game to be called every frame.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        override public void Update(GameTime gameTime)
-        {
-            // exit on escape
-            if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Escape))
-            {
-                Exit();
-            }
-        }
+		/// <summary>
+		/// Override this to implement Update() function for your game to be called every frame.
+		/// </summary>
+		/// <param name="gameTime">Provides a snapshot of timing values.</param>
+		override public void Update(GameTime gameTime)
+		{
+			// exit on escape
+			if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Escape))
+			{
+				Exit();
+			}
+		}
 
-        /// <summary>
-        /// Override this to initialize game scenes and load data.
-        /// </summary>
-        override public void Initialize()
-        {
-		    // create player and add to scene
-            GameObject player = new GameObject("player", SceneNodeType.Simple);
-            player.Parent = ActiveScene.Root;
+		/// <summary>
+		/// Override this to initialize game scenes and load data.
+		/// </summary>
+		override public void Initialize()
+		{
+			// create player and add to scene
+			GameObject player = new GameObject("player", SceneNodeType.Simple);
+			player.Parent = ActiveScene.Root;
 			
 			// set position and add sphere component
-            player.SceneNode.Position = new Vector3(0, 1, 0);
-            player.AddComponent(new ShapeRenderer(ShapeMeshes.SphereLowPoly));
-        }
+			player.SceneNode.Position = new Vector3(0, 1, 0);
+			player.AddComponent(new ShapeRenderer(ShapeMeshes.SphereLowPoly));
+		}
 
-        /// <summary>
-        /// Override this to implement custom drawing logic.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        override public void Draw(GameTime gameTime)
-        {
-        }
-    }
+		/// <summary>
+		/// Override this to implement custom drawing logic.
+		/// </summary>
+		/// <param name="gameTime">Provides a snapshot of timing values.</param>
+		override public void Draw(GameTime gameTime)
+		{
+		}
+	}
 }
 ```
 
@@ -904,7 +904,7 @@ For example, you can use this manager to set that bot ```Space``` key or ```Left
 ```cs
 if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Fire))
 {
-    // fire your weapon!
+	// fire your weapon!
 }
 ```
 
@@ -1250,9 +1250,9 @@ using GeonBit.Core.Graphics.Materials;
 
 // change how we create material for basic effects
 DefaultMaterialsFactory.SetDefaultMaterialGenerator(MaterialTypes.Basic, (Effect mgEffect) => 
-    {
-        return new MyCustomMaterial((BasicEffect)mgEffect, true);
-    }
+	{
+		return new MyCustomMaterial((BasicEffect)mgEffect, true);
+	}
 );
 ```
 
@@ -1272,66 +1272,66 @@ To create your own material you need to inherit from the MaterialAPI class:
 /// </summary>
 public class MyCustomMaterial : MaterialAPI
 {
-    // the effect instance of this material.
-    BasicEffect _effect;
+	// the effect instance of this material.
+	BasicEffect _effect;
 
-    /// <summary>
-    /// Get the effect instance.
-    /// </summary>
-    public override Effect Effect { get { return _effect; } }
+	/// <summary>
+	/// Get the effect instance.
+	/// </summary>
+	public override Effect Effect { get { return _effect; } }
 
-    /// <summary>
-    /// Create the custom material from empty effect.
-    /// </summary>
-    public MyCustomMaterial() : this(new BasicEffect(GraphicsManager.GraphicsDevice), true)
-    {
-    }
+	/// <summary>
+	/// Create the custom material from empty effect.
+	/// </summary>
+	public MyCustomMaterial() : this(new BasicEffect(GraphicsManager.GraphicsDevice), true)
+	{
+	}
 
-    /// <summary>
-    /// Create the custom material.
-    /// </summary>
-    /// <param name="effect">Effect to use.</param>
-    public MyCustomMaterial(BasicEffect effect)
-    {
-        _effect = effect;
-    }
+	/// <summary>
+	/// Create the custom material.
+	/// </summary>
+	/// <param name="effect">Effect to use.</param>
+	public MyCustomMaterial(BasicEffect effect)
+	{
+		_effect = effect;
+	}
 
-    /// <summary>
-    /// Apply this material.
-    /// </summary>
-    override protected void MaterialSpecificApply(bool wasLastMaterial)
-    {
-        // set world matrix
-        _effect.World = World;
+	/// <summary>
+	/// Apply this material.
+	/// </summary>
+	override protected void MaterialSpecificApply(bool wasLastMaterial)
+	{
+		// set world matrix
+		_effect.World = World;
 
-        // if it was last material used, stop here - no need for the following settings
-        if (wasLastMaterial) { return; }
+		// if it was last material used, stop here - no need for the following settings
+		if (wasLastMaterial) { return; }
 
-        // set all effect params
-        _effect.View = View;
-        _effect.Projection = Projection;
-        _effect.Texture = Texture;
-        _effect.TextureEnabled = TextureEnabled;
-        _effect.Alpha = Alpha;
-        _effect.AmbientLightColor = AmbientLight.ToVector3();
-        _effect.DiffuseColor = DiffuseColor.ToVector3();
-        _effect.LightingEnabled = LightingEnabled;
-        _effect.PreferPerPixelLighting = SmoothLighting;
-        _effect.SpecularColor = SpecularColor.ToVector3();
-        _effect.SpecularPower = SpecularPower;
-        GraphicsManager.GraphicsDevice.SamplerStates[0] = SamplerState;
-    }
+		// set all effect params
+		_effect.View = View;
+		_effect.Projection = Projection;
+		_effect.Texture = Texture;
+		_effect.TextureEnabled = TextureEnabled;
+		_effect.Alpha = Alpha;
+		_effect.AmbientLightColor = AmbientLight.ToVector3();
+		_effect.DiffuseColor = DiffuseColor.ToVector3();
+		_effect.LightingEnabled = LightingEnabled;
+		_effect.PreferPerPixelLighting = SmoothLighting;
+		_effect.SpecularColor = SpecularColor.ToVector3();
+		_effect.SpecularPower = SpecularPower;
+		GraphicsManager.GraphicsDevice.SamplerStates[0] = SamplerState;
+	}
 
-    /// <summary>
-    /// Clone this material.
-    /// </summary>
-    /// <returns>Copy of this material.</returns>
-    public override MaterialAPI Clone()
-    {
-        MaterialAPI ret = new MyCustomMaterial(_effect);
-        CloneBasics(ref ret);
-        return ret;
-    }
+	/// <summary>
+	/// Clone this material.
+	/// </summary>
+	/// <returns>Copy of this material.</returns>
+	public override MaterialAPI Clone()
+	{
+		MaterialAPI ret = new MyCustomMaterial(_effect);
+		CloneBasics(ref ret);
+		return ret;
+	}
 }
 ```
 
@@ -1441,7 +1441,7 @@ For example, the following component will act as a 'killer' body - everything th
 /// <param name="data">Extra collision data.</param>
 protected override void OnCollisionStart(GameObject other, Core.Physics.CollisionData data)
 {
-    other.Destroy();
+	other.Destroy();
 }
 ```
 
@@ -1482,7 +1482,7 @@ Core.Physics.RaycastResults raycast = scene.Physics.Raycast(Vector3.Zero, Vector
 // if we hit anything, we destroy that object
 if (raycast.HasHit)
 {
-    raycast.Collision.CollisionBody._GameObject.Destroy();
+	raycast.Collision.CollisionBody._GameObject.Destroy();
 }
 ```
 
@@ -1495,10 +1495,10 @@ Core.Physics.RaycastResults raycast = scene.Physics.Raycast(Vector3.Zero, Vector
 // if we hit anything, we destroy those objects
 if (raycast.HasHit)
 {
-    foreach (var collision in raycast.Collisions)
-    {
-        collision.CollisionBody._GameObject.Destroy();
-    }
+	foreach (var collision in raycast.Collisions)
+	{
+		collision.CollisionBody._GameObject.Destroy();
+	}
 }
 ```
 
@@ -1665,17 +1665,17 @@ Here's an example of a basic ```GeonBitPluginInitializer``` class and how it sho
 ```cs
 public static class GeonBitPluginInitializer
 {
-    // get plugin name
-    static public string GetName() 
-    {
-        return "MyPlugin";
-    }
-    
-    // initialize plugin
-    static public void Initialize()
-    {
-        // do init code
-    }
+	// get plugin name
+	static public string GetName() 
+	{
+		return "MyPlugin";
+	}
+	
+	// initialize plugin
+	static public void Initialize()
+	{
+		// do init code
+	}
 }
 ```
 

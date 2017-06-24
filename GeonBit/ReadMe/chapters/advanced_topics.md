@@ -162,9 +162,9 @@ using GeonBit.Core.Graphics.Materials;
 
 // change how we create material for basic effects
 DefaultMaterialsFactory.SetDefaultMaterialGenerator(MaterialTypes.Basic, (Effect mgEffect) => 
-    {
-        return new MyCustomMaterial((BasicEffect)mgEffect, true);
-    }
+	{
+		return new MyCustomMaterial((BasicEffect)mgEffect, true);
+	}
 );
 ```
 
@@ -184,66 +184,66 @@ To create your own material you need to inherit from the MaterialAPI class:
 /// </summary>
 public class MyCustomMaterial : MaterialAPI
 {
-    // the effect instance of this material.
-    BasicEffect _effect;
+	// the effect instance of this material.
+	BasicEffect _effect;
 
-    /// <summary>
-    /// Get the effect instance.
-    /// </summary>
-    public override Effect Effect { get { return _effect; } }
+	/// <summary>
+	/// Get the effect instance.
+	/// </summary>
+	public override Effect Effect { get { return _effect; } }
 
-    /// <summary>
-    /// Create the custom material from empty effect.
-    /// </summary>
-    public MyCustomMaterial() : this(new BasicEffect(GraphicsManager.GraphicsDevice), true)
-    {
-    }
+	/// <summary>
+	/// Create the custom material from empty effect.
+	/// </summary>
+	public MyCustomMaterial() : this(new BasicEffect(GraphicsManager.GraphicsDevice), true)
+	{
+	}
 
-    /// <summary>
-    /// Create the custom material.
-    /// </summary>
-    /// <param name="effect">Effect to use.</param>
-    public MyCustomMaterial(BasicEffect effect)
-    {
-        _effect = effect;
-    }
+	/// <summary>
+	/// Create the custom material.
+	/// </summary>
+	/// <param name="effect">Effect to use.</param>
+	public MyCustomMaterial(BasicEffect effect)
+	{
+		_effect = effect;
+	}
 
-    /// <summary>
-    /// Apply this material.
-    /// </summary>
-    override protected void MaterialSpecificApply(bool wasLastMaterial)
-    {
-        // set world matrix
-        _effect.World = World;
+	/// <summary>
+	/// Apply this material.
+	/// </summary>
+	override protected void MaterialSpecificApply(bool wasLastMaterial)
+	{
+		// set world matrix
+		_effect.World = World;
 
-        // if it was last material used, stop here - no need for the following settings
-        if (wasLastMaterial) { return; }
+		// if it was last material used, stop here - no need for the following settings
+		if (wasLastMaterial) { return; }
 
-        // set all effect params
-        _effect.View = View;
-        _effect.Projection = Projection;
-        _effect.Texture = Texture;
-        _effect.TextureEnabled = TextureEnabled;
-        _effect.Alpha = Alpha;
-        _effect.AmbientLightColor = AmbientLight.ToVector3();
-        _effect.DiffuseColor = DiffuseColor.ToVector3();
-        _effect.LightingEnabled = LightingEnabled;
-        _effect.PreferPerPixelLighting = SmoothLighting;
-        _effect.SpecularColor = SpecularColor.ToVector3();
-        _effect.SpecularPower = SpecularPower;
-        GraphicsManager.GraphicsDevice.SamplerStates[0] = SamplerState;
-    }
+		// set all effect params
+		_effect.View = View;
+		_effect.Projection = Projection;
+		_effect.Texture = Texture;
+		_effect.TextureEnabled = TextureEnabled;
+		_effect.Alpha = Alpha;
+		_effect.AmbientLightColor = AmbientLight.ToVector3();
+		_effect.DiffuseColor = DiffuseColor.ToVector3();
+		_effect.LightingEnabled = LightingEnabled;
+		_effect.PreferPerPixelLighting = SmoothLighting;
+		_effect.SpecularColor = SpecularColor.ToVector3();
+		_effect.SpecularPower = SpecularPower;
+		GraphicsManager.GraphicsDevice.SamplerStates[0] = SamplerState;
+	}
 
-    /// <summary>
-    /// Clone this material.
-    /// </summary>
-    /// <returns>Copy of this material.</returns>
-    public override MaterialAPI Clone()
-    {
-        MaterialAPI ret = new MyCustomMaterial(_effect);
-        CloneBasics(ref ret);
-        return ret;
-    }
+	/// <summary>
+	/// Clone this material.
+	/// </summary>
+	/// <returns>Copy of this material.</returns>
+	public override MaterialAPI Clone()
+	{
+		MaterialAPI ret = new MyCustomMaterial(_effect);
+		CloneBasics(ref ret);
+		return ret;
+	}
 }
 ```
 
@@ -353,7 +353,7 @@ For example, the following component will act as a 'killer' body - everything th
 /// <param name="data">Extra collision data.</param>
 protected override void OnCollisionStart(GameObject other, Core.Physics.CollisionData data)
 {
-    other.Destroy();
+	other.Destroy();
 }
 ```
 
@@ -394,7 +394,7 @@ Core.Physics.RaycastResults raycast = scene.Physics.Raycast(Vector3.Zero, Vector
 // if we hit anything, we destroy that object
 if (raycast.HasHit)
 {
-    raycast.Collision.CollisionBody._GameObject.Destroy();
+	raycast.Collision.CollisionBody._GameObject.Destroy();
 }
 ```
 
@@ -407,10 +407,10 @@ Core.Physics.RaycastResults raycast = scene.Physics.Raycast(Vector3.Zero, Vector
 // if we hit anything, we destroy those objects
 if (raycast.HasHit)
 {
-    foreach (var collision in raycast.Collisions)
-    {
-        collision.CollisionBody._GameObject.Destroy();
-    }
+	foreach (var collision in raycast.Collisions)
+	{
+		collision.CollisionBody._GameObject.Destroy();
+	}
 }
 ```
 

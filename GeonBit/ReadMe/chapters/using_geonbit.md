@@ -20,70 +20,70 @@ using GeonBit.ECS.Components.Sound;
 
 namespace GeonBit_Desktop_Application
 {
-    /// <summary>
-    /// Your main game class!
-    /// </summary>
-    internal class Game1 : GeonBitGame
-    {
-        /// <summary>
-        /// Initialize your GeonBitGame properties here.
-        /// </summary>
-        public Game1()
-        {
-            UiTheme = "hd";
-            DebugMode = true;
-            EnableVsync = true;
-        }
+	/// <summary>
+	/// Your main game class!
+	/// </summary>
+	internal class Game1 : GeonBitGame
+	{
+		/// <summary>
+		/// Initialize your GeonBitGame properties here.
+		/// </summary>
+		public Game1()
+		{
+			UiTheme = "hd";
+			DebugMode = true;
+			EnableVsync = true;
+		}
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        override public void Update(GameTime gameTime)
-        {
-            /// exit application on escape
-            if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Escape))
-            {
-                Exit();
-            }
+		/// <summary>
+		/// Allows the game to run logic such as updating the world,
+		/// checking for collisions, gathering input, and playing audio.
+		/// </summary>
+		/// <param name="gameTime">Provides a snapshot of timing values.</param>
+		override public void Update(GameTime gameTime)
+		{
+			/// exit application on escape
+			if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Escape))
+			{
+				Exit();
+			}
 			
-            /// TBD add any custom Update functionality here.
-        }
+			/// TBD add any custom Update functionality here.
+		}
 
-        /// <summary>
-        /// Initialize to implement per main type.
-        /// </summary>
-        override public void Initialize()
-        {
-            /// TBD create your scene, components and init resources here.
-            /// The code below contains a simple example of how to use UI, camera, and basic entity renderer.
+		/// <summary>
+		/// Initialize to implement per main type.
+		/// </summary>
+		override public void Initialize()
+		{
+			/// TBD create your scene, components and init resources here.
+			/// The code below contains a simple example of how to use UI, camera, and basic entity renderer.
 
-            /// Example 1: create UI text
-            ActiveScene.UserInterface.AddEntity(new GeonBit.UI.Entities.Paragraph("Welcome to GeonBit! Here's a sphere:"));
+			/// Example 1: create UI text
+			ActiveScene.UserInterface.AddEntity(new GeonBit.UI.Entities.Paragraph("Welcome to GeonBit! Here's a sphere:"));
 
-            /// Example 2: create camera and add to scene
-            GameObject cameraObject = new GameObject("camera");
-            cameraObject.AddComponent(new Camera());
-            cameraObject.SceneNode.PositionZ = 5;
-            cameraObject.Parent = ActiveScene.Root;
+			/// Example 2: create camera and add to scene
+			GameObject cameraObject = new GameObject("camera");
+			cameraObject.AddComponent(new Camera());
+			cameraObject.SceneNode.PositionZ = 5;
+			cameraObject.Parent = ActiveScene.Root;
 
-            /// Example 3: add 3d shape to scene
-            GameObject shapeObject = new GameObject("shape");
-            shapeObject.AddComponent(new ShapeRenderer(ShapeMeshes.Sphere));
-            shapeObject.Parent = ActiveScene.Root;
-        }
+			/// Example 3: add 3d shape to scene
+			GameObject shapeObject = new GameObject("shape");
+			shapeObject.AddComponent(new ShapeRenderer(ShapeMeshes.Sphere));
+			shapeObject.Parent = ActiveScene.Root;
+		}
 
-        /// <summary>
-        /// Draw function to implement per main type.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        override public void Draw(GameTime gameTime)
-        {
-            /// TBD add any custom drawing functionality here.
-            /// Note: since GeonBit handle its own drawing internally, usually you don't need to do anything here.
-        }
-    }
+		/// <summary>
+		/// Draw function to implement per main type.
+		/// </summary>
+		/// <param name="gameTime">Provides a snapshot of timing values.</param>
+		override public void Draw(GameTime gameTime)
+		{
+			/// TBD add any custom drawing functionality here.
+			/// Note: since GeonBit handle its own drawing internally, usually you don't need to do anything here.
+		}
+	}
 }
 
 ```
@@ -144,57 +144,57 @@ using GeonBit.ECS.Components.Graphics;
 
 namespace GeonBitExamples
 {
-    /// <summary>
-    /// Main for the game itself.
-    /// </summary>
-    public class MyGame : GeonBitGame
-    {
-        /// <summary>
-        /// Create the game class.
-        /// </summary>
-        public MyGame()
-        { 
+	/// <summary>
+	/// Main for the game itself.
+	/// </summary>
+	public class MyGame : GeonBitGame
+	{
+		/// <summary>
+		/// Create the game class.
+		/// </summary>
+		public MyGame()
+		{ 
 			// optional settings:
 			EnableVsync = true;
 			DebugMode = true;
 			UiTheme = "hd";
 		}
 
-        /// <summary>
-        /// Override this to implement Update() function for your game to be called every frame.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        override public void Update(GameTime gameTime)
-        {
-            // exit on escape
-            if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Escape))
-            {
-                Exit();
-            }
-        }
+		/// <summary>
+		/// Override this to implement Update() function for your game to be called every frame.
+		/// </summary>
+		/// <param name="gameTime">Provides a snapshot of timing values.</param>
+		override public void Update(GameTime gameTime)
+		{
+			// exit on escape
+			if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Escape))
+			{
+				Exit();
+			}
+		}
 
-        /// <summary>
-        /// Override this to initialize game scenes and load data.
-        /// </summary>
-        override public void Initialize()
-        {
-		    // create player and add to scene
-            GameObject player = new GameObject("player", SceneNodeType.Simple);
-            player.Parent = ActiveScene.Root;
+		/// <summary>
+		/// Override this to initialize game scenes and load data.
+		/// </summary>
+		override public void Initialize()
+		{
+			// create player and add to scene
+			GameObject player = new GameObject("player", SceneNodeType.Simple);
+			player.Parent = ActiveScene.Root;
 			
 			// set position and add sphere component
-            player.SceneNode.Position = new Vector3(0, 1, 0);
-            player.AddComponent(new ShapeRenderer(ShapeMeshes.SphereLowPoly));
-        }
+			player.SceneNode.Position = new Vector3(0, 1, 0);
+			player.AddComponent(new ShapeRenderer(ShapeMeshes.SphereLowPoly));
+		}
 
-        /// <summary>
-        /// Override this to implement custom drawing logic.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        override public void Draw(GameTime gameTime)
-        {
-        }
-    }
+		/// <summary>
+		/// Override this to implement custom drawing logic.
+		/// </summary>
+		/// <param name="gameTime">Provides a snapshot of timing values.</param>
+		override public void Draw(GameTime gameTime)
+		{
+		}
+	}
 }
 ```
 
@@ -665,7 +665,7 @@ For example, you can use this manager to set that bot ```Space``` key or ```Left
 ```cs
 if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Fire))
 {
-    // fire your weapon!
+	// fire your weapon!
 }
 ```
 

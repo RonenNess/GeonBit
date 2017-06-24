@@ -33,17 +33,17 @@ Here's an example of a basic ```GeonBitPluginInitializer``` class and how it sho
 ```cs
 public static class GeonBitPluginInitializer
 {
-    // get plugin name
-    static public string GetName() 
-    {
-        return "MyPlugin";
-    }
-    
-    // initialize plugin
-    static public void Initialize()
-    {
-        // do init code
-    }
+	// get plugin name
+	static public string GetName() 
+	{
+		return "MyPlugin";
+	}
+	
+	// initialize plugin
+	static public void Initialize()
+	{
+		// do init code
+	}
 }
 ```
 
