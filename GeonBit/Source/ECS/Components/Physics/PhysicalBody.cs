@@ -153,6 +153,26 @@ namespace GeonBit.ECS.Components.Physics
             set { _body.IsEthereal = value; }
         }
 
+        /// <summary>
+        /// Optional constant velocity to set for this physical body.
+        /// </summary>
+        public Vector3? ConstVelocity = null;
+
+        /// <summary>
+        /// Optional constant velocity to set for this physical body.
+        /// </summary>
+        public Vector3? ConstAngularVelocity = null;
+
+        /// <summary>
+        /// Optional constant force to set for this physical body.
+        /// </summary>
+        public Vector3? ConstForce = null;
+
+        /// <summary>
+        /// Optional constant angular force to set for this physical body.
+        /// </summary>
+        public Vector3? ConstTorqueForce = null;
+
         // are we currently in physics world?
         bool _isInWorld = false;
 
@@ -232,31 +252,8 @@ namespace GeonBit.ECS.Components.Physics
         /// <returns>Cloned copy of this component.</returns>
         override public BaseComponent Clone()
         {
-            // cloned component to return
-            PhysicalBody ret;
-
-            // clone based on type
-            switch (_shapeType)
-            {
-                // sphere
-                case PhysicalBodyShapeTypes.Sphere:
-                    ret = (PhysicalBody)CopyBasics(new PhysicalBody(GetShapeInfo<SphereInfo>(), Mass, Inertia, _body.Friction));
-                    break;
-
-                // plane
-                case PhysicalBodyShapeTypes.EndlessPlane:
-                    ret = (PhysicalBody)CopyBasics(new PhysicalBody(GetShapeInfo<EndlessPlaneInfo>(), Mass, Inertia, _body.Friction));
-                    break;
-
-                // box
-                case PhysicalBodyShapeTypes.Box:
-                    ret = (PhysicalBody)CopyBasics(new PhysicalBody(GetShapeInfo<BoxInfo>(), Mass, Inertia, _body.Friction));
-                    break;
-
-                // should never get here
-                default:
-                    throw new System.Exception("Unknown physical body type!");
-            }
+            // create cloned component to return
+            PhysicalBody ret = (PhysicalBody)CopyBasics(new PhysicalBody(_shapeInfo, Mass, Inertia, _body.Friction));
 
             // copy current state
             ret._body.CopyConditionFrom(_body);
@@ -265,6 +262,10 @@ namespace GeonBit.ECS.Components.Physics
             ret.Gravity = Gravity;
             ret.CollisionGroup = CollisionGroup;
             ret.CollisionMask = CollisionMask;
+            ret.ConstForce = ConstForce;
+            ret.ConstVelocity = ConstVelocity;
+            ret.ConstTorqueForce = ConstTorqueForce;
+            ret.ConstAngularVelocity = ConstAngularVelocity;
 
             // return the cloned body
             return ret;
@@ -276,6 +277,27 @@ namespace GeonBit.ECS.Components.Physics
         /// </summary>
         protected override void OnUpdate()
         {
+            // set const velocity
+            if (ConstVelocity != null)
+            {
+                _body.LinearVelocity = ConstVelocity.Value;
+            }
+            // set const angular velocity
+            if (ConstAngularVelocity != null)
+            {
+                _body.AngularVelocity = ConstAngularVelocity.Value;
+            }
+            // set const force
+            if (ConstForce != null)
+            {
+                _body.ApplyForce(ConstForce.Value);
+            }
+            // set const torque force
+            if (ConstTorqueForce != null)
+            {
+                _body.ApplyTorque(ConstTorqueForce.Value);
+            }
+
             // normally, we want to update node before drawing entity.
             // but if our node is currently not visible or culled out, we still want to update it.
             // for that purpose we do the test below - if node was not drawn, update from within update() call.
