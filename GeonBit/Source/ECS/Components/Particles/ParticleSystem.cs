@@ -49,7 +49,7 @@ namespace GeonBit.ECS.Components.Particles
         public uint MaxParticlesPerSpawn { get; private set; }
 
         /// <summary>
-        /// Will change frequency over time.
+        /// How much to change frequency over time.
         /// For example, if value is -0.5, will decrease Frequency by 0.5f over the span time of 1 second.
         /// </summary>
         public float FrequencyChange { get; private set; }
@@ -167,14 +167,15 @@ namespace GeonBit.ECS.Components.Particles
             // check if expired
             if (TimeToLive != 0f && _timeAlive > TimeToLive)
             {
-                // destroy parent if needed and then self
+                // destroy parent if needed (note: if destroying parent we don't need to destroy self as well)
                 if (DestroyParentWhenExpired && !_GameObject.WasDestroyed)
                 {
                     _GameObject.Destroy();
+                    return;
                 }
-                Destroy();
 
-                // stop here
+                // destroy self
+                Destroy();
                 return;
             }
 
