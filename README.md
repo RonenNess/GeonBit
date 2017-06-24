@@ -14,6 +14,8 @@ For other type of projects please see the [license file](LICENSE "license file")
 
 GeonBit docs are available [by chapters](docs/index.md) or [as a single file](docs/README.md).
 
+Install and using *GeonBit* is just [3 simple steps](docs/chapters/setup.md)!
+
 In addition, complete API docs can be found online [here](https://ronenness.github.io/GeonBit-docs/).
 
 # Changelog

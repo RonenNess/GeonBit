@@ -14,6 +14,8 @@
 
 [Setup](chapters/setup.md)
 
+[(Alternative) Manual Setup](chapters/(alternative)_manual_setup.md)
+
 [Using GeonBit](chapters/using_geonbit.md)
 
 [Advanced Topics](chapters/advanced_topics.md)

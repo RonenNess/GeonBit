@@ -190,9 +190,6 @@ These libs are used by the ```Core``` layer and you should not use them directly
 
 # Setup
 
-There are 2 ways to setup *GeonBit*, from template or manually:
-
-## From Template
 
 *GeonBit* requires some unique init code and built-in content. 
 Because of that, the best way to setup *GeonBit* is to use the provided ```Visual Studio``` template.
@@ -205,14 +202,16 @@ To use GeonBit template, follow these steps:
 
 ![Template Window](assets/template-window.png "Template Window")
 
+### That's it!
+
 When executing the new project, you should see something like this:
 
 ![GeonBit Template](assets/template-project.png "GeonBit Template")
 
 
-## Manual Setup
+# (Alternative) Manual Setup
 
-If you choose to setup *GeonBit* manually please follow these steps:
+If you don't want to use *GeonBit*'s template (not recommended!), you can also install *GeonBit* manually:
 
 ### Setup GeonBit.UI
 
