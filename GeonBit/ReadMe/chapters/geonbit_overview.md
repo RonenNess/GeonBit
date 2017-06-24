@@ -22,7 +22,8 @@ You should inherit from this class to implement your game logic and use ```GeonB
 
 ## Resources
 
-Instead of the default *MonoGame* Content class, in *GeonBit* you use the Resources Manager. When implementing a custom component or GeonBitGame class, the resources manager is easily accessible via the ```Resources``` getter.
+Instead of the default *MonoGame* Content class, in *GeonBit* you use the Resources Manager. 
+When implementing a custom component or GeonBitGame class, the resources manager is easily accessible via the ```Resources``` getter.
 
 
 ## GeonBit.Managers

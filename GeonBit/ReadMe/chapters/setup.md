@@ -1,23 +1,26 @@
 # Setup
 
-There are 3 ways to setup *GeonBit*, listed below:
+There are 2 ways to setup *GeonBit*, from template or manually:
 
 ## From Template
 
-*GeonBit* requires some external libs, specific init code, and built-in content.
-Because of that, the best and most simple way to setup *GeonBit* is via the ```Visual Studio``` templates.
+*GeonBit* requires some unique init code and built-in content. 
+Because of that, the best way to setup *GeonBit* is to use the provided ```Visual Studio``` template.
 
-To do so, simply install the template file attached to this git ([found here](https://github.com/RonenNess/GeonBit/Template)) and create a new projects from that template. Your project should compile and run out of the box.
+To use GeonBit template, follow these steps:
 
-## From Empty Project
+1. Download template [from here](https://github.com/RonenNess/GeonBit/raw/master/Template/GeonBit%20Desktop%20Application.zip) (or take the zip file from ```Template/``` folder).
+2. Install it on Visual Studio (most simple way is to copy it to VS templates folder, for example: ```C:\Users\<USERNAME>\Documents\Visual Studio 2015\Templates\ProjectTemplates```).
+3. Create a new project from the GeonBit template.
 
-If you don't like to use templates for whatever reason, you can download a working empty *GeonBit* project from [this repo](https://github.com/RonenNess/GeonBit.Template).
+When executing the new project, you should see something like this:
 
-Just clone the git and change project settings and name to fit your needs.
+![GeonBit Template](../assets/template-project.png "GeonBit Template")
+
 
 ## Manual Setup
 
-If you choose to setup *GeonBit* manually, for whatever reason, please follow these steps:
+If you choose to setup *GeonBit* manually please follow these steps:
 
 ### Setup GeonBit.UI
 

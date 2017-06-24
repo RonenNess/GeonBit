@@ -2,9 +2,111 @@
 
 Now its time to finally learn how to use *GeonBit* to make your next awesome game!
 
+## GeonBitGame
+
+If you used the *GeonBit* template, you should see a file in your project called ```Game1.cs``` and inside a ```Game1``` class. 
+If you didn't use the template, it should look something like this:
+
+```cs
+using Microsoft.Xna.Framework;
+using GeonBit;
+using GeonBit.ECS;
+using GeonBit.ECS.Components;
+using GeonBit.ECS.Components.Graphics;
+using GeonBit.ECS.Components.Misc;
+using GeonBit.ECS.Components.Particles;
+using GeonBit.ECS.Components.Physics;
+using GeonBit.ECS.Components.Sound;
+
+namespace GeonBit_Desktop_Application
+{
+    /// <summary>
+    /// Your main game class!
+    /// </summary>
+    internal class Game1 : GeonBitGame
+    {
+        /// <summary>
+        /// Initialize your GeonBitGame properties here.
+        /// </summary>
+        public Game1()
+        {
+            UiTheme = "hd";
+            DebugMode = true;
+            EnableVsync = true;
+        }
+
+        /// <summary>
+        /// Allows the game to run logic such as updating the world,
+        /// checking for collisions, gathering input, and playing audio.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        override public void Update(GameTime gameTime)
+        {
+            /// exit application on escape
+            if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Escape))
+            {
+                Exit();
+            }
+			
+            /// TBD add any custom Update functionality here.
+        }
+
+        /// <summary>
+        /// Initialize to implement per main type.
+        /// </summary>
+        override public void Initialize()
+        {
+            /// TBD create your scene, components and init resources here.
+            /// The code below contains a simple example of how to use UI, camera, and basic entity renderer.
+
+            /// Example 1: create UI text
+            ActiveScene.UserInterface.AddEntity(new GeonBit.UI.Entities.Paragraph("Welcome to GeonBit! Here's a sphere:"));
+
+            /// Example 2: create camera and add to scene
+            GameObject cameraObject = new GameObject("camera");
+            cameraObject.AddComponent(new Camera());
+            cameraObject.SceneNode.PositionZ = 5;
+            cameraObject.Parent = ActiveScene.Root;
+
+            /// Example 3: add 3d shape to scene
+            GameObject shapeObject = new GameObject("shape");
+            shapeObject.AddComponent(new ShapeRenderer(ShapeMeshes.Sphere));
+            shapeObject.Parent = ActiveScene.Root;
+        }
+
+        /// <summary>
+        /// Draw function to implement per main type.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        override public void Draw(GameTime gameTime)
+        {
+            /// TBD add any custom drawing functionality here.
+            /// Note: since GeonBit handle its own drawing internally, usually you don't need to do anything here.
+        }
+    }
+}
+
+```
+
+The ```GeonBitGame``` class is your main game class.
+
+- Use its **Constructor** to init some creation-time params.
+- Use its **Initialization** function to create your scene, prototypes, objects etc.
+- Use its **Update** function to do some custom global updates, which are not related to any specific component.
+- Use its **Draw** function to add any special drawing functionality.
+
+In the following chapters we'll assume such class exists and properly called from ```Program.Main()```:
+
+```cs
+GeonBit.GeonBitMain.Instance.Run(new Game1());
+``` 
+
+
 ## Game Objects & Components
 
 As mentioned before, *GameObjects* are the basic entity in the Entity-Component model. Everything in your game is a *GameObject*.
+
+If you used the GeonBit template, you can delete the content of your ```Game1``` Initialize() code. We'll learn it here step by step.
 
 Lets start by creating a new *GameObject*:
 
