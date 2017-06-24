@@ -32,6 +32,32 @@ namespace GeonBit.Core.Graphics
     }
 
     /// <summary>
+    /// All built-in blend states.
+    /// </summary>
+    public static class BlendStates
+    {
+        /// <summary>
+        /// Additive blending.
+        /// </summary>
+        public static BlendState Additive = BlendState.Additive;
+
+        /// <summary>
+        /// Alpha blend (alpha channels).
+        /// </summary>
+        public static BlendState AlphaBlend = BlendState.AlphaBlend;
+
+        /// <summary>
+        /// Non-premultiplied blending.
+        /// </summary>
+        public static BlendState NonPremultiplied = BlendState.NonPremultiplied;
+
+        /// <summary>
+        /// Opaque (no alpha blending).
+        /// </summary>
+        public static BlendState Opaque = BlendState.Opaque;
+    }
+
+    /// <summary>
     /// A callback to generate the default materials all loaded meshes will recieve.
     /// </summary>
     /// <param name="mgEffect">MonoGame effect loaded by the mesh loader. You can use it to extract data.</param>
