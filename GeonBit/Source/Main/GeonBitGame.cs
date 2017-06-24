@@ -19,7 +19,6 @@
 #endregion
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using GeonBit.Managers;
 
 namespace GeonBit
@@ -38,7 +37,7 @@ namespace GeonBit
         /// <summary>
         /// Provide an easy access to all GeonBit managers.
         /// </summary>
-        protected readonly Managers.EasyManagersGetters Managers = new Managers.EasyManagersGetters();
+        protected readonly EasyManagersGetters Managers = new EasyManagersGetters();
 
         // pointer to the monogame game wrapper class.
         internal MonoGameGameWrapper _gameWrapper;
@@ -58,20 +57,17 @@ namespace GeonBit
         /// </summary>
         protected ECS.Components.Graphics.Camera ActiveCamera { get { return GeonBitMain.ActiveScene.ActiveCamera; } }
 
-        // optional paragraph to show diagnostic data
-        GeonBit.UI.Entities.Paragraph _showDiagnosticData;
-
         /// <summary>How many seconds passed since last frame, in real seconds.</summary>
         protected float _timeFactor = 0.0f;
 
         /// <summary>
         /// Get GeonBit custom content class.
         /// </summary>
-        public GeonBit.Core.ResourcesManager Resources
+        public Core.ResourcesManager Resources
         {
             get
             {
-                return GeonBit.Core.ResourcesManager.Instance;
+                return Core.ResourcesManager.Instance;
             }
         }
 
@@ -133,20 +129,6 @@ namespace GeonBit
         public bool UiEnabled
         {
             get { return GeonBitMain.Instance.UiEnabled; }
-        }
-
-        /// <summary>
-        /// Show / hide diagnostic data.
-        /// </summary>
-        /// <param name="show"></param>
-        /// <param name="position"></param>
-        public void ShowDiagnosticData(bool show, UI.Entities.Anchor position = UI.Entities.Anchor.BottomLeft)
-        {
-            if (show && !UiEnabled)
-            {
-                throw new System.Exception("Cannot show built-in diagnostic with GeonBit.UI disabled. To show diagnostic data on external UI system, use GetDiagnosticDataAsString().");
-            }
-            _showDiagnosticData = show ? new UI.Entities.Paragraph("", position, Color.White, scale: 0.8f) : null;
         }
 
         /// <summary>
