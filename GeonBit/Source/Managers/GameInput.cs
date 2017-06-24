@@ -224,6 +224,9 @@ namespace GeonBit.Managers
             // set basic keys
             SetDefaultCommonKeys();
 
+            // set space as fire
+            _keyboardMap[KeyboardKeys.Space] = GameKeys.Fire;
+
             // up
             _keyboardMap[KeyboardKeys.Up] = GameKeys.Forward;
             _keyboardMap[KeyboardKeys.W] = GameKeys.Forward;
