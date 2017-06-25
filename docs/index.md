@@ -8,6 +8,8 @@
 
 [Intro](chapters/intro.md)
 
+[Demos](chapters/demos.md)
+
 [Glossary](chapters/glossary.md)
 
 [GeonBit Overview](chapters/geonbit_overview.md)

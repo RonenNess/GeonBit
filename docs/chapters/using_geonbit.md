@@ -782,13 +782,21 @@ For example, after creating your enemy *GameObject* and adding all its component
 Managers.Prototypes.Register(enemyGameObject, "enemy");
 ```
 
-And whenever you want to spawn a new enemy instance, you can fetch it from Prototypes:
+Note that you can also register a function as a Prototype:
+
+```cs
+Managers.Prototypes.Register(() => {
+	return new GameObject();
+}, "enemy");
+```
+
+Now whenever you want to spawn a new enemy instance, you can fetch it from Prototypes:
 
 ```cs
 GameObject newEnemy = Managers.Prototypes.Spawn("enemy");
 ```
 
-Using Prototypes to instantiate *GameObject* types is recommended for both readability and to enjoy internal optimizations that might be added to *GeonBit* at later versions.
+Using Prototypes to instantiate *GameObject* types is recommended for both readability and to enjoy internal optimizations that might be added to *GeonBit* in the future.
 
 
 ## UI

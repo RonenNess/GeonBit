@@ -77,6 +77,12 @@ In short, GeonBit comes with everything you need to implement a basic 3D game, f
 For more complicated stuff (for example, if you build a multiplayer game and need networking components), GeonBit is opened source easy to extend, so you can easily write your own components and integrate inside the existing ECS framework.
 
 
+# Demos
+
+Some *GeonBit* demo projects are available [here](https://github.com/RonenNess/GeonBit.Demos). 
+Feel free to download and use them!
+
+
 # Glossary
 
 Before diving deeper into *GeonBit*, lets define some basic concepts (these are relevant to most ECS engines out there):

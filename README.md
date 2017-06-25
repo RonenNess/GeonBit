@@ -20,6 +20,11 @@ In addition, complete API docs can be found online [here](https://ronenness.gith
 
 Installing and using *GeonBit* takes only [3 simple steps](docs/chapters/setup.md)!
 
+# Demos
+
+Some *GeonBit* demo projects are available [here](https://github.com/RonenNess/GeonBit.Demos). 
+Feel free to download and use them!
+
 # Changelog
 
 Versions changelog can be found [here](docs/changes.md).
