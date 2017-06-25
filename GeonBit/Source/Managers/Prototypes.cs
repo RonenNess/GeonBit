@@ -23,6 +23,13 @@ using Microsoft.Xna.Framework;
 namespace GeonBit.Managers
 {
     /// <summary>
+    /// A generator function to spawn a new GameObject.
+    /// This function is used when registering a function as a prototype.
+    /// </summary>
+    /// <returns>New GameObject instance.</returns>
+    public delegate ECS.GameObject GameObjectGenerator();
+
+    /// <summary>
     /// Manage GameObject prototypes that we can spawn.
     /// </summary>
     public class Prototypes : IManager
@@ -46,7 +53,7 @@ namespace GeonBit.Managers
         }
 
         // dictionary of loaded prototypes
-        Dictionary<string, ECS.GameObject> _prototypes;
+        Dictionary<string, object> _prototypes;
 
         /// <summary>
         /// To make it a true singleton.
@@ -59,7 +66,7 @@ namespace GeonBit.Managers
         public void Initialize()
         {
             // create dictionary of prototypes
-            _prototypes = new Dictionary<string, ECS.GameObject>();
+            _prototypes = new Dictionary<string, object>();
         }
 
         /// <summary>
@@ -88,6 +95,16 @@ namespace GeonBit.Managers
         }
 
         /// <summary>
+        /// Register a prototype from a function to generate a GameObject.
+        /// </summary>
+        /// <param name="generator">A function to return a new GameObject instance.</param>
+        /// <param name="name">Name from prototype.</param>
+        public void Register(GameObjectGenerator generator, string name)
+        {
+            _prototypes[name] = generator;
+        }
+
+        /// <summary>
         /// Remove a prototype.
         /// </summary>
         /// <param name="name">Name of prototype to remove.</param>
@@ -104,7 +121,21 @@ namespace GeonBit.Managers
         /// <returns>New GameObject instance, built from prototype.</returns>
         public ECS.GameObject Spawn(string name)
         {
-            return _prototypes[name].Clone();
+            // get prototype from dictionary
+            object prototype = _prototypes[name];
+
+            // try to use as a gameobject
+            ECS.GameObject asGameObject = prototype as ECS.GameObject;
+            if (asGameObject != null)
+            {
+                return asGameObject.Clone();
+            }
+            // if not a game object, use as a function
+            else
+            {
+                GameObjectGenerator func = prototype as GameObjectGenerator;
+                return func();
+            }
         }
 
         /// <summary>
