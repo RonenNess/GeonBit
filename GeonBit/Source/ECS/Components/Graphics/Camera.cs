@@ -28,7 +28,7 @@ namespace GeonBit.ECS.Components.Graphics
     public class Camera : BaseComponent
     {
         // the graphic camera object (core layer).
-        Core.Graphics.Camera _graphicCamera;
+        Core.Graphics.CameraEntity _graphicCamera;
 
         /// <summary>
         /// Far clip plane distance.
@@ -114,7 +114,7 @@ namespace GeonBit.ECS.Components.Graphics
         public Camera()
         {
             // create new graphic camera object
-            _graphicCamera = new Core.Graphics.Camera();
+            _graphicCamera = new Core.Graphics.CameraEntity();
         }
 
         /// <summary>

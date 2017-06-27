@@ -40,6 +40,11 @@ namespace GeonBit.ECS.Components.Graphics
         protected override BaseRenderableEntity Entity { get { return _entity; } }
 
         /// <summary>
+        /// Playing animations speed (relevant if using animation clips).
+        /// </summary>
+        public float AnimationSpeed = 1f;
+
+        /// <summary>
         /// Override material default settings for this specific model instance.
         /// </summary>
         public MaterialOverrides MaterialOverride
@@ -110,6 +115,16 @@ namespace GeonBit.ECS.Components.Graphics
         }
 
         /// <summary>
+        /// Play animation clip.
+        /// </summary>
+        /// <param name="clip">Animation clip to play.</param>
+        /// <param name="speed">Animation playing speed.</param>
+        public void PlayAnimation(SpriteAnimationClip clip, float speed = 1f)
+        {
+            _entity.PlayAnimation(clip, speed);
+        }
+
+        /// <summary>
         /// Change the spritesheet and current step of this sprite.
         /// </summary>
         /// <param name="newSpritesheet">New spritesheet data to use.</param>
@@ -138,6 +153,15 @@ namespace GeonBit.ECS.Components.Graphics
         }
 
         /// <summary>
+        /// Called every frame in the Update() loop.
+        /// Note: this is called only if GameObject is enabled.
+        /// </summary>
+        protected override void OnUpdate()
+        {
+            _entity.Update(Managers.TimeManager.TimeFactor * AnimationSpeed);
+        }
+
+        /// <summary>
         /// Clone this component.
         /// </summary>
         /// <returns>Cloned copy of this component.</returns>
@@ -149,6 +173,7 @@ namespace GeonBit.ECS.Components.Graphics
             ret.MaterialOverride = _entity.MaterialOverride.Clone();
             ret.LockedAxis = LockedAxis;
             ret.BlendingState = BlendingState;
+            ret.AnimationSpeed = AnimationSpeed;
             return ret;
         }
     }

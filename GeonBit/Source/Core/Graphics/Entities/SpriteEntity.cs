@@ -24,167 +24,6 @@ using System.Collections.Generic;
 namespace GeonBit.Core.Graphics
 {
     /// <summary>
-    /// Spritesheet define animation steps of a spritesheet texture.
-    /// For example, if you have a spritesheet that describe 4 steps of a walking animation, this
-    /// object define the steps of the spritesheet and its texture coords.
-    /// </summary>
-    public class SpriteSheet
-    {
-        // list with steps in spritesheet
-        List<SpriteSheetStep> _steps = new List<SpriteSheetStep>();
-
-        /// <summary>
-        /// A single step inside a spritesheet.
-        /// </summary>
-        public class SpriteSheetStep
-        {
-            /// <summary>
-            /// Vertices buffer.
-            /// </summary>
-            public VertexPositionNormalTexture[] Vertices { get; internal set; }
-
-            /// <summary>
-            /// Vertices indexes.
-            /// </summary>
-            public short[] Indexes { get; internal set; }
-        }
-
-        // dictionary of step names (to get sprite from spritesheet via string identifier)
-        Dictionary<string, int> _stepNames = new Dictionary<string, int>();
-
-        /// <summary>
-        /// Create spritesheet without any steps (you need to add via AddStep).
-        /// </summary>
-        public SpriteSheet()
-        {
-        }
-
-        /// <summary>
-        /// Create spritesheet from constant steps count.
-        /// </summary>
-        public SpriteSheet(Point stepsCount)
-        {
-            BuildForConstStepSize(stepsCount);
-        }
-
-        /// <summary>
-        /// Get spritesheet step by index.
-        /// </summary>
-        /// <param name="index">Step index to get.</param>
-        /// <returns>Spritesheet step.</returns>
-        public SpriteSheetStep GetStep(int index)
-        {
-            if (index >= _steps.Count) { throw new System.Exception("Spritesheet step out of range!"); }
-            return _steps[index];
-        }
-
-        /// <summary>
-        /// Get spritesheet step by string identifier (if set).
-        /// </summary>
-        /// <param name="identifier">Step index to get.</param>
-        /// <returns>Spritesheet step.</returns>
-        public SpriteSheetStep GetStep(string identifier)
-        {
-            return GetStep(_stepNames[identifier]);
-        }
-
-        /// <summary>
-        /// Define a step in the spritesheet.
-        /// </summary>
-        /// <param name="position">Position in spritesheet texture, in percents (eg values range from 0 to 1).</param>
-        /// <param name="size">Size in spritesheet texture, in percents (eg values range from 0 to 1).</param>
-        /// <param name="identifier">Optional step string identifier.</param>
-        public void AddStep(Vector2 position, Vector2 size, string identifier = null)
-        {
-            // create the step
-            SpriteSheetStep step = BuildStep(position, size);
-            _steps.Add(step);
-
-            // if there's a string identifier, set it
-            if (identifier != null)
-            {
-                _stepNames[identifier] = _steps.Count - 1;
-            }
-        }
-
-        /// <summary>
-        /// Build the entire spritesheet from a constant step size.
-        /// Note: this only works for spritesheet with constant sprite size, eg all steps are at the same size.
-        /// </summary>
-        /// <param name="stepsCount">How many sprites there are on X and Y axis of the spritesheet.</param>
-        public void BuildForConstStepSize(Point stepsCount)
-        {
-            // calc size of a single step
-            Vector2 size = Vector2.One / new Vector2(stepsCount.X, stepsCount.Y);
-
-            // create all steps
-            for (int j = 0; j < stepsCount.Y; ++j)
-            {
-                for (int i = 0; i < stepsCount.X; ++i)
-                {
-                    Vector2 position = size * new Vector2(i, j);
-                    AddStep(position, size);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Attach a string identifier to a spritesheet step.
-        /// </summary>
-        /// <param name="index">Step index.</param>
-        /// <param name="identifier">Identifier to set.</param>
-        public void AssignNameToStep(int index, string identifier)
-        {
-            _stepNames[identifier] = index;
-        }
-
-        /// <summary>
-        /// Create a single spritesheet step.
-        /// </summary>
-        /// <param name="positionInSpritesheet">Position in spritesheet (0-1 coords).</param>
-        /// <param name="sizeInSpriteSheet">Size in spritesheet (0-1 coords).</param>
-        SpriteSheetStep BuildStep(Vector2 positionInSpritesheet, Vector2 sizeInSpriteSheet)
-        {
-            // create vertices
-            VertexPositionNormalTexture[] vertices = new VertexPositionNormalTexture[4];
-
-            // set normal
-            for (int i = 0; i < 4; ++i)
-            {
-                vertices[i].Normal = Vector3.Forward;
-            }
-
-            // set vertices position and UV
-            float halfSize = 0.5f;
-            vertices[0].Position = new Vector3(-halfSize, -halfSize, 0);    // bottom left
-            vertices[1].Position = new Vector3(-halfSize, halfSize, 0);     // top left
-            vertices[2].Position = new Vector3(halfSize, -halfSize, 0);     // bottom right
-            vertices[3].Position = new Vector3(halfSize, halfSize, 0);      // top right
-
-            // set vertices UVs
-            vertices[0].TextureCoordinate = positionInSpritesheet + sizeInSpriteSheet;                              // bottom left
-            vertices[1].TextureCoordinate = positionInSpritesheet + new Vector2(sizeInSpriteSheet.X, 0);            // top left
-            vertices[2].TextureCoordinate = positionInSpritesheet + new Vector2(0, sizeInSpriteSheet.Y);            // bottom right
-            vertices[3].TextureCoordinate = positionInSpritesheet;                                                  // top right
-
-            // Set the index buffer for each vertex, using clockwise winding
-            short[] indexes = new short[6];
-            indexes[0] = 0;
-            indexes[1] = 1;
-            indexes[2] = 2;
-            indexes[3] = 2;
-            indexes[4] = 1;
-            indexes[5] = 3;
-
-            // create a new step and add to steps dictionary
-            SpriteSheetStep step = new SpriteSheetStep();
-            step.Vertices = vertices;
-            step.Indexes = indexes;
-            return step;
-        }
-    }
-
-    /// <summary>
     /// A sprite entity (3d quad that always faces camera and plays animation from spritesheet texture file).
     /// </summary>
     public class SpriteEntity : BaseRenderableEntity
@@ -195,7 +34,15 @@ namespace GeonBit.Core.Graphics
         public SpriteSheet Spritesheet { get; private set; }
 
         // current spritesheet step
-        SpriteSheet.SpriteSheetStep _spritesheetStep;
+        SpriteSheetStep _spritesheetStep;
+
+        // currently playing animation (or null, if not playing any clips at the momeny)
+        SpriteAnimationClipPlay _currAnimation = null;
+
+        /// <summary>
+        /// Callback to call whenever sprite animation cycle ends (when using animation clips).
+        /// </summary>
+        public OnAnimationClipEnds OnAnimationEnd = null;
 
         // material to draw the sprite with
         Materials.MaterialAPI _material;
@@ -230,6 +77,10 @@ namespace GeonBit.Core.Graphics
         public void CopyStep(SpriteEntity other)
         {
             _spritesheetStep = other._spritesheetStep;
+            if (other._currAnimation != null)
+            {
+                PlayAnimation(other._currAnimation.Clip, other._currAnimation.SpeedFactor, other._currAnimation.CurrentStep);
+            }
         }
 
         /// <summary>
@@ -304,6 +155,21 @@ namespace GeonBit.Core.Graphics
         public Vector3? LockedAxis = Vector3.Up;
 
         /// <summary>
+        /// Play animation clip.
+        /// </summary>
+        /// <param name="clip">Animation clip to play.</param>
+        /// <param name="speed">Animation playing speed.</param>
+        /// <param name="startingStep">Animation starting step.</param>
+        public void PlayAnimation(SpriteAnimationClip clip, float speed = 1f, int? startingStep = null)
+        {
+            _currAnimation = new SpriteAnimationClipPlay(clip, speed, startingStep);
+            _currAnimation.OnAnimationEnd = () =>
+            {
+                this.OnAnimationEnd?.Invoke();
+            };
+        }
+
+        /// <summary>
         /// Change the spritesheet and current step of this sprite.
         /// </summary>
         /// <param name="newSpritesheet">New spritesheet data to use.</param>
@@ -312,6 +178,7 @@ namespace GeonBit.Core.Graphics
         {
             Spritesheet = newSpritesheet;
             _spritesheetStep = Spritesheet.GetStep(startingStep);
+            _currAnimation = null;
         }
 
         /// <summary>
@@ -321,6 +188,7 @@ namespace GeonBit.Core.Graphics
         public void SetStep(string identifier)
         {
             _spritesheetStep = Spritesheet.GetStep(identifier);
+            _currAnimation = null;
         }
 
         /// <summary>
@@ -330,6 +198,20 @@ namespace GeonBit.Core.Graphics
         public void SetStep(int index)
         {
             _spritesheetStep = Spritesheet.GetStep(index);
+            _currAnimation = null;
+        }
+
+        /// <summary>
+        /// Update animations if currently playing.
+        /// </summary>
+        /// <param name="elapsedTime">Elapsed game time, in seconds, since last frame.</param>
+        public void Update(float elapsedTime)
+        {
+            if (_currAnimation != null)
+            {
+                int index = _currAnimation.Update(elapsedTime);
+                _spritesheetStep = Spritesheet.GetStep(index);
+            }
         }
 
         /// <summary>

@@ -90,6 +90,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Core\CoreManager.cs" />
     <Compile Include="Source\Core\Graphics\Entities\BaseRenderableEntity.cs" />
+    <Compile Include="Source\Core\Graphics\Entities\SpriteSheet.cs" />
     <Compile Include="Source\Core\Graphics\Entities\SpriteEntity.cs" />
     <Compile Include="Source\Core\Graphics\Entities\BoundingBoxEntity.cs" />
     <Compile Include="Source\Core\Graphics\Entities\IEntity.cs" />
@@ -107,7 +108,7 @@
     <Compile Include="Source\Core\Graphics\Materials\SpriteMaterial.cs" />
     <Compile Include="Source\Core\Graphics\Materials\BasicMaterial.cs" />
     <Compile Include="Source\Core\Graphics\Materials\SkinnedMaterial.cs" />
-    <Compile Include="Source\Core\Graphics\Misc\Camera.cs" />
+    <Compile Include="Source\Core\Graphics\Misc\CameraEntity.cs" />
     <Compile Include="Source\Core\Graphics\Misc\ModelUtils.cs" />
     <Compile Include="Source\Core\Graphics\Nodes\NodesManager.cs" />
     <Compile Include="Source\Core\Graphics\Nodes\OctreeCullingNode.cs" />

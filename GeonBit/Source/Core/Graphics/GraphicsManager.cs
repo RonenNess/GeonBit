@@ -221,6 +221,6 @@ namespace GeonBit.Core.Graphics
         /// <summary>
         /// Currently active camera.
         /// </summary>
-        public static Camera ActiveCamera;
+        public static CameraEntity ActiveCamera;
     }
 }

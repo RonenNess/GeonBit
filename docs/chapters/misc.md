@@ -3,7 +3,6 @@
 ## TBDS
 
 - GPU particles system.
-- Spritesheet animation clips.
 - More built-in materials, including with real lights.
 - Physical material - maybe?
 

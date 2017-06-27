@@ -42,7 +42,7 @@ namespace GeonBit.Core.Graphics
     /// <summary>
     /// A 3d camera object.
     /// </summary>
-    public class Camera
+    public class CameraEntity
     {
         // projection params
         float _fieldOfView = MathHelper.PiOver4;
@@ -125,7 +125,7 @@ namespace GeonBit.Core.Graphics
         /// <summary>
         /// Create a new camera instance
         /// </summary>
-        public Camera()
+        public CameraEntity()
         {
         }
 
