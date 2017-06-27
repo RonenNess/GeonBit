@@ -698,6 +698,27 @@ var spritesheet = new SpriteSheet(new Point(8, 4));
 gameObject.AddComponent(new Sprite(spritesheet, "texture_path"));
 ```
 
+You can then change sprites step in spritesheet:
+
+```cs
+// get sprite component and set index in spritesheet
+sprite = gameObject.GetComponent<Sprite>();
+sprite.StepStep(2);
+
+// or if you created a spritesheet with named steps:
+sprite.StepStep("walk_down");
+```
+
+Sprite entities also support animations:
+
+```cs
+// define animation clip and play it
+SpriteAnimationClip animationClip = new SpriteAnimationClip(startStep: 0, endStep: 7, speed: 10f, loop: true);
+sprite.PlayAnimation(animationClip);
+```
+
+For more info on sprites & billboard, check out the examples in [GeonBit demos](https://github.com/RonenNess/GeonBit.Demos).
+
 ![Sprite Example](assets/sprite.png "sprite.png")
 
 #### SkyBox
