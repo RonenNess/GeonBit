@@ -4,6 +4,12 @@
 
 **A 3D Entity-Component-System engine, powered by MonoGame for C# games.**
 
+## IMPORTANT NOTICE
+
+The engine is still in Beta phase. 
+
+You can download and use it, but keep in mind that some of the API may change in the following days and expect some bug-fixing patches.
+
 # License
 
 *For the purpose of making games, educational projects, or apps with gamification properties*, GeonBit is distributed under the **MIT license** and is completely free for commercial and non commercial use.
