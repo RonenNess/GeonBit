@@ -160,11 +160,19 @@ namespace GeonBit.Core
 
         /// <summary>
         /// Get a material from a mesh effect.
-        /// Note: this will only work on an effect extracted from a mesh instance (mesh.Effects).
+        /// Note: this will only work on an effect that are loaded as part of a model.
         /// </summary>
         static public Graphics.Materials.MaterialAPI GetMaterial(this Effect effect)
         {
             return effect.Tag as Graphics.Materials.MaterialAPI;
+        }
+
+        /// <summary>
+        /// Get a material from a mesh part.
+        /// </summary>
+        static public Graphics.Materials.MaterialAPI GetMaterial(this ModelMeshPart meshpart)
+        {
+            return meshpart.Effect.GetMaterial();
         }
     }
 }
