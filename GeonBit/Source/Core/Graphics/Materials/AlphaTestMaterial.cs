@@ -57,20 +57,21 @@ namespace GeonBit.Core.Graphics.Materials
         /// <summary>
         /// Create the material.
         /// </summary>
-        /// <param name="effect">Effect to use.</param>
+        /// <param name="fromEffect">Effect to create material from.</param>
         /// <param name="copyEffectProperties">If true, will copy initial properties from effect.</param>
-        public AlphaTestMaterial(AlphaTestEffect effect, bool copyEffectProperties = true)
+        public AlphaTestMaterial(AlphaTestEffect fromEffect, bool copyEffectProperties = true)
         {
             // store effect and set default properties
-            _effect = effect;
+            _effect = fromEffect;
             SetDefaults();
 
             // copy properties from effect itself
             if (copyEffectProperties)
             {
                 // set effect defaults
-                Texture = _effect.Texture;
-                Alpha = _effect.Alpha;
+                Texture = fromEffect.Texture;
+                TextureEnabled = fromEffect.Texture != null;
+                Alpha = fromEffect.Alpha;
 
                 // enable lightings by default
                 LightingEnabled = true;

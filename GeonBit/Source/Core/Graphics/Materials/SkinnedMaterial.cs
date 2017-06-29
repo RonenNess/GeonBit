@@ -55,25 +55,26 @@ namespace GeonBit.Core.Graphics.Materials
         /// <summary>
         /// Create the material.
         /// </summary>
-        /// <param name="effect">Effect to use.</param>
+        /// <param name="fromEffect">Effect to create material from.</param>
         /// <param name="copyEffectProperties">If true, will copy initial properties from effect.</param>
-        public SkinnedMaterial(SkinnedEffect effect, bool copyEffectProperties = true)
+        public SkinnedMaterial(SkinnedEffect fromEffect, bool copyEffectProperties = true)
         {
             // store effect and set default properties
-            _effect = new SkinnedEffect(effect.GraphicsDevice);
+            _effect = fromEffect; // new SkinnedEffect(fromEffect.GraphicsDevice);
             SetDefaults();
 
             // copy properties from effect itself
             if (copyEffectProperties)
             {
                 // set effect defaults
-                Texture = _effect.Texture;
-                Alpha = _effect.Alpha;
-                AmbientLight = new Color(_effect.AmbientLightColor.X, _effect.AmbientLightColor.Y, _effect.AmbientLightColor.Z);
-                DiffuseColor = new Color(_effect.DiffuseColor.X, _effect.DiffuseColor.Y, _effect.DiffuseColor.Z);
-                SmoothLighting = _effect.PreferPerPixelLighting;
-                SpecularColor = new Color(_effect.SpecularColor.X, _effect.SpecularColor.Y, _effect.SpecularColor.Z);
-                SpecularPower = _effect.SpecularPower;
+                Texture = fromEffect.Texture;
+                TextureEnabled = fromEffect.Texture != null;
+                Alpha = fromEffect.Alpha;
+                AmbientLight = new Color(fromEffect.AmbientLightColor.X, fromEffect.AmbientLightColor.Y, fromEffect.AmbientLightColor.Z);
+                DiffuseColor = new Color(fromEffect.DiffuseColor.X, fromEffect.DiffuseColor.Y, fromEffect.DiffuseColor.Z);
+                SmoothLighting = fromEffect.PreferPerPixelLighting;
+                SpecularColor = new Color(fromEffect.SpecularColor.X, fromEffect.SpecularColor.Y, fromEffect.SpecularColor.Z);
+                SpecularPower = fromEffect.SpecularPower;
 
                 // enable lightings by default
                 LightingEnabled = true;
@@ -112,7 +113,7 @@ namespace GeonBit.Core.Graphics.Materials
             _effect.Projection = Projection;
             _effect.Texture = Texture;
             _effect.Alpha = Alpha;
-            _effect.AmbientLightColor = AmbientLight.ToVector3();
+            _effect.AmbientLightColor = LightingEnabled ? AmbientLight.ToVector3() : Color.White.ToVector3();
             _effect.DiffuseColor = DiffuseColor.ToVector3();
             _effect.PreferPerPixelLighting = SmoothLighting;
             _effect.SpecularColor = SpecularColor.ToVector3();

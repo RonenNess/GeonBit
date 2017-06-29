@@ -58,27 +58,27 @@ namespace GeonBit.Core.Graphics.Materials
         /// <summary>
         /// Create the default material.
         /// </summary>
-        /// <param name="effect">Effect to use.</param>
+        /// <param name="fromEffect">Effect to create material from.</param>
         /// <param name="copyEffectProperties">If true, will copy initial properties from effect.</param>
-        public BasicMaterial(BasicEffect effect, bool copyEffectProperties = true)
+        public BasicMaterial(BasicEffect fromEffect, bool copyEffectProperties = true)
         {
             // store effect and set default properties
-            _effect = effect;
+            _effect = fromEffect;
             SetDefaults();
 
             // copy properties from effect itself
             if (copyEffectProperties)
             {
                 // set effect defaults
-                Texture = _effect.Texture;
-                TextureEnabled = _effect.TextureEnabled;
-                Alpha = _effect.Alpha;
-                AmbientLight = new Color(_effect.AmbientLightColor.X, _effect.AmbientLightColor.Y, _effect.AmbientLightColor.Z);
-                DiffuseColor = new Color(_effect.DiffuseColor.X, _effect.DiffuseColor.Y, _effect.DiffuseColor.Z);
-                LightingEnabled = _effect.LightingEnabled;
-                SmoothLighting = _effect.PreferPerPixelLighting;
-                SpecularColor = new Color(_effect.SpecularColor.X, _effect.SpecularColor.Y, _effect.SpecularColor.Z);
-                SpecularPower = _effect.SpecularPower;
+                Texture = fromEffect.Texture;
+                TextureEnabled = fromEffect.TextureEnabled;
+                Alpha = fromEffect.Alpha;
+                AmbientLight = new Color(fromEffect.AmbientLightColor.X, fromEffect.AmbientLightColor.Y, fromEffect.AmbientLightColor.Z);
+                DiffuseColor = new Color(fromEffect.DiffuseColor.X, fromEffect.DiffuseColor.Y, fromEffect.DiffuseColor.Z);
+                LightingEnabled = fromEffect.LightingEnabled;
+                SmoothLighting = fromEffect.PreferPerPixelLighting;
+                SpecularColor = new Color(fromEffect.SpecularColor.X, fromEffect.SpecularColor.Y, fromEffect.SpecularColor.Z);
+                SpecularPower = fromEffect.SpecularPower;
 
                 // enable lightings by default
                 LightingEnabled = true;

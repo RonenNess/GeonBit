@@ -71,6 +71,27 @@ namespace GeonBit.ECS.Components.Graphics
         }
 
         /// <summary>
+        /// Get material for a given mesh id and part index.
+        /// </summary>
+        /// <param name="meshId">Mesh id to get material for.</param>
+        /// <param name="meshPartIndex">MeshPart index to get material for.</param>
+        public Core.Graphics.Materials.MaterialAPI GetMaterial(string meshId, int meshPartIndex = 0)
+        {
+            return _entity.GetMaterial(meshId, meshPartIndex);
+        }
+
+        /// <summary>
+        /// Return a list with all materials in model.
+        /// Note: if alternative materials are set, will return them.
+        /// Note2: prevent duplications, eg if even if more than one part uses the same material it will only return it once.
+        /// </summary>
+        /// <returns>List of materials.</returns>
+        public System.Collections.Generic.List<Core.Graphics.Materials.MaterialAPI> GetMaterials()
+        {
+            return _entity.GetMaterials();
+        }
+
+        /// <summary>
         /// Get the main entity instance of this renderer.
         /// </summary>
         protected override Core.Graphics.BaseRenderableEntity Entity { get { return _entity; } }

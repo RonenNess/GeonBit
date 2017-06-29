@@ -152,6 +152,29 @@ namespace GeonBit.Core.Graphics
         }
 
         /// <summary>
+        /// Return a list with all materials in model.
+        /// Note: if alternative materials are set, will return them.
+        /// Note2: prevent duplications, eg if even if more than one part uses the same material it will only return it once.
+        /// </summary>
+        /// <returns>List of materials.</returns>
+        public List<Materials.MaterialAPI> GetMaterials()
+        {
+            List<Materials.MaterialAPI> ret = new List<Materials.MaterialAPI>();
+            foreach (var mesh in Model.Meshes)
+            {
+                for (int i = 0; i < mesh.MeshParts.Count; ++i)
+                {
+                    Materials.MaterialAPI material = GetMaterial(mesh.Name, i);
+                    if (!ret.Contains(material))
+                    {
+                        ret.Add(material);
+                    }
+                }
+            }
+            return ret;
+        }
+
+        /// <summary>
         /// Draw this model.
         /// </summary>
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
