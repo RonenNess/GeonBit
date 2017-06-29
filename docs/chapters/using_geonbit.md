@@ -414,12 +414,21 @@ gameObject.AddComponent(new ShapeRenderer(ShapeMeshes.Cube));
 
 #### SkinnedModelRenderer
 
-Render a 3d model with skinned animation (be sure to set the content importer to GeonBit skinned animation).
+Render a 3d model with skinned animation.
 
 Usage example:
 
 ```cs
 gameObject.AddComponent(new SkinnedModelRenderer("asset_path"));
+```
+
+To use skinned model you must set the model ```Processor``` (in the content manager) to either CPU AnimatedModel (for CPU skinned mesh) or GPU AnimatedModel + Skinned Effect (for GPU skinned mesh).
+
+Then you can change animation clips like this:
+
+```cs
+SkinnedModelRenderer skinnedRenderer = modelObj.GetComponent<SkinnedModelRenderer>();
+skinnedRenderer.SetClip("walking_1", inLoop: true);
 ```
 
 #### BillboardRenderer
