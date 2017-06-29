@@ -33,6 +33,9 @@ namespace GeonBit.ECS.Components.Graphics
         /// <summary>Sphere shape.</summary>
         Sphere,
 
+        /// <summary>Sphere with smooth normals.</summary>
+        SphereSmooth,
+
         /// <summary>Cube shape.</summary>
         Cube,
 
