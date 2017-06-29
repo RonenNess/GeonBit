@@ -37,6 +37,17 @@ namespace GeonBit.ECS.Components.Graphics
         /// </summary>
         public bool IsLooped = true;
 
+        /// <summary>
+        /// If set, will not animate the mesh if distance from camera is greater than value.
+        /// This is an optimization that allow you to disable small animations when too far away.
+        /// </summary>
+        public float MaxAnimationDistance = 0f;
+
+        /// <summary>
+        /// If true (default), will animate mesh even when not drawn (due to cluiing optimizations).
+        /// If false and object is culled, will not animate.
+        /// </summary>
+        public bool AnimateWhenCulled = true;
 
         /// <summary>
         /// Lock animation while transitioning.
@@ -166,6 +177,22 @@ namespace GeonBit.ECS.Components.Graphics
         /// </summary>
         protected override void OnUpdate()
         {
+            // check distance optimization
+            if (MaxAnimationDistance != 0f)
+            {
+                float distance = Vector3.Distance(_GameObject.ActiveScene.ActiveCamera.Position, _GameObject.SceneNode.WorldPosition);
+                if (distance > MaxAnimationDistance)
+                {
+                    return;
+                }
+            }
+
+            // check if wasn't drawn last frame and should not animate when not drawn
+            if (!AnimateWhenCulled && !_GameObject.SceneNode.WasDrawnThisFrame)
+            {
+                return;
+            }
+
             // create the skinned entity
             _skinnedEntity.Update(Managers.TimeManager.TimeFactor * AnimationSpeed, Matrix.Identity);
         }
@@ -185,6 +212,8 @@ namespace GeonBit.ECS.Components.Graphics
             ret.IdleAnimationClip = IdleAnimationClip;
             ret.BackToIdleTransitionTime = BackToIdleTransitionTime;
             ret.LockWhileTransitioning = LockWhileTransitioning;
+            ret.MaxAnimationDistance = MaxAnimationDistance;
+            ret.AnimateWhenCulled = AnimateWhenCulled;
             return ret;
         }
     }
