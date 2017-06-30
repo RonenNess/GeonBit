@@ -111,7 +111,6 @@ namespace GeonBit.Core.Graphics.Materials
             _effect.DiffuseColor = DiffuseColor.ToVector3();
             _effect.AlphaFunction = AlphaFunction;
             _effect.ReferenceAlpha = ReferenceAlpha;
-            GraphicsManager.GraphicsDevice.SamplerStates[0] = SamplerState;
         }
 
         /// <summary>

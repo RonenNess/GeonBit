@@ -155,6 +155,9 @@ namespace GeonBit.Core.Graphics.Materials
             // set world matrix
             World = worldMatrix;
 
+            // apply sampler state
+            GraphicsManager.GraphicsDevice.SamplerStates[0] = SamplerState;
+
             // set effect tag to point on self, and call the per-effect specific apply
             if (Effect.Tag == null) { Effect.Tag = this; }
             MaterialSpecificApply(_lastMaterialApplied == this);

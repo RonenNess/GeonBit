@@ -110,7 +110,6 @@ namespace GeonBit.Core.Graphics.Materials
             _effect.PreferPerPixelLighting = SmoothLighting;
             _effect.SpecularColor = SpecularColor.ToVector3();
             _effect.SpecularPower = SpecularPower;
-            GraphicsManager.GraphicsDevice.SamplerStates[0] = SamplerState;
         }
 
         /// <summary>
