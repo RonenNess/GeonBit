@@ -84,6 +84,11 @@ namespace GeonBit.Core.Graphics
         Opacity,
 
         /// <summary>
+        /// For entities that are mostly solid and opaque, but have some transparent elements in them.
+        /// </summary>
+        Mixed,
+
+        /// <summary>
         /// Special queue that draws everything as wireframe.
         /// </summary>
         Wireframe,
@@ -266,6 +271,18 @@ namespace GeonBit.Core.Graphics
                 queue.RasterizerState.FillMode = FillMode.Solid;
                 queue.DepthStencilState.DepthBufferEnable = true;
                 queue.DepthStencilState.DepthBufferWriteEnable = false;
+                queue.SortByCamera = true;
+                _renderingQueues.Add(queue);
+            }
+
+            // Mixed
+            {
+                RenderingQueueInstance queue = new RenderingQueueInstance();
+                queue.RasterizerState.CullMode = CullMode.CullCounterClockwiseFace;
+                queue.RasterizerState.DepthClipEnable = true;
+                queue.RasterizerState.FillMode = FillMode.Solid;
+                queue.DepthStencilState.DepthBufferEnable = true;
+                queue.DepthStencilState.DepthBufferWriteEnable = true;
                 queue.SortByCamera = true;
                 _renderingQueues.Add(queue);
             }
