@@ -116,7 +116,7 @@ namespace GeonBit.Core.Graphics.Materials
             _effect.AmbientLightColor = LightingEnabled ? AmbientLight.ToVector3() : Color.White.ToVector3();
             _effect.DiffuseColor = DiffuseColor.ToVector3();
             _effect.PreferPerPixelLighting = SmoothLighting;
-            _effect.SpecularColor = SpecularColor.ToVector3();
+            _effect.SpecularColor = LightingEnabled ? SpecularColor.ToVector3() : Color.Black.ToVector3();
             _effect.SpecularPower = SpecularPower;
         }
 
