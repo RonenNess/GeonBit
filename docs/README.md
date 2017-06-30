@@ -1269,13 +1269,19 @@ Materials are made of an Effect (eg shaders) and some extra data (diffuse color,
 
 Render smooth surfaces with constant basic lights. This material uses MonoGame ```BasicEffect```.
 
+Note: this material is not very optimized and is designed for testing and development phase. You should write your own material and effect to replace it.
+
 #### AlphaTestMaterial
 
 A material that performance alpha test and omit invisible pixels. This material uses MonoGame ```AlphaTestEffect```.
 
+Note: this material is not very optimized and is designed for testing and development phase. You should write your own material and effect to replace it.
+
 #### SkinnedMaterial
 
 A material that support GPU skinned animation. This material uses MonoGame ```SkinnedEffect```.
+
+Note: this material is not very optimized and is designed for testing and development phase. You should write your own material and effect to replace it.
 
 #### SkyboxMaterial
 
