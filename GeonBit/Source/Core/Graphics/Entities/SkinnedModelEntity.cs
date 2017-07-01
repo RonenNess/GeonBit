@@ -20,6 +20,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GeonBit.Extend.Animation;
+using System.Collections;
+using System.Collections.Specialized;
 
 namespace GeonBit.Core.Graphics
 {
@@ -47,7 +49,7 @@ namespace GeonBit.Core.Graphics
     /// <summary>
     /// Skinned animation model entity (render model as a whole, with animation clips supported).
     /// </summary>
-    public class SkinnedModelEntity : ModelEntity
+    public class SkinnedModelEntity : CompositeModelEntity
     {
         // model animations
         Animations _animations;
@@ -186,11 +188,6 @@ namespace GeonBit.Core.Graphics
         }
 
         /// <summary>
-        /// Should we process mesh parts?
-        /// </summary>
-        override protected bool ProcessMeshParts { get { return true; } }
-
-        /// <summary>
         /// Draw this model.
         /// </summary>
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
@@ -263,24 +260,40 @@ namespace GeonBit.Core.Graphics
         }
 
         /// <summary>
-        /// Called before drawing each mesh part.
-        /// This is useful to extend this model with animations etc.
+        /// Draw this entity.
         /// </summary>
-        /// <param name="part">Mesh part we are about to draw.</param>
-        protected override void BeforeDrawingMeshPart(ModelMeshPart part)
+        /// <param name="parent">Parent node that's currently drawing this entity.</param>
+        /// <param name="localTransformations">Local transformations from the direct parent node.</param>
+        /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
+        public override void Draw(Node parent, Matrix localTransformations, Matrix worldTransformations)
         {
-            // animate mesh parts by chosen method
-            switch (_animateMode)
-            {
-                // animate in gpu
-                case AnimatedMode.GPU:
-                    part.Effect.GetMaterial().SetBoneTransforms(CurrAnimationTransform);
-                    break;
+            // call base drawing
+            base.Draw(parent, localTransformations, worldTransformations);
 
-                // animate in cpu
-                case AnimatedMode.CPU:
-                    part.UpdateVertices(CurrAnimationTransform);
-                    break;
+            // animate parts by updating bones transformations
+            foreach (DictionaryEntry entry in _meshes)
+            {
+                // get mesh
+                MeshEntity mesh = entry.Value as MeshEntity;
+
+                // iterate parts and set bones
+                foreach (var part in mesh.Mesh.MeshParts)
+                {
+
+                    // animate mesh parts by chosen method
+                    switch (_animateMode)
+                    {
+                        // animate in gpu
+                        case AnimatedMode.GPU:
+                            part.Effect.GetMaterial().SetBoneTransforms(CurrAnimationTransform);
+                            break;
+
+                        // animate in cpu
+                        case AnimatedMode.CPU:
+                            part.UpdateVertices(CurrAnimationTransform);
+                            break;
+                    }
+                }
             }
         }
     }

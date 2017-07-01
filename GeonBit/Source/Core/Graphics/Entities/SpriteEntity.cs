@@ -48,11 +48,6 @@ namespace GeonBit.Core.Graphics
         Materials.MaterialAPI _material;
 
         /// <summary>
-        /// Blending state of this entity.
-        /// </summary>
-        public BlendState BlendingState = BlendState.AlphaBlend;
-
-        /// <summary>
         /// Optional custom render settings for this specific sprite instance.
         /// These settings will override some of the material's properties before rendering.
         /// Note: this method is much less efficient than using different materials.
@@ -220,6 +215,9 @@ namespace GeonBit.Core.Graphics
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
         public override void DoEntityDraw(Matrix worldTransformations)
         {
+            // call base draw entity
+            base.DoEntityDraw(worldTransformations);
+
             // decompose transformations
             Vector3 position; Quaternion rotation; Vector3 scale;
             worldTransformations.Decompose(out scale, out rotation, out position);
@@ -244,9 +242,6 @@ namespace GeonBit.Core.Graphics
 
             // update per-entity override properties
             Materials.MaterialAPI material = MaterialOverride.Apply(_material);
-
-            // set blend state
-            GraphicsManager.GraphicsDevice.BlendState = BlendingState;
 
             // setup material
             material.Apply(newWorld);

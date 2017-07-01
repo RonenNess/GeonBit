@@ -25,7 +25,7 @@ namespace GeonBit.ECS.Components.Graphics
     /// <summary>
     /// This component renders an animated skinned 3D model.
     /// </summary>
-    public class SkinnedModelRenderer : ModelRenderer
+    public class SkinnedModelRenderer : CompositeModelRenderer
     {
         /// <summary>
         /// Animation speed factor.

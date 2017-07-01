@@ -60,11 +60,6 @@ namespace GeonBit.Core.Graphics
         public MaterialOverrides MaterialOverride = new MaterialOverrides();
 
         /// <summary>
-        /// Blending state of this entity.
-        /// </summary>
-        public BlendState BlendingState = BlendState.AlphaBlend;
-
-        /// <summary>
         /// Create the mesh entity from mesh instance.
         /// </summary>
         /// <param name="model">Model to draw.</param>
@@ -107,18 +102,18 @@ namespace GeonBit.Core.Graphics
         /// <summary>
         /// Get material for a given mesh id.
         /// </summary>
-        /// <param name="effectIndex">Effect index to get material for.</param>
-        public Materials.MaterialAPI GetMaterial(int effectIndex = 0)
+        /// <param name="meshPartIndex">MeshPart index to get material for.</param>
+        public Materials.MaterialAPI GetMaterial(int meshPartIndex = 0)
         {
             // if we got alternative materials array defined, check if we got alternative material for this effect index
             if (_materials != null)
             {
                 // get material for effect index or null if overflow
-                return effectIndex < _materials.Length ? _materials[effectIndex] : null;
+                return meshPartIndex < _materials.Length ? _materials[meshPartIndex] : null;
             }
 
             // if not found, return the default material attached to the mesh effect (via 'Tag')
-            return (Materials.MaterialAPI)Mesh.Effects[effectIndex].Tag;
+            return Mesh.MeshParts[meshPartIndex].GetMaterial();
         }
 
         /// <summary>
@@ -127,15 +122,19 @@ namespace GeonBit.Core.Graphics
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
         public override void DoEntityDraw(Matrix worldTransformations)
         {
+            // call base draw entity
+            base.DoEntityDraw(worldTransformations);
+
             // reset last radius
             _lastRadius = 0f;
             float scaleLen = worldTransformations.Scale.Length();
 
-            // set blend state
-            GraphicsManager.GraphicsDevice.BlendState = BlendingState;
+            // check if in this mesh we have shared materials, eg same effects used for several mesh parts
+            bool gotSharedEffects = Mesh.Effects.Count != Mesh.MeshParts.Count;
 
-            // iterate over mesh effects
-            for (int index = 0; index < Mesh.Effects.Count; ++index)
+            // iterate over mesh parts
+            int index = 0;
+            foreach (var meshPart in Mesh.MeshParts)
             {
                 // get material for this mesh and effect index
                 Materials.MaterialAPI material = GetMaterial(index);
@@ -147,9 +146,25 @@ namespace GeonBit.Core.Graphics
                 // update per-entity override properties
                 material = MaterialOverride.Apply(material);
 
-                // apply material effect on the mesh part
-                material.Apply(worldTransformations);
-                Mesh.MeshParts[index].Effect = material.Effect;
+                // if we don't have shared effects, eg every mesh part has its own effect, update material transformations
+                if (!gotSharedEffects) material.Apply(worldTransformations);
+
+                // apply material effect on the mesh part. note: we first store original effect in mesh part's tag.
+                meshPart.Tag = meshPart.Effect;
+                meshPart.Effect = material.Effect;
+
+                // next index.
+                ++index;
+            }
+
+            // if we have shared effects, eg more than one mesh part with the same effect, we apply all materials here
+            // this is to prevent applying the same material more than once
+            if (gotSharedEffects)
+            {
+                foreach (var effect in Mesh.Effects)
+                {
+                    effect.GetMaterial().Apply(worldTransformations);
+                }
             }
 
             // update last radius
@@ -157,7 +172,13 @@ namespace GeonBit.Core.Graphics
 
             // draw the mesh itself
             Mesh.Draw();
-            
+
+            // restore original effect to mesh parts
+            foreach (var meshPart in Mesh.MeshParts)
+            {
+                meshPart.Effect = meshPart.Tag as Effect;
+                meshPart.Tag = null;
+            }
         }
 
         /// <summary>

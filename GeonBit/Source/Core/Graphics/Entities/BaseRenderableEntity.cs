@@ -57,6 +57,11 @@ namespace GeonBit.Core.Graphics
         public RenderingQueue RenderingQueue = RenderingQueue.Solid;
 
         /// <summary>
+        /// Blending state for this entity.
+        /// </summary>
+        public BlendState BlendingState = BlendState.AlphaBlend;
+
+        /// <summary>
         /// If true, will draw just the wireframe of the entity.
         /// Note: settings this property will change the rendering queue property.
         /// </summary>
@@ -134,6 +139,8 @@ namespace GeonBit.Core.Graphics
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
         public virtual void DoEntityDraw(Matrix worldTransformations)
         {
+            // set blend state
+            GraphicsManager.GraphicsDevice.BlendState = BlendingState;
         }
 
         /// <summary>

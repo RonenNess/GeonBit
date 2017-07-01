@@ -66,6 +66,16 @@ namespace GeonBit.ECS.Components.Graphics
             return _entity.GetMesh(name);
         }
 
+        /// <summary>
+        /// Return a list with all materials in model.
+        /// Note: if alternative materials are set, will return them.
+        /// Note2: prevent duplications, eg if even if more than one part uses the same material it will only return it once.
+        /// </summary>
+        /// <returns>List of materials.</returns>
+        public System.Collections.Generic.List<Core.Graphics.Materials.MaterialAPI> GetMaterials()
+        {
+            return _entity.GetMaterials();
+        }
 
         /// <summary>
         /// Protected constructor without params to use without creating entity, for inheriting classes.

@@ -48,11 +48,6 @@ namespace GeonBit.Core.Graphics
         float _lastRadius = 0f;
 
         /// <summary>
-        /// Blending state of this entity.
-        /// </summary>
-        public BlendState BlendingState = BlendState.AlphaBlend;
-
-        /// <summary>
         /// Create the model entity from model instance.
         /// </summary>
         /// <param name="model">Model to draw.</param>
@@ -75,12 +70,12 @@ namespace GeonBit.Core.Graphics
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
         public override void DoEntityDraw(Matrix worldTransformations)
         {
+            // call base draw entity
+            base.DoEntityDraw(worldTransformations);
+
             // reset last radius
             _lastRadius = 0f;
             float scaleLen = worldTransformations.Scale.Length();
-
-            // set blend state
-            GraphicsManager.GraphicsDevice.BlendState = BlendingState;
 
             // iterate model meshes
             foreach (var mesh in Model.Meshes)

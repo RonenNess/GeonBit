@@ -21,6 +21,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Collections.Generic;
 
 namespace GeonBit.Core.Graphics
 {
@@ -44,7 +45,7 @@ namespace GeonBit.Core.Graphics
         /// <summary>
         /// Dictionary with all the mesh entities.
         /// </summary>
-        OrderedDictionary _meshes = new OrderedDictionary();
+        protected OrderedDictionary _meshes = new OrderedDictionary();
         
         /// <summary>
         /// Create the model entity from model instance.
@@ -85,6 +86,30 @@ namespace GeonBit.Core.Graphics
         public MeshEntity GetMesh(string name)
         {
             return _meshes[name] as MeshEntity;
+        }
+
+        /// <summary>
+        /// Return a list with all materials in model.
+        /// Note: if alternative materials are set, will return them.
+        /// Note2: prevent duplications, eg if even if more than one part uses the same material it will only return it once.
+        /// </summary>
+        /// <returns>List of materials.</returns>
+        public List<Materials.MaterialAPI> GetMaterials()
+        {
+            List<Materials.MaterialAPI> ret = new List<Materials.MaterialAPI>();
+            foreach (DictionaryEntry entry in _meshes)
+            {
+                MeshEntity mesh = entry.Value as MeshEntity;
+                for (int i = 0; i < mesh.Mesh.MeshParts.Count; ++i)
+                {
+                    Materials.MaterialAPI material = mesh.GetMaterial(i);
+                    if (!ret.Contains(material))
+                    {
+                        ret.Add(material);
+                    }
+                }
+            }
+            return ret;
         }
 
         /// <summary>
