@@ -65,11 +65,6 @@ namespace GeonBit.Core.Graphics
         internal Dictionary<string, Materials.MaterialAPI[]>  OverrideMaterialsDictionary { get { return _materials; } }
 
         /// <summary>
-        /// If set, will always replace the world matrix when rendering entity.
-        /// </summary>
-        public Matrix? OverrideWorldMatrix = null;
-
-        /// <summary>
         /// Optional custom render settings for this specific instance.
         /// Note: this method is much less efficient than materials override.
         /// </summary>
@@ -177,12 +172,6 @@ namespace GeonBit.Core.Graphics
         {
             // call base draw entity
             base.DoEntityDraw(worldTransformations);
-
-            // use override world matrix
-            if (OverrideWorldMatrix != null)
-            {
-                worldTransformations = OverrideWorldMatrix.Value;
-            }
 
             // reset last radius
             _lastRadius = 0f;

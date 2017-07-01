@@ -47,7 +47,6 @@ namespace GeonBit.ECS.Components.Graphics
             TexturePath = texture ?? DefaultTexture;
             _entity.RenderingQueue = Core.Graphics.RenderingQueue.BackgroundNoCull;
             _entity.SetMaterial(new Core.Graphics.Materials.SkyboxMaterial(TexturePath, true));
-            _entity.OverrideWorldMatrix = Matrix.Identity;
         }
 
         /// <summary>
