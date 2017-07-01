@@ -46,6 +46,34 @@ namespace GeonBit.Managers
         }
 
         /// <summary>
+        /// Get current viewport size.
+        /// </summary>
+        public Point ViewportSize
+        {
+            get
+            {
+                return new Point(
+                    Core.Graphics.GraphicsManager.GraphicsDevice.Viewport.Width, 
+                    Core.Graphics.GraphicsManager.GraphicsDevice.Viewport.Height
+                    );
+            }
+        }
+
+        /// <summary>
+        /// Get current resolution size.
+        /// </summary>
+        public Point ScreenSize
+        {
+            get
+            {
+                return new Point(
+                    Core.Graphics.GraphicsManager.GraphicsDevice.DisplayMode.Width,
+                    Core.Graphics.GraphicsManager.GraphicsDevice.DisplayMode.Height
+                    );
+            }
+        }
+
+        /// <summary>
         /// To make it a true singleton.
         /// </summary>
         private GraphicsManager() { }
