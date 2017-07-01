@@ -95,20 +95,46 @@ namespace GeonBit
             /// If true, will switch to fullscreen during the initialization step.
             /// </summary>
             public bool FullScreen = false;
+
+            /// <summary>
+            /// Title to give to the application (instead of the default project name).
+            /// </summary>
+            public string Title = null;
         }
 
         /// <summary>
         /// Initialize params you can setup during the constructor of your game class.
         /// These params affect how GeonBit init itself. Most of these settings can be changed later manually.
-        /// Note: after initialization is done, this object is deleted and replaced with null.
+        /// Note: after constructor is done, this object is deleted and replaced with null.
         /// </summary>
-        public _InitParams InitParams { get; internal set; } = new _InitParams();
+        public _InitParams InitParams { get; private set; } = new _InitParams();
 
         /// <summary>
         /// Create the main game class.
         /// </summary>
         public GeonBitGame()
         {
+        }
+
+        /// <summary>
+        /// Do some pre-initialize stuff (mostly apply init params).
+        /// </summary>
+        public void PreInit()
+        {
+            // set fullscreen
+            if (InitParams.FullScreen)
+            {
+                MakeFullscreen();
+            }
+
+            // set title
+            if (InitParams.Title != null)
+            {
+                SetTitle(InitParams.Title);
+            }
+
+            // clear the init params
+            InitParams = null;
         }
 
         /// <summary>
@@ -169,6 +195,24 @@ namespace GeonBit
         public void MakeFullscreen(bool framed = false)
         {
             _gameWrapper.MakeFullscreen(framed);
+        }
+
+        /// <summary>
+        /// Set window title.
+        /// </summary>
+        /// <param name="title">New title to set.</param>
+        public void SetTitle(string title)
+        {
+            _gameWrapper.SetTitle(title);
+        }
+
+        /// <summary>
+        /// Resize window.
+        /// </summary>
+        /// <param name="size">New window size.</param>
+        public void Resize(Point size)
+        {
+            _gameWrapper.Resize(size);
         }
     }
 }

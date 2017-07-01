@@ -78,17 +78,11 @@ namespace GeonBit
             // initialize engine
             GeonBitMain.Instance.Initialize(this, _graphics, _game.InitParams.UiTheme, _game.InitParams.DebugMode);
 
-            // set fullscreen
-            if (_game.InitParams.FullScreen)
-            {
-                _game.MakeFullscreen();
-            }
+            // do pre-initialize stuff
+            _game.PreInit();
 
             // call the _game init
             _game.Initialize();
-
-            // clear the init params
-            _game.InitParams = null;
 
             // call base initialize
             base.Initialize();
@@ -134,6 +128,26 @@ namespace GeonBit
         }
 
         /// <summary>
+        /// Set window title.
+        /// </summary>
+        /// <param name="title">New title to set.</param>
+        public void SetTitle(string title)
+        {
+            Window.Title = title;
+        }
+
+        /// <summary>
+        /// Resize window.
+        /// </summary>
+        /// <param name="size">New window size.</param>
+        public void Resize(Point size)
+        {
+            _graphics.PreferredBackBufferWidth = size.X;
+            _graphics.PreferredBackBufferHeight = size.Y;
+            _graphics.ApplyChanges();
+        }
+
+        /// <summary>
         /// Make game work in fullscreen mode.
         /// </summary>
         /// <param name="framed">If true, will make fullscreen but with window frame.</param>
@@ -146,13 +160,14 @@ namespace GeonBit
                 _graphics.PreferredBackBufferHeight = _graphics.GraphicsDevice.DisplayMode.Height;
                 _graphics.IsFullScreen = false;
                 _graphics.ApplyChanges();
-                Window.AllowUserResizing = false;
             }
             // really fullscreen
             else
             {
                 _graphics.PreferredBackBufferWidth = _graphics.GraphicsDevice.DisplayMode.Width;
                 _graphics.PreferredBackBufferHeight = _graphics.GraphicsDevice.DisplayMode.Height;
+                Window.AllowUserResizing = true;
+                Window.IsBorderless = true;
                 _graphics.ApplyChanges();
                 _graphics.ToggleFullScreen();
             }
