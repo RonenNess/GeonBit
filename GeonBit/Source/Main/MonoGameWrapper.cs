@@ -60,7 +60,7 @@ namespace GeonBit
             Content.RootDirectory = "Content";
 
             // if vsync disabled
-            if (!_game.EnableVsync)
+            if (!_game.InitParams.EnableVsync)
             {
                 _graphics.SynchronizeWithVerticalRetrace = false;
                 IsFixedTimeStep = false;
@@ -76,10 +76,19 @@ namespace GeonBit
         protected sealed override void Initialize()
         {
             // initialize engine
-            GeonBitMain.Instance.Initialize(this, _graphics, _game.UiTheme, _game.DebugMode);
+            GeonBitMain.Instance.Initialize(this, _graphics, _game.InitParams.UiTheme, _game.InitParams.DebugMode);
+
+            // set fullscreen
+            if (_game.InitParams.FullScreen)
+            {
+                _game.MakeFullscreen();
+            }
 
             // call the _game init
             _game.Initialize();
+
+            // clear the init params
+            _game.InitParams = null;
 
             // call base initialize
             base.Initialize();

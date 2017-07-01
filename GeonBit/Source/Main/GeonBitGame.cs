@@ -72,23 +72,37 @@ namespace GeonBit
         }
 
         /// <summary>
-        /// Should we enable vsync to sync FPS with monitor refresh rate?
-        /// Note: you must set this property before Initialize is called, eg inside the constructor.
+        /// Different params we can setup inside the constructor.
         /// </summary>
-        public bool EnableVsync { protected set; get; } = true;
+        public class _InitParams 
+        {
+            /// <summary>
+            /// If true, will limit FPS rate to fit monitor v-sync (usually 60 FPS).
+            /// </summary>
+            public bool EnableVsync = true;
+
+            /// <summary>
+            /// Which UI theme to use (or null, if you don't want to use GeonBit built-in UI system).
+            /// </summary>
+            public string UiTheme = "editor";
+
+            /// <summary>
+            /// If true, GeonBit will init in debug mode. This is slower but provide more diagnostic and debug data.
+            /// </summary>
+            public bool DebugMode = true;
+
+            /// <summary>
+            /// If true, will switch to fullscreen during the initialization step.
+            /// </summary>
+            public bool FullScreen = false;
+        }
 
         /// <summary>
-        /// Which UI theme to use (or null, if you don't want to use GeonBit built-in UI system).
-        /// Note: you must set this property before Initialize is called, eg inside the constructor.
+        /// Initialize params you can setup during the constructor of your game class.
+        /// These params affect how GeonBit init itself. Most of these settings can be changed later manually.
+        /// Note: after initialization is done, this object is deleted and replaced with null.
         /// </summary>
-        public string UiTheme { protected set; get; } = "editor";
-        
-        /// <summary>
-        /// Should we run in debug mode? This will show and render some extra data, but should not
-        /// use for released games.
-        /// Note: you must set this property before Initialize is called, eg inside the constructor.
-        /// </summary>
-        public bool DebugMode { protected set; get; } = true;
+        public _InitParams InitParams { get; internal set; } = new _InitParams();
 
         /// <summary>
         /// Create the main game class.

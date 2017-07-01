@@ -14,7 +14,7 @@ namespace GeonBit
         public EmptyGeonBitMain()
         {
             // disable ui, since this project don't contain geonbit ui content
-            UiTheme = null;
+            InitParams.UiTheme = null;
         }
 
         /// <summary>
