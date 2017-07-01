@@ -408,7 +408,7 @@ namespace GeonBit.Managers
         /// </summary>
         /// <param name="key">Keyboard key to test.</param>
         /// <returns>If keyboard key was released in this frame.</returns>
-        public bool KeyboardKeyReleased(KeyboardKeys key)
+        public bool IsKeyboardKeyReleased(KeyboardKeys key)
         {
             return _input.IsKeyReleased((Microsoft.Xna.Framework.Input.Keys)key);
         }
