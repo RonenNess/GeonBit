@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
 	<id>GeonBit</id>
-	<version>0.0.0.2</version>
+	<version>0.0.0.3</version>
 	<authors>Ronen Ness</authors>
 	<owners>RonenNess</owners>
 	<title>GeonBit.Core</title>
@@ -26,7 +26,7 @@
 	<file src="GeonBit\bin\DesktopGL\AnyCPU\Release\AnimationImporters.dll" target="lib\geonbit\AnimationImporters.dll"/>
 	<file src="GeonBit\bin\DesktopGL\AnyCPU\Release\Animations.dll" target="lib\geonbit\Animations.dll"/>
 	<file src="GeonBit\bin\DesktopGL\AnyCPU\Release\GraphicsImporters.dll" target="lib\geonbit\GraphicsImporters.dll"/>
-	<file src="GeonBit\ReadMe\Documentation.chm" target="Documentation.chm"/>
+	<file src="docs\Documentation.chm" target="Documentation.chm"/>
 	<file src="GeonBit\Content\GeonBit.Core\**\*.*" target="content\Content\GeonBit.Core" /> 
   </files>
 </package>
