@@ -30,9 +30,9 @@ namespace GeonBit_Desktop_Application
 		/// </summary>
 		public Game1()
 		{
-			UiTheme = "hd";
-			DebugMode = true;
-			EnableVsync = true;
+			InitParams.UiTheme = "hd";
+			InitParams.DebugMode = true;
+			InitParams.EnableVsync = true;
 		}
 
 		/// <summary>
@@ -155,9 +155,9 @@ namespace GeonBitExamples
 		public MyGame()
 		{ 
 			// optional settings:
-			EnableVsync = true;
-			DebugMode = true;
-			UiTheme = "hd";
+			InitParams.EnableVsync = true;
+			InitParams.DebugMode = true;
+			InitParams.UiTheme = "hd";
 		}
 
 		/// <summary>

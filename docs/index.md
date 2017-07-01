@@ -22,8 +22,6 @@
 
 [Advanced Topics](chapters/advanced_topics.md)
 
-[Cookbook](chapters/cookbook.md)
-
 [Plugins](chapters/plugins.md)
 
 [Misc](chapters/misc.md)
