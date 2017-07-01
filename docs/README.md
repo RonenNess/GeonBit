@@ -662,6 +662,28 @@ Usage example:
 gameObject.AddComponent(new ShapeRenderer(ShapeMeshes.Cube));
 ```
 
+#### CompositeModelRenderer
+
+Its quite common to have complex models that contain both opaque and transparent parts, and may even have different Blending States.
+
+To handle those cases, you can use the ```CompositeModelRenderer```. This model renderer will break the model into meshes, that you can set seperately and use like individual models.
+For example, if you have a car model with transparent windshield:
+
+```cs
+// create car model
+GameObject modelObject = new GameObject("car");
+CompositeModelRenderer model = new CompositeModelRenderer("car_model");
+
+// get the windshield mesh and change its rendering queue
+model.GetMesh("windshield").RenderingQueue = GeonBit.Core.Graphics.RenderingQueue.Opacity;
+```
+
+#### SimpleModelRenderer
+
+Simple model renderers work like ```ModelRenderer```, but have much less options and configurable stuff.
+
+This renderer sacrifice flexibility to gain some performance. Use this type for models you want to draw as-is, and by large numbers.
+
 #### SkinnedModelRenderer
 
 Render a 3d model with skinned animation.
@@ -680,6 +702,8 @@ Then you can change animation clips like this:
 SkinnedModelRenderer skinnedRenderer = modelObj.GetComponent<SkinnedModelRenderer>();
 skinnedRenderer.SetClip("walking_1", inLoop: true);
 ```
+
+Note that the ```SkinnedModelRenderer``` is a subclass of the ```CompositeModelRenderer``` entity, meaning that its made of multiple meshes and is not rendered as a single entity.
 
 #### BillboardRenderer
 

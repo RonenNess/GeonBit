@@ -40,15 +40,6 @@ namespace GeonBit.ECS.Components.Graphics
         protected override BaseRenderableEntity Entity { get { return _entity; } }
 
         /// <summary>
-        /// Entity blending state.
-        /// </summary>
-        public BlendState BlendingState
-        {
-            set { _entity.BlendingState = value; }
-            get { return _entity.BlendingState; }
-        }
-
-        /// <summary>
         /// Override material default settings for this specific model instance.
         /// </summary>
         public MaterialOverrides MaterialOverride

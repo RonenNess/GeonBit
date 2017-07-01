@@ -72,15 +72,6 @@ namespace GeonBit.ECS.Components.Graphics
         }
 
         /// <summary>
-        /// Entity blending state.
-        /// </summary>
-        public BlendState BlendingState
-        {
-            set { _entity.BlendingState = value; }
-            get { return _entity.BlendingState; }
-        }
-
-        /// <summary>
         /// Create the sprite renderer component.
         /// </summary>
         /// <param name="spritesheet">Spritesheet data.</param>
@@ -172,7 +163,6 @@ namespace GeonBit.ECS.Components.Graphics
             ret._entity.CopyStep(_entity);
             ret.MaterialOverride = _entity.MaterialOverride.Clone();
             ret.LockedAxis = LockedAxis;
-            ret.BlendingState = BlendingState;
             ret.AnimationSpeed = AnimationSpeed;
             return ret;
         }

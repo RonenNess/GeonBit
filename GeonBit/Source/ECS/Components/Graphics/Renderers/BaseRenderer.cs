@@ -17,6 +17,7 @@
 // Since: 2017.
 //-----------------------------------------------------------------------------
 #endregion
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GeonBit.ECS.Components.Graphics
 {
@@ -31,9 +32,18 @@ namespace GeonBit.ECS.Components.Graphics
         protected abstract Core.Graphics.BaseRenderableEntity Entity { get; }
 
         /// <summary>
+        /// Set / get Entity blending state.
+        /// </summary>
+        public BlendState BlendingState
+        {
+            set { Entity.BlendingState = value; }
+            get { return Entity.BlendingState; }
+        }
+
+        /// <summary>
         /// Set / get the rendering queue of this entity.
         /// </summary>
-        public Core.Graphics.RenderingQueue RenderingQueue
+        virtual public Core.Graphics.RenderingQueue RenderingQueue
         {
             get { return Entity.RenderingQueue; }
             set { Entity.RenderingQueue = value; }
@@ -47,7 +57,9 @@ namespace GeonBit.ECS.Components.Graphics
         protected override BaseComponent CopyBasics(BaseComponent copyTo)
         {
             base.CopyBasics(copyTo);
-            ((BaseRendererComponent)copyTo).RenderingQueue = RenderingQueue;
+            BaseRendererComponent otherRenderer = copyTo as BaseRendererComponent;
+            otherRenderer.RenderingQueue = RenderingQueue;
+            otherRenderer.BlendingState = BlendingState;
             return copyTo;
         }
 

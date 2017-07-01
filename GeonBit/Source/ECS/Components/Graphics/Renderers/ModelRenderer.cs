@@ -42,15 +42,6 @@ namespace GeonBit.ECS.Components.Graphics
         }
 
         /// <summary>
-        /// Entity blending state.
-        /// </summary>
-        public BlendState BlendingState
-        {
-            set { _entity.BlendingState = value; }
-            get { return _entity.BlendingState; }
-        }
-
-        /// <summary>
         /// Set alternative material for a specific mesh id.
         /// </summary>
         /// <param name="material">Material to set.</param>
@@ -129,7 +120,6 @@ namespace GeonBit.ECS.Components.Graphics
         {
             ModelRenderer other = copyTo as ModelRenderer;
             other.MaterialOverride = MaterialOverride.Clone();
-            other.BlendingState = BlendingState;
             other._entity.CopyMaterials(other._entity.OverrideMaterialsDictionary);
             return base.CopyBasics(other);
         }

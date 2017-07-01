@@ -19,6 +19,7 @@
 #endregion
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace GeonBit.ECS.Components.Graphics
 {
@@ -37,6 +38,20 @@ namespace GeonBit.ECS.Components.Graphics
         /// Get the main entity instance of this renderer.
         /// </summary>
         protected override Core.Graphics.BaseRenderableEntity Entity { get { return _entity; } }
+
+        /// <summary>
+        /// Set the rendering queue of for all meshes in the composite model.
+        /// </summary>
+        override public Core.Graphics.RenderingQueue RenderingQueue
+        {
+            set
+            {
+                foreach (var mesh in GetMeshes())
+                {
+                    mesh.RenderingQueue = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Return meshes count.
@@ -64,6 +79,15 @@ namespace GeonBit.ECS.Components.Graphics
         public Core.Graphics.MeshEntity GetMesh(string name)
         {
             return _entity.GetMesh(name);
+        }
+
+        /// <summary>
+        /// Get all meshes as a list.
+        /// </summary>
+        /// <returns>List of MeshEntity instances in this composite model.</returns>
+        public List<Core.Graphics.MeshEntity> GetMeshes()
+        {
+            return _entity.GetMeshes();
         }
 
         /// <summary>
@@ -108,7 +132,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// <returns>The object we are copying properties to.</returns>
         protected override BaseComponent CopyBasics(BaseComponent copyTo)
         {
-            ModelRenderer other = copyTo as ModelRenderer;
+            CompositeModelRenderer other = copyTo as CompositeModelRenderer;
             return base.CopyBasics(other);
         }
 
@@ -127,6 +151,7 @@ namespace GeonBit.ECS.Components.Graphics
                 other.MaterialOverride = self.MaterialOverride.Clone();
                 other.BlendingState = self.BlendingState;
                 other.SetMaterials(self.OverrideMaterials);
+                other.RenderingQueue = self.RenderingQueue;
             }
             return ret;
         }

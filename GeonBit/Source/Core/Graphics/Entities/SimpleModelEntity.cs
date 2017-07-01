@@ -83,7 +83,7 @@ namespace GeonBit.Core.Graphics
                 // iterate over mesh effects and apply them (set world matrix etc)
                 foreach (var effect in mesh.Effects)
                 {
-                    Materials.MaterialAPI material = effect.Tag as Materials.MaterialAPI;
+                    Materials.MaterialAPI material = effect.GetMaterial();
                     material.Apply(worldTransformations);
                 }
 

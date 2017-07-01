@@ -89,6 +89,20 @@ namespace GeonBit.Core.Graphics
         }
 
         /// <summary>
+        /// Get all meshes in this composite model.
+        /// </summary>
+        /// <returns></returns>
+        public List<MeshEntity> GetMeshes()
+        {
+            List<MeshEntity> ret = new List<MeshEntity>(_meshes.Values.Count);
+            foreach (var mesh in _meshes.Values)
+            {
+                ret.Add(mesh as MeshEntity);
+            }
+            return ret;
+        }
+
+        /// <summary>
         /// Return a list with all materials in model.
         /// Note: if alternative materials are set, will return them.
         /// Note2: prevent duplications, eg if even if more than one part uses the same material it will only return it once.

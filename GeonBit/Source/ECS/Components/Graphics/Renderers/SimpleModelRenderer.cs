@@ -34,15 +34,6 @@ namespace GeonBit.ECS.Components.Graphics
         protected Core.Graphics.SimpleModelEntity _entity;
 
         /// <summary>
-        /// Entity blending state.
-        /// </summary>
-        public BlendState BlendingState
-        {
-            set { _entity.BlendingState = value; }
-            get { return _entity.BlendingState; }
-        }
-
-        /// <summary>
         /// Get the main entity instance of this renderer.
         /// </summary>
         protected override Core.Graphics.BaseRenderableEntity Entity { get { return _entity; } }
@@ -69,18 +60,6 @@ namespace GeonBit.ECS.Components.Graphics
         /// <param name="model">Path of the model asset to draw.</param>
         public SimpleModelRenderer(string model) : this(Resources.GetModel(model))
         {
-        }
-
-        /// <summary>
-        /// Copy basic properties to another component (helper function to help with Cloning).
-        /// </summary>
-        /// <param name="copyTo">Other component to copy values to.</param>
-        /// <returns>The object we are copying properties to.</returns>
-        protected override BaseComponent CopyBasics(BaseComponent copyTo)
-        {
-            SimpleModelRenderer other = copyTo as SimpleModelRenderer;
-            other.BlendingState = BlendingState;
-            return base.CopyBasics(other);
         }
 
         /// <summary>
