@@ -68,10 +68,10 @@ namespace GeonBit.Core.Graphics
         /// Draw this model.
         /// </summary>
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
-        public override void DoEntityDraw(Matrix worldTransformations)
+        public override void DoEntityDraw(ref Matrix worldTransformations)
         {
             // call base draw entity
-            base.DoEntityDraw(worldTransformations);
+            base.DoEntityDraw(ref worldTransformations);
 
             // reset last radius
             _lastRadius = 0f;
@@ -84,7 +84,7 @@ namespace GeonBit.Core.Graphics
                 foreach (var effect in mesh.Effects)
                 {
                     Materials.MaterialAPI material = effect.GetMaterial();
-                    material.Apply(worldTransformations);
+                    material.Apply(ref worldTransformations);
                 }
 
                 // update last radius
@@ -113,7 +113,7 @@ namespace GeonBit.Core.Graphics
         /// <param name="localTransformations">Local transformations from the direct parent node.</param>
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
         /// <returns>Bounding box of the entity.</returns>
-        protected override BoundingSphere CalcBoundingSphere(Node parent, Matrix localTransformations, Matrix worldTransformations)
+        protected override BoundingSphere CalcBoundingSphere(Node parent, ref Matrix localTransformations, ref Matrix worldTransformations)
         {
             BoundingSphere modelBoundingSphere = ModelUtils.GetBoundingSphere(Model);
             modelBoundingSphere.Radius *= worldTransformations.Scale.Length();
@@ -129,7 +129,7 @@ namespace GeonBit.Core.Graphics
         /// <param name="localTransformations">Local transformations from the direct parent node.</param>
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
         /// <returns>Bounding box of the entity.</returns>
-        protected override BoundingBox CalcBoundingBox(Node parent, Matrix localTransformations, Matrix worldTransformations)
+        protected override BoundingBox CalcBoundingBox(Node parent, ref Matrix localTransformations, ref Matrix worldTransformations)
         {
             // get bounding box in local space
             BoundingBox modelBoundingBox = ModelUtils.GetBoundingBox(Model);

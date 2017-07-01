@@ -213,10 +213,10 @@ namespace GeonBit.Core.Graphics
         /// Draw this model.
         /// </summary>
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
-        public override void DoEntityDraw(Matrix worldTransformations)
+        public override void DoEntityDraw(ref Matrix worldTransformations)
         {
             // call base draw entity
-            base.DoEntityDraw(worldTransformations);
+            base.DoEntityDraw(ref worldTransformations);
 
             // decompose transformations
             Vector3 position; Quaternion rotation; Vector3 scale;
@@ -244,7 +244,7 @@ namespace GeonBit.Core.Graphics
             Materials.MaterialAPI material = MaterialOverride.Apply(_material);
 
             // setup material
-            material.Apply(newWorld);
+            material.Apply(ref newWorld);
 
             // draw sprite
             // draw the cube vertices

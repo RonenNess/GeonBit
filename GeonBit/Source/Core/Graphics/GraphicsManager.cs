@@ -100,7 +100,7 @@ namespace GeonBit.Core.Graphics
             // if no queue, draw immediately and return
             if (entity.RenderingQueue == RenderingQueue.NoQueue)
             {
-                entity.DoEntityDraw(world);
+                entity.DoEntityDraw(ref world);
                 return;
             }
 

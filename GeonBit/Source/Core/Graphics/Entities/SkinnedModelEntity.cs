@@ -159,7 +159,7 @@ namespace GeonBit.Core.Graphics
         /// </summary>
         /// <param name="elapsedTime">Elapsed game time, in seconds, since last frame.</param>
         /// <param name="worldTransformations">Entity model root transform.</param>
-        public void Update(float elapsedTime, Matrix worldTransformations)
+        public void Update(float elapsedTime, ref Matrix worldTransformations)
         {
             // update animation 
             _animations.Update(elapsedTime, true, worldTransformations);
@@ -191,7 +191,7 @@ namespace GeonBit.Core.Graphics
         /// Draw this model.
         /// </summary>
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
-        public override void DoEntityDraw(Matrix worldTransformations)
+        public override void DoEntityDraw(ref Matrix worldTransformations)
         {
             // if during animation transition, prepare transformations for current frame
             if (_timeToFinishTransition > 0f)
@@ -212,7 +212,7 @@ namespace GeonBit.Core.Graphics
             }
 
             // call base draw
-            base.DoEntityDraw(worldTransformations);
+            base.DoEntityDraw(ref worldTransformations);
         }
 
         /// <summary>
@@ -265,10 +265,10 @@ namespace GeonBit.Core.Graphics
         /// <param name="parent">Parent node that's currently drawing this entity.</param>
         /// <param name="localTransformations">Local transformations from the direct parent node.</param>
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
-        public override void Draw(Node parent, Matrix localTransformations, Matrix worldTransformations)
+        public override void Draw(Node parent, ref Matrix localTransformations, ref Matrix worldTransformations)
         {
             // call base drawing
-            base.Draw(parent, localTransformations, worldTransformations);
+            base.Draw(parent, ref localTransformations, ref worldTransformations);
 
             // animate parts by updating bones transformations
             foreach (DictionaryEntry entry in _meshes)

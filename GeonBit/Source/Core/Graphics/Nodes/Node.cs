@@ -319,7 +319,7 @@ namespace GeonBit.Core.Graphics
             // draw all child entities
             foreach (IEntity entity in _childEntities)
             {
-                entity.Draw(this, _localTransform, _worldTransform);
+                entity.Draw(this, ref _localTransform, ref _worldTransform);
             }
         }
 
@@ -905,7 +905,7 @@ namespace GeonBit.Core.Graphics
                 }
 
                 // get entity bounding box
-                BoundingBox currBox = entity.GetBoundingBox(this, _localTransform, _worldTransform);
+                BoundingBox currBox = entity.GetBoundingBox(this, ref _localTransform, ref _worldTransform);
                 if (currBox.Min != currBox.Max)
                 {
                     corners.Add(currBox.Min);
@@ -987,7 +987,7 @@ namespace GeonBit.Core.Graphics
                 }
 
                 // get entity bounding sphere
-                BoundingSphere currSphere = entity.GetBoundingSphere(this, _localTransform, _worldTransform);
+                BoundingSphere currSphere = entity.GetBoundingSphere(this, ref _localTransform, ref _worldTransform);
                 ret = BoundingSphere.CreateMerged(ret, currSphere);
             }
 

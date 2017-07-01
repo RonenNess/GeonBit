@@ -95,7 +95,7 @@ namespace GeonBit.Core.Graphics
             // draw all child entities
             foreach (IEntity entity in _childEntities)
             {
-                entity.Draw(this, _localTransform, _worldTransform);
+                entity.Draw(this, ref _localTransform, ref _worldTransform);
             }
         }
 

@@ -391,7 +391,7 @@ namespace GeonBit.Core.Graphics
                 // draw all entities in queue
                 foreach (var entityData in queue.Entities)
                 {
-                    entityData.Entity.DoEntityDraw(entityData.World);
+                    entityData.Entity.DoEntityDraw(ref entityData.World);
                 }
 
                 // clear queue

@@ -150,7 +150,7 @@ namespace GeonBit.Core.Graphics.Materials
         /// Apply all new properties on the material effect.
         /// Call this whenever you want to draw using this material.
         /// </summary>
-        public void Apply(Matrix worldMatrix)
+        public void Apply(ref Matrix worldMatrix)
         {
             // set world matrix
             World = worldMatrix;

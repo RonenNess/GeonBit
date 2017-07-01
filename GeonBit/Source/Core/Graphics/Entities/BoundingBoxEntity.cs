@@ -115,7 +115,7 @@ namespace GeonBit.Core.Graphics
         /// Draw this model.
         /// </summary>
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
-        public override void DoEntityDraw(Matrix worldTransformations)
+        public override void DoEntityDraw(ref Matrix worldTransformations)
         {
             // not visible / no active camera? skip
             if (!Visible || GraphicsManager.ActiveCamera == null)

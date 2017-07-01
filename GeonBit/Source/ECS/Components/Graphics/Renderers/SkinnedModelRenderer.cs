@@ -50,6 +50,11 @@ namespace GeonBit.ECS.Components.Graphics
         public bool AnimateWhenCulled = true;
 
         /// <summary>
+        /// Identiti matrix.
+        /// </summary>
+        static Matrix Identity = Matrix.Identity;
+
+        /// <summary>
         /// Lock animation while transitioning.
         /// </summary>
         public bool LockWhileTransitioning
@@ -194,7 +199,7 @@ namespace GeonBit.ECS.Components.Graphics
             }
 
             // create the skinned entity
-            _skinnedEntity.Update(Managers.TimeManager.TimeFactor * AnimationSpeed, Matrix.Identity);
+            _skinnedEntity.Update(Managers.TimeManager.TimeFactor * AnimationSpeed, ref Identity);
         }
 
         /// <summary>

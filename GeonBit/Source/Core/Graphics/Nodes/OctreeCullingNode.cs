@@ -436,7 +436,7 @@ namespace GeonBit.Core.Graphics
                     _debugBoundingBoxEntity.Box = LastBoundingBox;
                 }
                 _debugBoundingBoxEntity.BoxEffect.DiffuseColor = _nodesUnderThisOctreeBox.Count > 0 ? Color.Yellow.ToVector3() : Color.Gray.ToVector3();
-                _debugBoundingBoxEntity.Draw(this, _localTransform, _worldTransform);
+                _debugBoundingBoxEntity.Draw(this, ref _localTransform, ref _worldTransform);
             }
 
             // draw nodes that are directly under this octree box.
