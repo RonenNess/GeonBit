@@ -34,3 +34,6 @@ Feel free to download and use them!
 # Changelog
 
 Versions changelog can be found [here](docs/changes.md).
+
+
+![Examples](docs/assets/examples.jpg "Examples")
