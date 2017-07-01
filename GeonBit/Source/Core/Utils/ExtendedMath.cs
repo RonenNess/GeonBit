@@ -181,7 +181,7 @@ namespace GeonBit.Core.Utils
             }
 
             // should never happen!
-            throw new Exception("Internal error with PickBasedOnProbability!");
+            throw new Exceptions.InternalError("Internal error with PickBasedOnProbability!");
         }
     }
 }

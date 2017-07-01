@@ -301,7 +301,7 @@ namespace GeonBit.ECS
 
                 // unknown type
                 default:
-                    throw new System.Exception("Unknown or unsupported scene node type!");
+                    throw new Exceptions.UnsupportedTypeException("Unknown or unsupported scene node type!");
             }
 
             // increase instances counter
@@ -400,13 +400,13 @@ namespace GeonBit.ECS
             // cannot clone destroyed objects
             if (_destroyed)
             {
-                throw new System.Exception("Cannot clone destroyed objects!");
+                throw new Exceptions.InvalidActionException("Cannot clone destroyed objects!");
             }
 
             // cannot clone root
             if (IsRoot)
             {
-                throw new System.Exception("Cannot clone root GameObject!");
+                throw new Exceptions.InvalidActionException("Cannot clone root GameObject!");
             }
 
             // create child object
@@ -701,13 +701,13 @@ namespace GeonBit.ECS
             // sanity check - make sure its not root
             if (IsRoot && _parent != newParent)
             {
-                throw new System.Exception("Cannot set parent to root scene node!");
+                throw new Exceptions.InvalidActionException("Cannot set parent to root scene node!");
             }
 
             // sanity check - make sure not self
             if (newParent == this)
             {
-                throw new System.Exception("GameObject cannot be its own parent!");
+                throw new Exceptions.InvalidActionException("GameObject cannot be its own parent!");
             }
 
             // if we had previous parent, remove self from its children list
@@ -908,7 +908,7 @@ namespace GeonBit.ECS
             // sanity check - make sure component don't have a parent
             if (component._GameObject != null)
             {
-                throw new System.Exception("Cannot add the same component to multiple game objects!");
+                throw new Exceptions.InvalidActionException("Cannot add the component to multiple game objects!");
             }
 
             // set component parent

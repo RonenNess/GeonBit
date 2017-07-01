@@ -114,7 +114,7 @@ namespace GeonBit.ECS.Components
             // already destroyed? exception
             if (_wasDestroyed)
             {
-                throw new System.Exception("Component already destroyed!");
+                throw new Exceptions.InvalidActionException("Component already destroyed!");
             }
 
             // remove from parent (if got one)
@@ -255,7 +255,7 @@ namespace GeonBit.ECS.Components
         /// </summary>
         public void RemoveFromParent()
         {
-            if (_gameObject == null) { throw new System.Exception("Component have no parent to remove from!"); }
+            if (_gameObject == null) { throw new Exceptions.InvalidActionException("Component have no parent to remove from!"); }
             _gameObject.RemoveComponent(this);
         }
 

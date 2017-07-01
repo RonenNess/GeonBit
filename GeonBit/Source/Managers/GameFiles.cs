@@ -131,14 +131,14 @@ namespace GeonBit.Managers
                 case FileFormats.Xml:
                     if (append)
                     {
-                        throw new System.Exception("Cannot use 'append' option when writing an XML file.");
+                        throw new Exceptions.InvalidActionException("Cannot use 'append' option when writing an XML file.");
                     }
                     WriteToXmlFile<T>(filePath, objectToWrite);
                     break;
 
                 // should never happen.
                 default:
-                    throw new System.Exception("Unknown file format!");
+                    throw new Exceptions.UnsupportedTypeException("Unknown file format!");
             }
         }
 
@@ -163,7 +163,7 @@ namespace GeonBit.Managers
 
                 // should never happen.
                 default:
-                    throw new System.Exception("Unknown file format!");
+                    throw new Exceptions.UnsupportedTypeException("Unknown file format!");
             }
         }
 

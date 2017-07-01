@@ -89,6 +89,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Core\CoreManager.cs" />
+    <Compile Include="Source\Core\Exceptions.cs" />
     <Compile Include="Source\Core\Graphics\Entities\BaseRenderableEntity.cs" />
     <Compile Include="Source\Core\Graphics\Entities\SpriteSheet.cs" />
     <Compile Include="Source\Core\Graphics\Entities\SpriteEntity.cs" />

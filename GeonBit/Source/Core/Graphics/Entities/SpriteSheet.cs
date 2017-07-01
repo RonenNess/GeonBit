@@ -74,7 +74,7 @@ namespace GeonBit.Core.Graphics
         /// <returns>Spritesheet step.</returns>
         public SpriteSheetStep GetStep(int index)
         {
-            if (index >= _steps.Count) { throw new System.Exception("Spritesheet step out of range!"); }
+            if (index >= _steps.Count) { throw new Exceptions.OutOfRangeException("Spritesheet step out of range!"); }
             return _steps[index];
         }
 
@@ -225,7 +225,7 @@ namespace GeonBit.Core.Graphics
             // sanity check
             if (startStep > endStep)
             {
-                throw new System.Exception("Animation clip ending step index cannot be smaller than starting step index!");
+                throw new Exceptions.InvalidValueException("Animation clip ending step index cannot be smaller than starting step index!");
             }
 
             // store properties

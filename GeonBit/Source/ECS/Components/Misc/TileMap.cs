@@ -235,7 +235,7 @@ namespace GeonBit.ECS.Components.Misc
             // make sure index is valid
             if (index.X < 0 || index.Y < 0)
             {
-                throw new System.Exception("Tile index must be positive!");
+                throw new Exceptions.OutOfRangeException("Tile index must be positive!");
             }
 
             // calc batch index and relative index

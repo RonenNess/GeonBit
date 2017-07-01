@@ -220,7 +220,7 @@ namespace GeonBit.ECS.Components.Graphics
             // if not in scene, throw exception
             if (_GameObject == null || _GameObject.ParentScene == null)
             {
-                throw new System.Exception("Cannot make a camera active when its not under any scene!");
+                throw new Exceptions.InvalidActionException("Cannot make a camera active when its not under any scene!");
             }
 
             // set active camera pointer

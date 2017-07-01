@@ -340,7 +340,7 @@ namespace GeonBit.Core.Graphics
         /// <param name="entity">Entity to add.</param>
         public void AddEntity(IEntity entity)
         {
-            if (!CanHoldEntities) { throw new System.Exception("Add an entity to a node type that cannot hold entities."); }
+            if (!CanHoldEntities) { throw new Exceptions.InvalidActionException("Cannot add entities to this node type."); }
             _childEntities.Add(entity);
             OnEntitiesListChange(entity, true);
         }
@@ -382,7 +382,7 @@ namespace GeonBit.Core.Graphics
             // node already got a parent?
             if (node.Parent != null)
             {
-                throw new System.Exception("Can't add a node that already have a parent.");
+                throw new Exceptions.InvalidActionException("Can't add a node that already have a parent.");
             }
 
             // add node to children list
@@ -405,7 +405,7 @@ namespace GeonBit.Core.Graphics
             // make sure the node is a child of this node
             if (node.Parent != this)
             {
-                throw new System.Exception("Can't remove a node that don't belong to this parent.");
+                throw new Exceptions.InvalidActionException("Can't remove a node that don't belong to this parent.");
             }
 
             // remove node from children list
@@ -455,7 +455,7 @@ namespace GeonBit.Core.Graphics
             // don't have a parent?
             if (Parent == null)
             {
-                throw new System.Exception("Can't remove an orphan node from parent.");
+                throw new Exceptions.InvalidActionException("Can't remove an orphan node from parent.");
             }
 
             // remove from parent

@@ -110,17 +110,17 @@ namespace GeonBit.Managers
             }
             catch (AmbiguousMatchException)
             {
-                throw new Exception("Problem loading plugin from '" + assembly.FullName + "': AmbiguousMatchException in function '" + name + "'");
+                throw new Exceptions.InternalError("Problem loading plugin from '" + assembly.FullName + "': AmbiguousMatchException in function '" + name + "'");
             }
             catch (ArgumentNullException)
             {
-                throw new Exception("Problem loading plugin from '" + assembly.FullName + "': ArgumentNullException in function '" + name + "'");
+                throw new Exceptions.InternalError("Problem loading plugin from '" + assembly.FullName + "': ArgumentNullException in function '" + name + "'");
             }
 
             // not found?
             if (func == null)
             {
-                throw new Exception("Problem loading plugin from '" + assembly.FullName + "': function '" + name + "' not found.");
+                throw new Exceptions.InternalError("Problem loading plugin from '" + assembly.FullName + "': function '" + name + "' not found.");
             }
 
             // invoke function
@@ -130,7 +130,7 @@ namespace GeonBit.Managers
             }
             catch (Exception e)
             {
-                throw new Exception("Problem loading plugin from '" + assembly.FullName + "': got '" + e.Message + "' from function '" + name + "'");
+                throw new Exceptions.InternalError("Problem loading plugin from '" + assembly.FullName + "': got '" + e.Message + "' from function '" + name + "'");
             }
         }
 

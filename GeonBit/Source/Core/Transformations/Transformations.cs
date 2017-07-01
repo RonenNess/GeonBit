@@ -207,7 +207,7 @@ namespace GeonBit.Core
                         return Matrix.CreateRotationZ(Rotation.Z) * Matrix.CreateRotationY(Rotation.Y) * Matrix.CreateRotationX(Rotation.X);
 
                     default:
-                        throw new System.Exception("Unknown rotation order!");
+                        throw new Exceptions.UnsupportedTypeException("Unknown rotation order!");
                 }
             }
             // handle quaternion rotation
@@ -244,7 +244,7 @@ namespace GeonBit.Core
                         break;
 
                     default:
-                        throw new System.Exception("Unknown rotation order!");
+                        throw new Exceptions.UnsupportedTypeException("Unknown rotation order!");
                 }
 
                 // convert to a matrix and return
@@ -253,7 +253,7 @@ namespace GeonBit.Core
             // should never happen.
             else
             {
-                throw new System.Exception("Unknown rotation type!");
+                throw new Exceptions.UnsupportedTypeException("Unknown rotation type!");
             }
         }
 
@@ -290,7 +290,7 @@ namespace GeonBit.Core
                     return rot * pos * scale;
 
                 default:
-                    throw new System.Exception("Unknown build matrix order!");
+                    throw new Exceptions.UnsupportedTypeException("Unknown build matrix order!");
             }
         }
     }

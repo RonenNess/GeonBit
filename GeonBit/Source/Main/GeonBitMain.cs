@@ -141,7 +141,7 @@ namespace GeonBit
             // sanity check
             if (_wasInit)
             {
-                throw new System.Exception("GeonBit main was already init!");
+                throw new Exceptions.InvalidActionException("GeonBit main was already init!");
             }
 
             // register all the core managers
@@ -202,7 +202,7 @@ namespace GeonBit
             // we cannot register managers after init is called
             if (_wasInit)
             {
-                throw new System.Exception("Cannot register managers after Initialize was called!");
+                throw new Exceptions.InvalidActionException("Cannot register managers after Initialize was called!");
             }
 
             // add manager

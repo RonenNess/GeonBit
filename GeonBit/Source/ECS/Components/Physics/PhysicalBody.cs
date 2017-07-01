@@ -531,7 +531,7 @@ namespace GeonBit.ECS.Components.Physics
                 // make sure it doesn't already have a physical body
                 if (newParent.PhysicalBody != null && newParent.PhysicalBody != this)
                 {
-                    throw new System.Exception("Cannot add multiple physical bodies to a single Game Object!");
+                    throw new Exceptions.InvalidActionException("Cannot add multiple physical bodies to a single Game Object!");
                 }
 
                 // set its node to relay on external transformations.

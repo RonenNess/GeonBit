@@ -176,10 +176,10 @@ namespace GeonBit.Core.Graphics.Materials
         /// Set bone transforms for an animated material.
         /// Useable only for materials that implement skinned animation in shader.
         /// </summary>
-        /// <param name="bones"></param>
+        /// <param name="bones">Bones to set.</param>
         virtual public void SetBoneTransforms(Matrix[] bones)
         {
-            throw new System.Exception("Material does not support bone transformations in GPU.");
+            throw new Exceptions.InvalidActionException("Material does not support bone transformations in GPU.");
         }
 
         /// <summary>

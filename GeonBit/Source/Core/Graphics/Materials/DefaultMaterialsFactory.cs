@@ -91,7 +91,7 @@ namespace GeonBit.Core.Graphics.Materials
             // unknown type!
             else
             {
-                throw new System.Exception("Model had unsuporrted effect type!");
+                throw new Exceptions.UnsupportedTypeException("Model had unsuporrted effect type!");
             }
         }
 
