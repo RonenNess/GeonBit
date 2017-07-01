@@ -49,12 +49,21 @@ namespace GeonBit.ECS.Components.Graphics
         }
 
         /// <summary>
-        /// Set / get optional axis to lock rotation to.
+        /// Set / get optional axis to lock rotation to (when facing camera).
         /// </summary>
         public Vector3? LockedAxis
         {
             get { return _entity.LockedAxis; }
             set { _entity.LockedAxis = value; }
+        }
+
+        /// <summary>
+        /// If true, sprite will always face camera. If false will just use node's rotation.
+        /// </summary>
+        public bool FaceCamera
+        {
+            get { return _entity.FaceCamera; }
+            set { _entity.FaceCamera = value; }
         }
 
         /// <summary>
@@ -73,25 +82,30 @@ namespace GeonBit.ECS.Components.Graphics
         /// Create the billboard renderer component.
         /// </summary>
         /// <param name="texture">Texture to use for this sprite with a default material.</param>
-        public BillboardRenderer(Texture2D texture = null)
+        /// <param name="faceCamera">If true, will always face camera. If false will use node's rotation.</param>
+        public BillboardRenderer(Texture2D texture = null, bool faceCamera = true)
         {
             _entity = new SpriteEntity(_billboardSpritesheet, texture);
+            FaceCamera = faceCamera;
         }
 
         /// <summary>
         /// Create the billboard renderer component.
         /// </summary>
         /// <param name="material">Material to use with this sprite.</param>
-        public BillboardRenderer(MaterialAPI material)
+        /// <param name="faceCamera">If true, will always face camera. If false will use node's rotation.</param>
+        public BillboardRenderer(MaterialAPI material, bool faceCamera = true)
         {
             _entity = new SpriteEntity(_billboardSpritesheet, material);
+            FaceCamera = faceCamera;
         }
 
         /// <summary>
         /// Create the billboard renderer component.
         /// </summary>
         /// <param name="texturePath">Texture to use for this sprite with a new default material.</param>
-        public BillboardRenderer(string texturePath = null) : this(Resources.GetTexture(texturePath))
+        /// <param name="faceCamera">If true, will always face camera. If false will use node's rotation.</param>
+        public BillboardRenderer(string texturePath = null, bool faceCamera = true) : this(Resources.GetTexture(texturePath), faceCamera)
         {
         }
 
@@ -106,7 +120,7 @@ namespace GeonBit.ECS.Components.Graphics
             ret._entity.CopyStep(_entity);
             ret.MaterialOverride = _entity.MaterialOverride.Clone();
             ret.LockedAxis = LockedAxis;
-            ret.BlendingState = BlendingState;
+            ret.FaceCamera = FaceCamera;
             return ret;
         }
     }

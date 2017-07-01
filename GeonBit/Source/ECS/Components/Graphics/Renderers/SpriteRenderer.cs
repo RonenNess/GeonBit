@@ -54,12 +54,21 @@ namespace GeonBit.ECS.Components.Graphics
         }
 
         /// <summary>
-        /// Set / get optional axis to lock rotation to.
+        /// Set / get optional axis to lock rotation to (when facing camera).
         /// </summary>
         public Vector3? LockedAxis
         {
             get { return _entity.LockedAxis; }
             set { _entity.LockedAxis = value; }
+        }
+
+        /// <summary>
+        /// If true, sprite will always face camera. If false will just use node's rotation.
+        /// </summary>
+        public bool FaceCamera
+        {
+            get { return _entity.FaceCamera; }
+            set { _entity.FaceCamera = value; }
         }
 
         /// <summary>
@@ -78,9 +87,11 @@ namespace GeonBit.ECS.Components.Graphics
         /// <param name="texture">Texture to use for this sprite with a default material.</param>
         /// <param name="useSharedMaterial">If true, will use a shared material for all sprites using this texture. 
         /// This optimization reduce load/unload time and memory, but it means the material is shared with other sprites.</param>
-        public SpriteRenderer(SpriteSheet spritesheet, Texture2D texture = null, bool useSharedMaterial = true)
+        /// <param name="faceCamera">If true, will always face camera. If false will use node's rotation.</param>
+        public SpriteRenderer(SpriteSheet spritesheet, Texture2D texture = null, bool useSharedMaterial = true, bool faceCamera = true)
         {
             _entity = new SpriteEntity(spritesheet, texture, useSharedMaterial);
+            FaceCamera = faceCamera;
         }
 
         /// <summary>
@@ -88,9 +99,11 @@ namespace GeonBit.ECS.Components.Graphics
         /// </summary>
         /// <param name="spritesheet">Spritesheet data.</param>
         /// <param name="material">Material to use with this sprite.</param>
-        public SpriteRenderer(SpriteSheet spritesheet, MaterialAPI material)
+        /// <param name="faceCamera">If true, will always face camera. If false will use node's rotation.</param>
+        public SpriteRenderer(SpriteSheet spritesheet, MaterialAPI material, bool faceCamera = true)
         {
             _entity = new SpriteEntity(spritesheet, material);
+            FaceCamera = faceCamera;
         }
 
         /// <summary>
@@ -99,9 +112,10 @@ namespace GeonBit.ECS.Components.Graphics
         /// <param name="spritesheet">Spritesheet data.</param>
         /// <param name="texturePath">Texture to use for this sprite with a new default material.</param>
         /// <param name="useSharedMaterial">If true, will use a shared material for all sprites using this texture. 
+        /// <param name="faceCamera">If true, will always face camera. If false will use node's rotation.</param>
         /// This optimization reduce load/unload time and memory, but it means the material is shared with other sprites.</param>
-        public SpriteRenderer(SpriteSheet spritesheet, string texturePath = null, bool useSharedMaterial = true) : 
-            this(spritesheet, Resources.GetTexture(texturePath), useSharedMaterial)
+        public SpriteRenderer(SpriteSheet spritesheet, string texturePath = null, bool useSharedMaterial = true, bool faceCamera = true) : 
+            this(spritesheet, Resources.GetTexture(texturePath), useSharedMaterial, faceCamera)
         {
         }
 
@@ -164,6 +178,7 @@ namespace GeonBit.ECS.Components.Graphics
             ret.MaterialOverride = _entity.MaterialOverride.Clone();
             ret.LockedAxis = LockedAxis;
             ret.AnimationSpeed = AnimationSpeed;
+            ret.FaceCamera = FaceCamera;
             return ret;
         }
     }

@@ -48,6 +48,11 @@ namespace GeonBit.Core.Graphics
         Materials.MaterialAPI _material;
 
         /// <summary>
+        /// If true, will always face camera. If false will just use node's rotation.
+        /// </summary>
+        public bool FaceCamera = true;
+
+        /// <summary>
         /// Optional custom render settings for this specific sprite instance.
         /// These settings will override some of the material's properties before rendering.
         /// Note: this method is much less efficient than using different materials.
@@ -225,19 +230,28 @@ namespace GeonBit.Core.Graphics
             // create a new world matrix for the billboard
             Matrix newWorld;
 
-            // set rotation based on camera with locked axis
-            if (LockedAxis != null)
+            // if facing camera, create billboard world matrix
+            if (FaceCamera)
             {
-                newWorld = Matrix.CreateScale(scale) *
-                           Matrix.CreateConstrainedBillboard(position, GraphicsManager.ActiveCamera.Position, 
-                           LockedAxis.Value, null, null);
+                // set rotation based on camera with locked axis
+                if (LockedAxis != null)
+                {
+                    newWorld = Matrix.CreateScale(scale) *
+                               Matrix.CreateConstrainedBillboard(position, GraphicsManager.ActiveCamera.Position,
+                               LockedAxis.Value, null, null);
+                }
+                // set rotation based on camera without any locked axis
+                else
+                {
+                    newWorld = Matrix.CreateScale(scale) *
+                               Matrix.CreateBillboard(position, GraphicsManager.ActiveCamera.Position,
+                               Vector3.Up, null);
+                }
             }
-            // set rotation based on camera without any locked axis
+            // if not facing camera, just use world transformations
             else
             {
-                newWorld = Matrix.CreateScale(scale) *
-                           Matrix.CreateBillboard(position, GraphicsManager.ActiveCamera.Position, 
-                           Vector3.Up, null);
+                newWorld = worldTransformations;
             }
 
             // update per-entity override properties
