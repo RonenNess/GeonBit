@@ -1067,6 +1067,22 @@ Usage example:
 string report = Managers.Diagnostic.GetReportString();
 ```
 
+And the following snippet will add to scene a useful corner text with all diagnostic data:
+
+```cs
+// create paragraph to show diagnostics
+var diagnosticData = new GeonBit.UI.Entities.Paragraph("", GeonBit.UI.Entities.Anchor.BottomLeft, offset: Vector2.One * 10f);
+
+// add before-draw callback to update paragraph text to current diagnostic report
+diagnosticData.BeforeDraw = (GeonBit.UI.Entities.Entity entity) =>
+{
+	diagnosticData.Text = Managers.Diagnostic.GetReportString();
+};
+
+// add to scene
+scene.UserInterface.AddEntity(diagnosticData);
+```
+
 
 ### Prototypes
 
