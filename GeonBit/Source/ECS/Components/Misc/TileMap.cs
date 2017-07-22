@@ -23,6 +23,13 @@ using System.Collections.Generic;
 namespace GeonBit.ECS.Components.Misc
 {
     /// <summary>
+    /// A callback to call per tile when you want to process all tiles in a tilemap.
+    /// </summary>
+    /// <param name="tile">Current tile.</param>
+    /// <param name="index">Tile index.</param>
+    public delegate void ProcessTileCallback(GameObject tile, Point index);
+
+    /// <summary>
     /// This component help implement an optimized 2d tiles map.
     /// </summary>
     public class TileMap : BaseComponent
@@ -54,6 +61,9 @@ namespace GeonBit.ECS.Components.Misc
             // batch root GameObject
             public GameObject BatchRoot;
 
+            // batch index
+            public Point Index;
+
             /// <summary>
             /// Create a new tiles batch.
             /// </summary>
@@ -66,6 +76,7 @@ namespace GeonBit.ECS.Components.Misc
                 BatchRoot.UpdateWhenNotVisible = false;
                 BatchRoot.Parent = tilemap._root;
                 BatchRoot.AddComponentDebug(new Graphics.BoundingBoxRenderer());
+                Index = index;
 
                 // create tiles matrix
                 Tiles = new GameObject[tilemap.BatchSize, tilemap.BatchSize];
@@ -129,6 +140,42 @@ namespace GeonBit.ECS.Components.Misc
 
             // return new tilemap
             return ret;
+        }
+
+        /// <summary>
+        /// Execute a callback on all tiles in tilemap.
+        /// </summary>
+        /// <param name="callback">Function to execute (called with tile GameObject and index).</param>
+        public void ProcessTiles(ProcessTileCallback callback)
+        {
+            foreach (KeyValuePair<int, Dictionary<int, TilesBatch>> row in _batches)
+            {
+                foreach (KeyValuePair<int, TilesBatch> batch in row.Value)
+                {
+                    foreach (GameObject tile in batch.Value.Tiles)
+                    {
+                        if (tile != null)
+                        {
+                            callback(tile, (Point)tile.GetInternalData(InternalDataKey));
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Execute a callback on all tile batches in tilemap.
+        /// </summary>
+        /// <param name="callback">Function to execute (called with batch root GameObject and index).</param>
+        public void ProcessTileBatches(ProcessTileCallback callback)
+        {
+            foreach (KeyValuePair<int, Dictionary<int, TilesBatch>> row in _batches)
+            {
+                foreach (KeyValuePair<int, TilesBatch> batch in row.Value)
+                {
+                    callback(batch.Value.BatchRoot, batch.Value.Index);
+                }
+            }
         }
 
         /// <summary>

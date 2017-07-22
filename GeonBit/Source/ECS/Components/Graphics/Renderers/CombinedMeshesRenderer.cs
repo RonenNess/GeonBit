@@ -75,6 +75,7 @@ namespace GeonBit.ECS.Components.Graphics
         public void Build(bool assertIfWriteOnly = true)
         {
             _entity.Build(assertIfWriteOnly);
+            _GameObject.SceneNode.ForceFullUpdate();
         }
 
         /// <summary>

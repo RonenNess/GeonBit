@@ -522,6 +522,23 @@ namespace GeonBit.Core.Graphics
         }
 
         /// <summary>
+        /// Force this node to update transformation and recalculate bounding box and sphere.
+        /// </summary>
+        /// <param name="updateNow">If true, will update right now. If false, will do the actual update next drawing frame.</param>
+        public void ForceFullUpdate(bool updateNow = true)
+        {
+            _isDirty = true;
+            _boundingBoxDirty = true;
+            _boundingSphereDirty = true;
+            if (updateNow)
+            {
+                DoTransformationsUpdateIfNeeded();
+                UpdateBoundingBox();
+                UpdateBoundingSphere();
+            }
+        }
+
+        /// <summary>
         /// Calc final transformations for current frame.
         /// This uses an indicator to know if an update is needed, so no harm is done if you call it multiple times.
         /// </summary>
