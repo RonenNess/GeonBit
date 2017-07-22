@@ -39,6 +39,38 @@ namespace GeonBit.Core.Graphics.Materials
     public delegate void EffectPassCallback(EffectPass pass);
 
     /// <summary>
+    /// Sampler states we can use for materials textures.
+    /// </summary>
+    static public class SamplerStates
+    {
+        /// <summary>
+        /// AnisotropicClamp sampler state.
+        /// </summary>
+        public static SamplerState AnisotropicClamp { get { return SamplerState.AnisotropicClamp; } }
+
+        /// <summary>
+        /// AnisotropicWrap sampler state.
+        /// </summary>
+        public static SamplerState AnisotropicWrap { get { return SamplerState.AnisotropicWrap; } }
+
+        /// <summary>
+        /// LinearClamp sampler state.
+        /// </summary>
+        public static SamplerState LinearClamp { get { return SamplerState.LinearClamp; } }
+
+        /// <summary>
+        /// PointClamp sampler state.
+        /// </summary>
+        public static SamplerState PointClamp { get { return SamplerState.PointClamp; } }
+
+        /// <summary>
+        /// PointWrap sampler state.
+        /// </summary>
+        public static SamplerState PointWrap { get { return SamplerState.PointWrap; } }
+    }
+
+
+    /// <summary>
     /// The base class for a material.
     /// Note: for some material types one or more of the properties below may be ignored.
     /// For example, we might have a material that doesn't support lighting at all, and will ignore lighting-related properties.
