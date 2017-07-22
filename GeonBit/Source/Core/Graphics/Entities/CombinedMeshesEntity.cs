@@ -160,6 +160,8 @@ namespace GeonBit.Core.Graphics
                 // get mesh and transform
                 ModelMesh mesh = meshData.Mesh;
                 Matrix transform = meshData.Transform;
+                Vector3 scale; Quaternion rotation; Vector3 translate;
+                transform.Decompose(out scale, out rotation, out translate);
                 Materials.MaterialAPI overrideMaterial = meshData.Material;
 
                 // iterate mesh parts
@@ -205,10 +207,10 @@ namespace GeonBit.Core.Graphics
                         // get curr position with transformations
                         Vector3 currPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), transform);
 
-                        // get normals
-                        Vector3 normal = Vector3.Transform(new Vector3(vertexData[i + 3], vertexData[i + 4], vertexData[i + 5]), transform);
-                        normal.Normalize();
-
+                        // get normals and rotate it based on transformations
+                        Vector3 normal = new Vector3(vertexData[i + 3], vertexData[i + 4], vertexData[i + 5]);
+                        normal = Vector3.Transform(normal, rotation);
+                        
                         // get texture coords
                         Vector2 textcoords = new Vector2(vertexData[i + 6], vertexData[i + 7]);
 
