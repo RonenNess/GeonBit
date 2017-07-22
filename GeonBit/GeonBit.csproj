@@ -101,6 +101,7 @@
     <Compile Include="Source\Core\Graphics\Entities\SimpleModelEntity.cs" />
     <Compile Include="Source\Core\Graphics\Entities\ModelEntity.cs" />
     <Compile Include="Source\Core\Graphics\Entities\SkinnedModelEntity.cs" />
+    <Compile Include="Source\Core\Graphics\Entities\CombinedMeshesEntity.cs" />
     <Compile Include="Source\Core\Graphics\GraphicsManager.cs" />
     <Compile Include="Source\Core\Graphics\Materials\MaterialAPI.cs" />
     <Compile Include="Source\Core\Graphics\Materials\DefaultMaterialsFactory.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="Source\ECS\Components\Graphics\Camera.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Docs.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Renderers\BaseRenderer.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Renderers\CombinedMeshesRenderer.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Renderers\SpriteRenderer.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Renderers\BillboardRenderer.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Renderers\BoundingBoxRenderer.cs" />
