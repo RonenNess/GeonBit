@@ -168,6 +168,12 @@ namespace GeonBit.ECS
         protected List<GameObject> _children = new List<GameObject>();
 
         /// <summary>
+        /// If true, will disable update events (Update and FixedUpdate) for this game object and all its children and components.
+        /// This optimization is useful for containers that hold a lot of graphic entities, but don't have any updating logic.
+        /// </summary>
+        public bool DisableUpdateEvents = false;
+
+        /// <summary>
         /// Optional data you can attach to this game object.
         /// Note: this data will not be serialized / deserialized.
         /// </summary>
@@ -417,6 +423,9 @@ namespace GeonBit.ECS
             // copy user data
             ret.UserData = UserData;
 
+            // copy disabled update events flag
+            ret.DisableUpdateEvents = DisableUpdateEvents;
+
             // prepare lists
             PrepareChildrenAndComponentsArray();
 
@@ -485,6 +494,9 @@ namespace GeonBit.ECS
             {
                 // if disabled, should not update.
                 if (!_enabled) { return false; }
+
+                // if disabled update events, should not update
+                if (DisableUpdateEvents) { return false; }
 
                 // if culled and set not to update when not visible, should not update
                 if (!UpdateWhenNotVisible && !_sceneNode.WasDrawnThisFrame) { return false; }
