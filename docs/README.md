@@ -1441,6 +1441,60 @@ As you can see the implementation is pretty simple:
 That's it. The tricky part here is to implement the Effect itself, which is outside of *GeonBit*'s scope.
 
 
+## Combined Meshes Optimizer
+
+For some 3d games you might want to build the levels from lots of static, modular models: floor tiles, wall parts, trees, doodads, etc.
+
+Without any optimizations, a large level made like this can cause a lot of draw calls per frame. And that can impact performance.
+
+To tackle that issue, *GeonBit* comes with a built-in mesh combiner, that takes a list of models to draw with transformations and combine them into a single, larger mesh, thus reducing the draw calls.
+
+To create a ```CombinedMeshesRenderer``` optimizer:
+
+```cs
+// create a combined mesh renderer and attach to a gameobject called 'level'
+CombinedMeshesRenderer combined = new CombinedMeshesRenderer();
+combined.RenderingQueue = GeonBit.Core.Graphics.RenderingQueue.Terrain;
+level.AddComponent(combined);
+```
+
+And then you can start adding meshes and models to it:
+
+```cs
+// create transformations for the model
+GeonBit.Core.Transformations meshTransform = new GeonBit.Core.Transformations();
+meshTransform.Scale = Vector3.One * 10f;
+meshTransform.Position = new Vector3(100, 0, 50);
+
+// get model to add
+var model = GeonBit.Core.ResourcesManager.Instance.GetModel("tree");
+
+// add model to combined meshes renderer
+combined.AddModel(model, meshTransform.BuildMatrix());
+
+// or, you can add the model with specific material:
+combined.AddModel(model, meshTransform.BuildMatrix(), material);
+```
+
+After you finish adding all the models, you need to build the combiner:
+
+```cs
+combined.Build();
+```
+
+The combined meshes renderer will now turn into a renderable mesh that you can put in your scene.
+
+You can call ```Build()``` multiple times, but each time you need to add **all** the models as it doesn't remember the models from previous build.
+
+### Warnings
+
+Some things to be cautious about with Combined Meshes Optimizer:
+
+- If you make your combiners too big (for example the entire level in a single combiner) you may lose culling-base optimizations, and end up with worse performance. Its best to chunk down large levels into multiple combiners.
+- Combined meshes are static; you can no longer transform them and they don't support animation.
+- Building the combined meshes is a heavy task. Its totally ok and fast enough for level initialization, but avoid rebuilding it during runtime (unless its for level editor).
+
+
 ## Physics
 
 The physics simulation in *GeonBit* uses the open-source Bullet3D library. Physics in *GeonBit* includes:
