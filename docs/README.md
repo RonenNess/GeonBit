@@ -1273,6 +1273,7 @@ GameObject newObj = new GameObject("go_name", SceneNodeType.OctreeCulling);
 GameObject newObj = GameObject.CreateOctree(origin, size, maxDivisions);
 ```
 
+When creating octree with default settings, it will use ```GameObject.OctreeSceneBoundaries``` as bounding box, and ```GameObject.OctreeMaxDivisions``` as max divisions.
 
 ![Octree Example](assets/octree.png "octree.png")
 [An octree example with bounding-boxes rendered. Yellow boxes are segments that contain entities.]
