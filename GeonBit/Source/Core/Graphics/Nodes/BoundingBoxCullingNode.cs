@@ -48,7 +48,8 @@ namespace GeonBit.Core.Graphics
         {
             get
             {
-                return (CameraFrustum.Contains(GetBoundingBox()) != ContainmentType.Disjoint);
+                var bb = GetBoundingBox();
+                return (bb.Min != bb.Max && CameraFrustum.Contains(bb) != ContainmentType.Disjoint);
             }
         }
 
@@ -59,7 +60,8 @@ namespace GeonBit.Core.Graphics
         {
             get
             {
-                return (CameraFrustum.Contains(GetBoundingBox()) == ContainmentType.Intersects);
+                var bb = GetBoundingBox();
+                return (bb.Min != bb.Max && CameraFrustum.Contains(GetBoundingBox()) == ContainmentType.Intersects);
             }
         }
 

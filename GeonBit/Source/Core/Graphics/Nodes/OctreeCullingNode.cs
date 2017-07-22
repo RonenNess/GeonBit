@@ -234,15 +234,21 @@ namespace GeonBit.Core.Graphics
             // since we just got a child node, reset the counter until destroying self
             _countToRemoveSelf = 0;
 
+            // get the new node bounding box
+            BoundingBox bb = node.GetBoundingBox();
+
+            // nothing in it? don't add
+            if (bb.Min == bb.Max)
+            {
+                return;
+            }
+
             // if this is the smallest division possible, just add to node list and return
             if (_divisionsLeft == 0)
             {
                 AddToSelf(node);
                 return;
             }
-
-            // get the new node bounding box
-            BoundingBox bb = node.GetBoundingBox();
 
             // if its too big to fit into one subdivision, add directly to this octree node's list
             if ((bb.Max - bb.Min).Length() > _boxHalfLength)
