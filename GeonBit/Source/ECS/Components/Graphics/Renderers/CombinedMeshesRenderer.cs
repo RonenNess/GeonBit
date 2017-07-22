@@ -47,9 +47,10 @@ namespace GeonBit.ECS.Components.Graphics
         /// </summary>
         /// <param name="model">Model to add.</param>
         /// <param name="transform">World transformations.</param>
-        public void AddModel(Model model, Matrix transform)
+        /// <param name="material">Optional material to use instead of the model default materials.</param>
+        public void AddModel(Model model, Matrix transform, MaterialAPI material = null)
         {
-            _entity.AddModel(model, transform);
+            _entity.AddModel(model, transform, material);
         }
 
         /// <summary>
@@ -58,9 +59,10 @@ namespace GeonBit.ECS.Components.Graphics
         /// </summary>
         /// <param name="mesh">Mesh to add.</param>
         /// <param name="transform">World transformations.</param>
-        public void AddModelMesh(ModelMesh mesh, Matrix transform)
+        /// <param name="material">Optional material to use instead of the mesh default materials.</param>
+        public void AddModelMesh(ModelMesh mesh, Matrix transform, MaterialAPI material = null)
         {
-            _entity.AddModelMesh(mesh, transform);
+            _entity.AddModelMesh(mesh, transform, material);
         }
 
         /// <summary>

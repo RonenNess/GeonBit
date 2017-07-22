@@ -50,14 +50,21 @@ namespace GeonBit.Core.Graphics
             public Matrix Transform;
 
             /// <summary>
+            /// Optional material to use instead of the mesh default materials.
+            /// </summary>
+            public Materials.MaterialAPI Material;
+
+            /// <summary>
             /// Create the mesh entry.
             /// </summary>
             /// <param name="mesh">Mesh to use.</param>
             /// <param name="transform">World transformations.</param>
-            public MeshEntry(ModelMesh mesh, Matrix transform)
+            /// <param name="material">Optional material to use instead of the default mesh materials.</param>
+            public MeshEntry(ModelMesh mesh, Matrix transform, Materials.MaterialAPI material = null)
             {
                 Mesh = mesh;
                 Transform = transform;
+                Material = material;
             }
         }
 
@@ -91,11 +98,12 @@ namespace GeonBit.Core.Graphics
         /// </summary>
         /// <param name="model">Model to add.</param>
         /// <param name="transform">World transformations.</param>
-        public void AddModel(Model model, Matrix transform)
+        /// <param name="material">Optional material to use instead of the model default materials.</param>
+        public void AddModel(Model model, Matrix transform, Materials.MaterialAPI material = null)
         {
             foreach (var mesh in model.Meshes)
             {
-                AddModelMesh(mesh, transform);
+                AddModelMesh(mesh, transform, material);
             }
         }
 
@@ -105,9 +113,10 @@ namespace GeonBit.Core.Graphics
         /// </summary>
         /// <param name="mesh">Mesh to add.</param>
         /// <param name="transform">World transformations.</param>
-        public void AddModelMesh(ModelMesh mesh, Matrix transform)
+        /// <param name="material">Optional material to use instead of the mesh default materials.</param>
+        public void AddModelMesh(ModelMesh mesh, Matrix transform, Materials.MaterialAPI material = null)
         {
-            _meshes.Add(new MeshEntry(mesh, transform));
+            _meshes.Add(new MeshEntry(mesh, transform, material));
         }
 
         /// <summary>
@@ -128,12 +137,13 @@ namespace GeonBit.Core.Graphics
                 // get mesh and transform
                 ModelMesh mesh = meshData.Mesh;
                 Matrix transform = meshData.Transform;
+                Materials.MaterialAPI overrideMaterial = meshData.Material;
 
                 // iterate mesh parts
                 foreach (var meshPart in mesh.MeshParts)
                 {
-                    // get material from mesh part
-                    var material = meshPart.GetMaterial();
+                    // get material to use for this mesh part
+                    var material = overrideMaterial ?? meshPart.GetMaterial();
 
                     // get the combined chunk to add this meshpart to
                     var combinedPart = _parts[material];
