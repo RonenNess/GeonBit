@@ -88,6 +88,11 @@ namespace GeonBit.Core.Graphics
             /// Primitives count.
             /// </summary>
             public int PrimitiveCount { get; internal set; } = 0;
+
+            /// <summary>
+            /// Count index offset while building the combined mesh.
+            /// </summary>
+            public int IndexOffset { get; internal set; } = 0;
         }
 
         // list of meshes to add to the combined mesh next time we build.
@@ -194,6 +199,7 @@ namespace GeonBit.Core.Graphics
                     meshPart.VertexBuffer.GetData<float>(vertexData);
 
                     // iterate through vertices and add them
+                    int verticesInPart = 0;
                     for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
                     {
                         // get curr position with transformations
@@ -211,12 +217,19 @@ namespace GeonBit.Core.Graphics
 
                         // add to temp list of all points
                         allVertices.Add(currPosition);
+                        verticesInPart++;
                     }
 
-                    // get indexes and primitive count
+                    // set indexes
                     short[] drawOrder = new short[meshPart.IndexBuffer.IndexCount];
                     meshPart.IndexBuffer.GetData<short>(drawOrder);
-                    combinedPart.Indexes.AddRange(drawOrder);
+                    foreach (short currIndex in drawOrder)
+                    {
+                        combinedPart.Indexes.Add((short)(currIndex + combinedPart.IndexOffset));
+                    }
+                    combinedPart.IndexOffset += verticesInPart;
+
+                    // set primitives count
                     combinedPart.PrimitiveCount += meshPart.PrimitiveCount;
                 }
             }
