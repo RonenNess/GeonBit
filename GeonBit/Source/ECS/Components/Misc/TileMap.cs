@@ -92,7 +92,7 @@ namespace GeonBit.ECS.Components.Misc
         public TileMap(Vector2 tileSize, ushort batchSize = 10)
         {
             // create root
-            _root = new GameObject("tilemap", SceneNodeType.OctreeCulling);
+            _root = new GameObject("tilemap", SceneNodeType.BoundingBoxCulling);
 
             // store tile size and batch size
             TileSize = tileSize;
