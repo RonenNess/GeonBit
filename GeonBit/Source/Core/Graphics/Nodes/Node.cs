@@ -565,6 +565,23 @@ namespace GeonBit.Core.Graphics
         }
 
         /// <summary>
+        /// Transform a given transformations and return the result matrix.
+        /// </summary>
+        /// <param name="trans">Transformations to transform.</param>
+        /// <returns>Matrix with combined transformations.</returns>
+        public Matrix Transform(Transformations trans)
+        {
+            // build matrix for given transformations
+            Matrix transMatrix = trans.BuildMatrix();
+
+            // get our world transformations
+            Matrix worldMatrix = WorldTransformations;
+
+            // combine and return
+            return transMatrix * worldMatrix;
+        }
+
+        /// <summary>
         /// Return local transformations matrix (note: will recalculate if needed).
         /// </summary>
         public Matrix LocalTransformations
