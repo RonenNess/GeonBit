@@ -82,7 +82,7 @@ namespace GeonBit.Core.Graphics
             /// <summary>
             /// Vertices indexes.
             /// </summary>
-            public List<ushort> Indexes { get; internal set; } = new List<ushort>();
+            public List<short> Indexes { get; internal set; } = new List<short>();
         }
 
         // list of meshes to add to the combined mesh.
@@ -187,8 +187,8 @@ namespace GeonBit.Core.Graphics
                         combinedPart.Vertices.Add(new VertexPositionNormalTexture(currPosition, normal, textcoords));
                     }
 
-                    ushort[] drawOrder = new ushort[meshPart.IndexBuffer.IndexCount];
-                    meshPart.IndexBuffer.GetData<ushort>(drawOrder);
+                    short[] drawOrder = new short[meshPart.IndexBuffer.IndexCount];
+                    meshPart.IndexBuffer.GetData<short>(drawOrder);
                     combinedPart.Indexes.AddRange(drawOrder);
                 }
             }
@@ -203,21 +203,26 @@ namespace GeonBit.Core.Graphics
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
         public override void DoEntityDraw(ref Matrix worldTransformations)
         {
-            /*
-            // setup material
-            material.Apply(ref newWorld);
-
-            // draw sprite
-            // draw the cube vertices
-            material.IterateEffectPasses((EffectPass pass) =>
+            // iterate combined parts
+            foreach (var combinedPart in _parts)
             {
-                GraphicsManager.GraphicsDevice.DrawUserIndexedPrimitives
-                    <VertexPositionNormalTexture>(
-                    PrimitiveType.TriangleList,
-                    _spritesheetStep.Vertices, 0, 4,
-                    _spritesheetStep.Indexes, 0, 2);
-            });
-            */
+                // get and setup material
+                var material = combinedPart.Key;
+                material.Apply(ref worldTransformations);
+
+                // get vertices and indexes
+                var buffers = combinedPart.Value;
+
+                // draw with material
+                material.IterateEffectPasses((EffectPass pass) =>
+                {
+                    GraphicsManager.GraphicsDevice.DrawUserIndexedPrimitives
+                        <VertexPositionNormalTexture>(
+                        PrimitiveType.TriangleList,
+                        buffers.Vertices.ToArray(), 0, buffers.Vertices.Count,
+                        buffers.Indexes.ToArray(), 0, buffers.Indexes.Count);
+                });
+            }
         }
     }
 }
