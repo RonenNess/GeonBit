@@ -83,14 +83,29 @@ namespace GeonBit.Core.Graphics
             /// Vertices indexes.
             /// </summary>
             public List<short> Indexes { get; internal set; } = new List<short>();
+
+            /// <summary>
+            /// Primitives count.
+            /// </summary>
+            public int PrimitiveCount { get; internal set; } = 0;
         }
 
-        // list of meshes to add to the combined mesh.
-        List<MeshEntry> _meshes = new List<MeshEntry>();
+        // list of meshes to add to the combined mesh next time we build.
+        List<MeshEntry> _pendingMeshes = new List<MeshEntry>();
 
         // dictionary to hold the combined parts and their materials.
         // key is material so we can draw them in chunks sharing the same material and texture.
         Dictionary<Materials.MaterialAPI, CombinedMeshesPart> _parts = new Dictionary<Materials.MaterialAPI, CombinedMeshesPart>();
+
+        /// <summary>
+        /// Combined mesh bounding box.
+        /// </summary>
+        BoundingBox _boundingBox;
+
+        /// <summary>
+        /// Combined mesh bounding sphere.
+        /// </summary>
+        BoundingSphere _boundingSphere;
 
         /// <summary>
         /// Add a model to the combined mesh.
@@ -116,7 +131,7 @@ namespace GeonBit.Core.Graphics
         /// <param name="material">Optional material to use instead of the mesh default materials.</param>
         public void AddModelMesh(ModelMesh mesh, Matrix transform, Materials.MaterialAPI material = null)
         {
-            _meshes.Add(new MeshEntry(mesh, transform, material));
+            _pendingMeshes.Add(new MeshEntry(mesh, transform, material));
         }
 
         /// <summary>
@@ -131,8 +146,11 @@ namespace GeonBit.Core.Graphics
             // clear previous static parts
             _parts.Clear();
 
+            // store all vertices in a temp buffer to create bounding box and sphere in the end
+            List<Vector3> allVertices = new List<Vector3>();
+
             // iterate meshes
-            foreach (var meshData in _meshes)
+            foreach (var meshData in _pendingMeshes)
             {
                 // get mesh and transform
                 ModelMesh mesh = meshData.Mesh;
@@ -146,10 +164,15 @@ namespace GeonBit.Core.Graphics
                     var material = overrideMaterial ?? meshPart.GetMaterial();
 
                     // get the combined chunk to add this meshpart to
-                    var combinedPart = _parts[material];
+                    CombinedMeshesPart combinedPart;
+                    if (!_parts.TryGetValue(material, out combinedPart))
+                    {
+                        combinedPart = new CombinedMeshesPart();
+                        _parts[material] = combinedPart;
+                    }
 
                     // make sure its not readonly
-                    if (meshPart.VertexBuffer.BufferUsage == BufferUsage.WriteOnly || 
+                    if (meshPart.VertexBuffer.BufferUsage == BufferUsage.WriteOnly ||
                         meshPart.IndexBuffer.BufferUsage == BufferUsage.WriteOnly)
                     {
                         if (assertIfWriteOnly) { throw new Exceptions.InvalidValueException("Cannot add mesh with write-only buffers to Combined Mesh!"); }
@@ -185,16 +208,25 @@ namespace GeonBit.Core.Graphics
 
                         // add to vertices buffer
                         combinedPart.Vertices.Add(new VertexPositionNormalTexture(currPosition, normal, textcoords));
+
+                        // add to temp list of all points
+                        allVertices.Add(currPosition);
                     }
 
+                    // get indexes and primitive count
                     short[] drawOrder = new short[meshPart.IndexBuffer.IndexCount];
                     meshPart.IndexBuffer.GetData<short>(drawOrder);
                     combinedPart.Indexes.AddRange(drawOrder);
+                    combinedPart.PrimitiveCount += meshPart.PrimitiveCount;
                 }
             }
 
+            // update bounding box and sphere
+            _boundingSphere = BoundingSphere.CreateFromPoints(allVertices);
+            _boundingBox = BoundingBox.CreateFromPoints(allVertices);
+
             // clear the list of static meshes to build
-            _meshes.Clear();
+            _pendingMeshes.Clear();
         }
 
         /// <summary>
@@ -220,9 +252,54 @@ namespace GeonBit.Core.Graphics
                         <VertexPositionNormalTexture>(
                         PrimitiveType.TriangleList,
                         buffers.Vertices.ToArray(), 0, buffers.Vertices.Count,
-                        buffers.Indexes.ToArray(), 0, buffers.Indexes.Count);
+                        buffers.Indexes.ToArray(), 0, buffers.PrimitiveCount);
                 });
             }
+        }
+
+        /// <summary>
+        /// Get the bounding sphere of this entity.
+        /// </summary>
+        /// <param name="parent">Parent node that's currently drawing this entity.</param>
+        /// <param name="localTransformations">Local transformations from the direct parent node.</param>
+        /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
+        /// <returns>Bounding box of the entity.</returns>
+        protected override BoundingSphere CalcBoundingSphere(Node parent, ref Matrix localTransformations, ref Matrix worldTransformations)
+        {
+            BoundingSphere modelBoundingSphere = _boundingSphere;
+            modelBoundingSphere.Radius *= worldTransformations.Scale.Length();
+            modelBoundingSphere.Center = worldTransformations.Translation;
+            return modelBoundingSphere;
+
+        }
+
+        /// <summary>
+        /// Get the bounding box of this entity.
+        /// </summary>
+        /// <param name="parent">Parent node that's currently drawing this entity.</param>
+        /// <param name="localTransformations">Local transformations from the direct parent node.</param>
+        /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
+        /// <returns>Bounding box of the entity.</returns>
+        protected override BoundingBox CalcBoundingBox(Node parent, ref Matrix localTransformations, ref Matrix worldTransformations)
+        {
+            // get bounding box in local space
+            BoundingBox modelBoundingBox = _boundingBox;
+
+            // initialize minimum and maximum corners of the bounding box to max and min values
+            Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+
+            // iterate bounding box corners and transform them
+            foreach (Vector3 corner in modelBoundingBox.GetCorners())
+            {
+                // get curr position and update min / max
+                Vector3 currPosition = Vector3.Transform(corner, worldTransformations);
+                min = Vector3.Min(min, currPosition);
+                max = Vector3.Max(max, currPosition);
+            }
+
+            // create and return transformed bounding box
+            return new BoundingBox(min, max);
         }
     }
 }
