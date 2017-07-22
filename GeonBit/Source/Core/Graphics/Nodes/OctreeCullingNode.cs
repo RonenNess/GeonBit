@@ -134,6 +134,15 @@ namespace GeonBit.Core.Graphics
         }
 
         /// <summary>
+        /// Clone this scene node.
+        /// </summary>
+        /// <returns>Node copy.</returns>
+        public override Node Clone()
+        {
+            return new OctreeCullingNode(LastBoundingBox, _octreeData.MaxDivisions);
+        }
+
+        /// <summary>
         /// Initialize this octree node.
         /// </summary>
         void InitOctreeBox(BoundingBox boundingBox)

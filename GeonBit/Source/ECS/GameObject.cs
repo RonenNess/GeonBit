@@ -317,10 +317,11 @@ namespace GeonBit.ECS
         /// </summary>
         /// <param name="name">GameObject name.</param>
         /// <param name="node">Scene node (will be cloned).</param>
-        internal GameObject(string name, Core.Graphics.Node node)
+        /// <param name="cloneNode">If true, will clone the scene node. If false, will take it as-is</param>
+        internal GameObject(string name, Core.Graphics.Node node, bool cloneNode = true)
         {
             // clone scene node and set name
-            _sceneNode = node.Clone();
+            _sceneNode = cloneNode ? node.Clone() : node;
             Name = name;
 
             // increase instances counter
@@ -352,8 +353,9 @@ namespace GeonBit.ECS
         public static GameObject CreateOctree(Vector3 origin, Vector3 size, uint maxDivisions)
         {
             Vector3 halfSize = size * 0.5f;
-            Core.Graphics.Node sceneNode = new Core.Graphics.OctreeCullingNode(new BoundingBox(origin - halfSize, origin + halfSize), maxDivisions);
-            return new GameObject("octree", sceneNode);
+            BoundingBox bb = new BoundingBox(origin - halfSize, origin + halfSize);
+            Core.Graphics.Node sceneNode = new Core.Graphics.OctreeCullingNode(bb, maxDivisions);
+            return new GameObject("octree", sceneNode, false);
         }
 
         /// <summary>
