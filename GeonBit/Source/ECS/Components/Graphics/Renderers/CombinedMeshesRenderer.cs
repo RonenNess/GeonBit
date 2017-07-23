@@ -43,7 +43,6 @@ namespace GeonBit.ECS.Components.Graphics
 
         /// <summary>
         /// Add a model to the combined mesh.
-        /// Note: you must call Build() for this to take effect.
         /// </summary>
         /// <param name="model">Model to add.</param>
         /// <param name="transform">World transformations.</param>
@@ -51,11 +50,11 @@ namespace GeonBit.ECS.Components.Graphics
         public void AddModel(Model model, Matrix transform, MaterialAPI material = null)
         {
             _entity.AddModel(model, transform, material);
+            _GameObject.SceneNode.ForceFullUpdate(false);
         }
 
         /// <summary>
         /// Add a model mesh to the combined mesh.
-        /// Note: you must call Build() for this to take effect.
         /// </summary>
         /// <param name="mesh">Mesh to add.</param>
         /// <param name="transform">World transformations.</param>
@@ -63,19 +62,16 @@ namespace GeonBit.ECS.Components.Graphics
         public void AddModelMesh(ModelMesh mesh, Matrix transform, MaterialAPI material = null)
         {
             _entity.AddModelMesh(mesh, transform, material);
+            _GameObject.SceneNode.ForceFullUpdate(false);
         }
 
         /// <summary>
-        /// Build the entire combined meshes from the previously added models and meshes.
-        /// You need to call this function after you're done adding all the parts using AddModel() and AddModelMesh().
-        /// Note: once build, it will clear the list of meshes. So if you want to rebuild you need to re-add all model and meshes parts again.
+        /// Clear everything from the combined meshes renderer.
         /// </summary>
-        /// <param name="assertIfWriteOnly">If true and we get a mesh with write-only buffers (meaning we can't process it), will throw exception.
-        /// If false, will just skip that mesh part quitely.</param>
-        public void Build(bool assertIfWriteOnly = true)
+        public void Clear()
         {
-            _entity.Build(assertIfWriteOnly);
-            _GameObject.SceneNode.ForceFullUpdate();
+            _entity.Clear();
+            _GameObject.SceneNode.ForceFullUpdate(false);
         }
 
         /// <summary>
