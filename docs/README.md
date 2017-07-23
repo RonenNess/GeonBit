@@ -1476,15 +1476,11 @@ combined.AddModel(model, meshTransform.BuildMatrix());
 combined.AddModel(model, meshTransform.BuildMatrix(), material);
 ```
 
-After you finish adding all the models, you need to build the combiner:
+And you can even add primitives directly, without using meshes:
 
 ```cs
-combined.Build();
+combined.AddVertices(vertices, indexes, transformations, material);
 ```
-
-The combined meshes renderer will now turn into a renderable mesh that you can put in your scene.
-
-You can call ```Build()``` multiple times, but each time you need to add **all** the models as it doesn't remember the models from previous build.
 
 ### Warnings
 
@@ -1492,7 +1488,7 @@ Some things to be cautious about with Combined Meshes Optimizer:
 
 - If you make your combiners too big (for example the entire level in a single combiner) you may lose culling-base optimizations, and end up with worse performance. Its best to chunk down large levels into multiple combiners.
 - Combined meshes are static; you can no longer transform them and they don't support animation.
-- Building the combined meshes is a heavy task. Its totally ok and fast enough for level initialization, but avoid rebuilding it during runtime (unless its for level editor).
+- Building combined meshes is (relatively) a heavy task. Its fast enough for level initialization, but avoid rebuilding too often during runtime.
 
 
 ## Physics
