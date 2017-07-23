@@ -187,8 +187,8 @@ namespace GeonBit.Core.Graphics
         /// <param name="vertices">Vertices array to add.</param>
         /// <param name="indexes">Draw order / indexes array.</param>
         /// <param name="transform">World transformations.</param>
-        /// <param name="material">Optional material to use instead of the mesh default materials.</param>
-        public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, Matrix transform, Materials.MaterialAPI material = null)
+        /// <param name="material">Material to use with the vertices.</param>
+        public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, Matrix transform, Materials.MaterialAPI material)
         {
             // if transform is identity skip everything here
             if (transform == Matrix.Identity)
@@ -224,8 +224,8 @@ namespace GeonBit.Core.Graphics
         /// </summary>
         /// <param name="vertices">Vertices array to add.</param>
         /// <param name="indexes">Draw order / indexes array.</param>
-        /// <param name="material">Optional material to use instead of the mesh default materials.</param>
-        public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, Materials.MaterialAPI material = null)
+        /// <param name="material">Material to use with the vertices.</param>
+        public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, Materials.MaterialAPI material)
         {
             // get the combined chunk to add these vertices to
             CombinedMeshesPart combinedPart = GetCombinedPart(material);

@@ -66,6 +66,31 @@ namespace GeonBit.ECS.Components.Graphics
         }
 
         /// <summary>
+        /// Add array of vertices to the combined mesh.
+        /// </summary>
+        /// <param name="vertices">Vertices array to add.</param>
+        /// <param name="indexes">Draw order / indexes array.</param>
+        /// <param name="material">Material to use with the vertices.</param>
+        public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, MaterialAPI material)
+        {
+            _entity.AddVertices(vertices, indexes, material);
+            _GameObject.SceneNode.ForceFullUpdate(false);
+        }
+
+        /// <summary>
+        /// Add array of vertices to the combined mesh.
+        /// </summary>
+        /// <param name="vertices">Vertices array to add.</param>
+        /// <param name="indexes">Draw order / indexes array.</param>
+        /// <param name="transform">World transformations.</param>
+        /// <param name="material">Material to use with the vertices.</param>
+        public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, Matrix transform, MaterialAPI material)
+        {
+            _entity.AddVertices(vertices, indexes, transform, material);
+            _GameObject.SceneNode.ForceFullUpdate(false);
+        }
+
+        /// <summary>
         /// Clear everything from the combined meshes renderer.
         /// </summary>
         public void Clear()
