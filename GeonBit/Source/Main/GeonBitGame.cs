@@ -192,9 +192,44 @@ namespace GeonBit
         /// Make game work in fullscreen mode.
         /// </summary>
         /// <param name="framed">If true, will make fullscreen but with window frame.</param>
-        public void MakeFullscreen(bool framed = false)
+        /// <param name="resolution">Resolution to use (if not provided, will use device currently set resolution).</param>
+        public void MakeFullscreen(bool framed = false, Point? resolution = null)
         {
-            _gameWrapper.MakeFullscreen(framed);
+            _gameWrapper.MakeFullscreen(framed, resolution);
+        }
+
+        /// <summary>
+        /// Make game work in fullscreen mode using only resolution width (height will be automatically calculated for best fit).
+        /// </summary>
+        /// <param name="desiredWidth">Desired resolution width.</param>
+        public void MakeFullscreenForWidth(int desiredWidth)
+        {
+            Point originResolution = _gameWrapper.GetDisplayModeResolution();
+            float ratio = (float)(originResolution.Y) / (float)(originResolution.X);
+            Point fullResolution = new Point(desiredWidth, (int)(ratio * (float)(desiredWidth)));
+            _gameWrapper.MakeFullscreen(false, fullResolution);
+        }
+
+        /// <summary>
+        /// Make game work in fullscreen mode using only resolution height (width will be automatically calculated for best fit).
+        /// </summary>
+        /// <param name="desiredHeight">Desired resolution height.</param>
+        public void MakeFullscreenForHeight(int desiredHeight)
+        {
+            Point originResolution = _gameWrapper.GetDisplayModeResolution();
+            float ratio = (float)(originResolution.X) / (float)(originResolution.Y);
+            Point fullResolution = new Point((int)(ratio * (float)(desiredHeight)), desiredHeight);
+            _gameWrapper.MakeFullscreen(false, fullResolution);
+        }
+
+        /// <summary>
+        /// Get supported resolutions.
+        /// </summary>
+        /// <param name="onlyWithSameRatio">If true, will only return supported resolutions with the same ratio as current resolution.</param>
+        /// <returns>Array of supported resolutions.</returns>
+        public Point[] GetSupportedResolutions(bool onlyWithSameRatio = false)
+        {
+            return _gameWrapper.GetSupportedResolutions(onlyWithSameRatio);
         }
 
         /// <summary>

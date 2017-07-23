@@ -18,6 +18,7 @@
 //-----------------------------------------------------------------------------
 #endregion
 
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GeonBit.Managers;
@@ -151,26 +152,69 @@ namespace GeonBit
         /// Make game work in fullscreen mode.
         /// </summary>
         /// <param name="framed">If true, will make fullscreen but with window frame.</param>
-        public void MakeFullscreen(bool framed = false)
+        /// <param name="resolution">Resolution to use. If not provided, will use current device resolution.</param>
+        public void MakeFullscreen(bool framed = false, Point? resolution = null)
         {
+            // get default resolution
+            Point size = resolution ?? GetDisplayModeResolution();
+
             // "fullscreen" with frame and title bar
             if (framed)
             {
-                _graphics.PreferredBackBufferWidth = _graphics.GraphicsDevice.DisplayMode.Width;
-                _graphics.PreferredBackBufferHeight = _graphics.GraphicsDevice.DisplayMode.Height;
+                _graphics.PreferredBackBufferWidth = size.X;
+                _graphics.PreferredBackBufferHeight = size.Y;
                 _graphics.IsFullScreen = false;
                 _graphics.ApplyChanges();
             }
             // really fullscreen
             else
             {
-                _graphics.PreferredBackBufferWidth = _graphics.GraphicsDevice.DisplayMode.Width;
-                _graphics.PreferredBackBufferHeight = _graphics.GraphicsDevice.DisplayMode.Height;
+                _graphics.PreferredBackBufferWidth = size.X;
+                _graphics.PreferredBackBufferHeight = size.Y;
                 Window.AllowUserResizing = true;
                 Window.IsBorderless = true;
                 _graphics.ApplyChanges();
                 _graphics.ToggleFullScreen();
             }
+        }
+
+        /// <summary>
+        /// Get current display mode resolution.
+        /// </summary>
+        /// <returns>Current display mode resolution (or in other words, desktop's resolution).</returns>
+        public Point GetDisplayModeResolution()
+        {
+            return new Point(_graphics.GraphicsDevice.DisplayMode.Width, _graphics.GraphicsDevice.DisplayMode.Height);
+        }
+
+        /// <summary>
+        /// Get supported resolutions.
+        /// </summary>
+        /// <param name="onlyWithSameRatio">If true, will only return supported resolutions with the same ratio as current resolution.</param>
+        /// <returns>Array of supported resolutions.</returns>
+        public Point[] GetSupportedResolutions(bool onlyWithSameRatio = false)
+        {
+            // get native resulotion
+            Point nativeResolution = GetDisplayModeResolution();
+            float nativeRatio = (float)nativeResolution.X / (float)nativeResolution.Y;
+
+            // iterate supported resolutions
+            List<Point> ret = new List<Point>();
+            foreach (DisplayMode mode in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
+            {
+                // filter by ratio
+                if (onlyWithSameRatio)
+                {
+                    if ((float)mode.Width / (float)mode.Height != nativeRatio)
+                    {
+                        continue;
+                    }
+                }
+
+                // add to return list
+                ret.Add(new Point(mode.Width, mode.Height));
+            }
+            return ret.ToArray();
         }
 
         /// <summary>
