@@ -234,17 +234,16 @@ namespace GeonBit.Core.Graphics
             combinedPart.Vertices.AddRange(vertices);
 
             // add indexes (but first update them to be relative to whats already in combined part)
-            short[] relativeDrawOrder = new short[indexes.Length];
             for (int i = 0; i < indexes.Length; ++i)
             {
-                relativeDrawOrder[i] = (short)(indexes[i] + combinedPart.IndexOffset);
+                combinedPart.Indexes.Add((short)(indexes[i] + combinedPart.IndexOffset));
             }
 
             // increase index offset in combined part
             combinedPart.IndexOffset += vertices.Length;
 
             // update primitives count
-            combinedPart.PrimitiveCount += vertices.Length / 3;
+            combinedPart.PrimitiveCount += indexes.Length / 3;
         }
 
         /// <summary>
