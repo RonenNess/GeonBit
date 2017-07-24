@@ -314,6 +314,21 @@ namespace GeonBit.Core.Graphics
         }
 
         /// <summary>
+        /// Get / set the current animation step, relative to starting step.
+        /// </summary>
+        public int RelativeStep
+        {
+            set
+            {
+                CurrentStep = Clip.StartIndex + value;
+            }
+            get
+            {
+                return CurrentStep - Clip.StartIndex;
+            }
+        }
+
+        /// <summary>
         /// Advance animation and return current animation step index.
         /// </summary>
         /// <param name="timeFactor">Time factor for animation playing speed.</param>
