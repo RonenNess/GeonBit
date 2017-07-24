@@ -113,7 +113,9 @@ namespace GeonBit.ECS.Components.Graphics
         /// <returns>Cloned copy of this component.</returns>
         override public BaseComponent Clone()
         {
-            throw new Exceptions.InvalidActionException("Cannot clone a combined meshes renderer!");
+            CombinedMeshesRenderer ret = new CombinedMeshesRenderer();
+            ret._entity = _entity.Clone();
+            return ret;
         }
     }
 }

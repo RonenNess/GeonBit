@@ -84,6 +84,21 @@ namespace GeonBit.Core.Graphics
         bool _isBoundingDirty = true;
 
         /// <summary>
+        /// Clone this combined entity.
+        /// </summary>
+        /// <returns>Cloned copy.</returns>
+        public CombinedMeshesEntity Clone()
+        {
+            CombinedMeshesEntity ret = new CombinedMeshesEntity();
+            ret._isBoundingDirty = false;
+            ret._boundingBox = _boundingBox;
+            ret._boundingSphere = _boundingSphere;
+            ret._allPoints = new List<Vector3>(_allPoints);
+            ret._parts = new Dictionary<Materials.MaterialAPI, CombinedMeshesPart>(_parts);
+            return ret;
+        }
+
+        /// <summary>
         /// Add a model to the combined mesh.
         /// </summary>
         /// <param name="model">Model to add.</param>
