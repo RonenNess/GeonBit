@@ -67,5 +67,8 @@ namespace GeonBit.Managers
         /// Return if we are currently in debug mode.
         /// </summary>
         public bool DebugMode { get { return GeonBitMain.Instance.DebugMode; } }
+
+        /// <summary>Get resources manager.</summary>
+        public Core.ResourcesManager Resources { get { return Core.ResourcesManager.Instance; } }
     }
 }
