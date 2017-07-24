@@ -179,6 +179,9 @@ namespace GeonBit.Core.Graphics
                 // set primitives count
                 combinedPart.PrimitiveCount += meshPart.PrimitiveCount;
             }
+
+            // mark as dirty
+            _isBoundingDirty = true;
         }
 
         /// <summary>
@@ -216,7 +219,7 @@ namespace GeonBit.Core.Graphics
             }
 
             // add processed vertices
-            AddVertices(vertices, indexes, material);
+            AddVertices(processed, indexes, material);
         }
 
         /// <summary>
@@ -232,6 +235,10 @@ namespace GeonBit.Core.Graphics
 
             // add vertices to combined part
             combinedPart.Vertices.AddRange(vertices);
+            foreach (var vertex in vertices)
+            {
+                _allPoints.Add(vertex.Position);
+            }
 
             // add indexes (but first update them to be relative to whats already in combined part)
             for (int i = 0; i < indexes.Length; ++i)
@@ -244,6 +251,9 @@ namespace GeonBit.Core.Graphics
 
             // update primitives count
             combinedPart.PrimitiveCount += indexes.Length / 3;
+
+            // mark as dirty
+            _isBoundingDirty = true;
         }
 
         /// <summary>
@@ -307,8 +317,16 @@ namespace GeonBit.Core.Graphics
         /// </summary>
         private void RebuildBoundingBoxAndSphere()
         {
-            _boundingBox = BoundingBox.CreateFromPoints(_allPoints);
-            _boundingSphere = BoundingSphere.CreateFromPoints(_allPoints);
+            if (_allPoints.Count != 0)
+            {
+                _boundingBox = BoundingBox.CreateFromPoints(_allPoints);
+                _boundingSphere = BoundingSphere.CreateFromPoints(_allPoints);
+            }
+            else
+            {
+                _boundingBox = new BoundingBox();
+                _boundingSphere = new BoundingSphere();
+            }
         }
 
         /// <summary>
