@@ -105,6 +105,27 @@ namespace GeonBit.Core
         }
 
         /// <summary>
+        /// Get strings array.
+        /// </summary>
+        /// <param name="path">Asset path / name.</param>
+        /// <returns>Strings array.</returns>
+        public string[] GetStringArray(string path)
+        {
+            return _content.Load<string[]>(path);
+        }
+
+        /// <summary>
+        /// Get any other custom type.
+        /// </summary>
+        /// <typeparam name="T">Type to load.</typeparam>
+        /// <param name="path">Path to get resource from.</param>
+        /// <returns>Loaded instance.</returns>
+        public T GetCustomType<T>(string path)
+        {
+            return _content.Load<T>(path);
+        }
+
+        /// <summary>
         /// Get a 3d model.
         /// </summary>
         /// <param name="path">Asset path / name.</param>
