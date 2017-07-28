@@ -81,7 +81,7 @@ namespace GeonBit.Core.Graphics
         /// <summary>
         /// Do we need to update array with nodes directly under this octree?
         /// </summary>
-        bool _isNodesListDirty = false;
+        bool _isNodesListDirty = true;
 
         /// <summary>
         /// Bounding box entity for debug rendering.
@@ -477,7 +477,7 @@ namespace GeonBit.Core.Graphics
             // draw nodes that are directly under this octree box.
             // remember - nodes that are small enough got into one of the subdivisions of this node, but larget nodes are 
             // directly under this tree leaf and needs to be drawn.
-            foreach (Node child in _nodesUnderThisOctreeBox.ToArray())
+            foreach (Node child in _nodesUnderThisOctreeBoxArray)
             {
                 child.Draw(forceEvenIfAlreadyDrawn);
             }
