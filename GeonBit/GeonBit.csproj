@@ -141,6 +141,7 @@
     <Compile Include="Source\Core\Sound\SoundPlayer.cs" />
     <Compile Include="Source\Core\Transformations\Transformations.cs" />
     <Compile Include="Source\Core\Utils\ExtendedMath.cs" />
+    <Compile Include="Source\Core\Utils\ResizeableArray.cs" />
     <Compile Include="Source\ECS\Components\BaseComponent.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Backgrounds\SceneBackground.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Backgrounds\SkyBox.cs" />

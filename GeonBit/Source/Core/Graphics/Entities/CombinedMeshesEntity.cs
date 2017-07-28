@@ -22,6 +22,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using GeonBit.Core.Utils;
 
 namespace GeonBit.Core.Graphics
 {
@@ -43,12 +44,12 @@ namespace GeonBit.Core.Graphics
             /// <summary>
             /// Vertices buffer.
             /// </summary>
-            public List<VertexPositionNormalTexture> Vertices { get; internal set; } = new List<VertexPositionNormalTexture>();
+            public ResizableArray<VertexPositionNormalTexture> Vertices { get; internal set; } = new ResizableArray<VertexPositionNormalTexture>();
 
             /// <summary>
             /// Vertices indexes.
             /// </summary>
-            public List<short> Indexes { get; internal set; } = new List<short>();
+            public ResizableArray<short> Indexes { get; internal set; } = new ResizableArray<short>();
 
             /// <summary>
             /// Primitives count.
@@ -321,8 +322,8 @@ namespace GeonBit.Core.Graphics
                     GraphicsManager.GraphicsDevice.DrawUserIndexedPrimitives
                         <VertexPositionNormalTexture>(
                         PrimitiveType.TriangleList,
-                        buffers.Vertices.ToArray(), 0, buffers.Vertices.Count,
-                        buffers.Indexes.ToArray(), 0, buffers.PrimitiveCount);
+                        buffers.Vertices.InternalArray, 0, buffers.Vertices.Count,
+                        buffers.Indexes.InternalArray, 0, buffers.PrimitiveCount);
                 });
             }
         }

@@ -20,6 +20,7 @@
 #endregion
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using GeonBit.Core.Utils;
 
 namespace GeonBit.Core.Graphics
 {
@@ -71,6 +72,16 @@ namespace GeonBit.Core.Graphics
         // nodes that are actually inside this octree node, and not under one of its children
         // this is for child nodes that are too big for the subdivision nodes.
         List<Node> _nodesUnderThisOctreeBox = new List<Node>();
+
+        /// <summary>
+        /// Cache of nodes directly under this octree node.
+        /// </summary>
+        Node[] _nodesUnderThisOctreeBoxArray;
+        
+        /// <summary>
+        /// Do we need to update array with nodes directly under this octree?
+        /// </summary>
+        bool _isNodesListDirty = false;
 
         /// <summary>
         /// Bounding box entity for debug rendering.
@@ -297,6 +308,7 @@ namespace GeonBit.Core.Graphics
         {
             // add to list of nodes under this bounding box
             _nodesUnderThisOctreeBox.Add(node);
+            _isNodesListDirty = true;
 
             // link self to node
             node.LinkToNode(this);
@@ -351,6 +363,7 @@ namespace GeonBit.Core.Graphics
         {
             // remove from list
             _nodesUnderThisOctreeBox.Remove(node);
+            _isNodesListDirty = true;
 
             // check if we need to remove ourselves from parent
             // if so, start a timer that will do it after few frames (this is to reduce garbage generation due to rapidly moving objects)
@@ -452,6 +465,13 @@ namespace GeonBit.Core.Graphics
                 }
                 _debugBoundingBoxEntity.BoxEffect.DiffuseColor = _nodesUnderThisOctreeBox.Count > 0 ? Color.Yellow.ToVector3() : Color.Gray.ToVector3();
                 _debugBoundingBoxEntity.Draw(this, ref _localTransform, ref _worldTransform);
+            }
+
+            // check if we need to extract array of nodes under this octree
+            if (_isNodesListDirty)
+            {
+                _nodesUnderThisOctreeBoxArray = _nodesUnderThisOctreeBox.ToArray();
+                _isNodesListDirty = false;
             }
 
             // draw nodes that are directly under this octree box.

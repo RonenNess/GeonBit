@@ -23,6 +23,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
+using GeonBit.Core.Utils;
 
 namespace GeonBit.Core
 {
@@ -171,12 +172,13 @@ namespace GeonBit.Core
         /// </summary>
         static public Graphics.Materials.MaterialAPI[] GetMaterials(this ModelMesh mesh)
         {
-            List<Graphics.Materials.MaterialAPI> ret = new List<Graphics.Materials.MaterialAPI>();
+            ResizableArray<Graphics.Materials.MaterialAPI> ret = new ResizableArray<Graphics.Materials.MaterialAPI>();
             foreach (Effect effect in mesh.Effects)
             {
                 ret.Add(effect.Tag as Graphics.Materials.MaterialAPI);
             }
-            return ret.ToArray();
+            ret.Trim();
+            return ret.InternalArray;
         }
 
         /// <summary>
