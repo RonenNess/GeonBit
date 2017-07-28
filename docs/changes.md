@@ -1,6 +1,24 @@
 # ChangeLog
 
-## 1.0.0.0
+## 0.0.0.4
+
+- Minor fixes in ```TileMap``` component.
+- Added options to iterate tiles and batches in ```TileMap```.
+- Fixed octree cloning.
+- Optimized game object cloning.
+- Added option to disable update events for GameObjects that don't need it.
+- Added ```SamplerStates``` getter.
+- Added Combined Meshes Renderer.
+- Added ```Transform``` to scene node to process Matrices.
+- Added option to force node to update its transformations.
+- Optimized octree to not add empty nodes to octree.
+- Optimized bounding box / sphere culling nodes to cull when empty.
+- Added lots of useful functions in ```Game``` to set resolution and fullscreen.
+- Added option to set relative step in sprite animation.
+- Added more getters to resource manager.
+
+
+## 0.0.0.3
 
 First stable version release, which includes the following features / classes:
 
