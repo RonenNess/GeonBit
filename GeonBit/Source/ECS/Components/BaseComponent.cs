@@ -17,7 +17,9 @@
 // Since: 2017.
 //-----------------------------------------------------------------------------
 #endregion
+using System.Collections.Generic;
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("GameObject")]
+
 
 namespace GeonBit.ECS.Components
 {
@@ -60,6 +62,11 @@ namespace GeonBit.ECS.Components
                 return GeonBit.Core.ResourcesManager.Instance;
             }
         }
+
+        /// <summary>
+        /// List of frame-per events we want to test if this component has as an optimization to not iterate this component if not needed.
+        /// </summary>
+        private static string[] FrameBasedEvents = { "OnUpdate", "OnFixedUpdate", "OnBeforeDraw", "OnHeartbeat" };
 
         // did we already got spawn event?
         private bool _wasSpawned = false;
@@ -294,6 +301,40 @@ namespace GeonBit.ECS.Components
         public ReceivedMessageFlowControl SendMessage(string type)
         {
             return OnReceiveMessage(type);
+        }
+
+        /// <summary>
+        /// Return if this component has a method implemented.
+        /// </summary>
+        /// <param name="methodName">Method name to check.</param>
+        /// <returns>If method exists.</returns>
+        public bool HasMethodImplemented(string methodName)
+        {
+            // flags to get method
+            var flags = System.Reflection.BindingFlags.Instance |
+                System.Reflection.BindingFlags.NonPublic |
+                System.Reflection.BindingFlags.Public;
+
+            // get method
+            var type = this.GetType();
+
+            // return true only if not null and not implemented in base class
+            var method = type.GetMethod(methodName, flags);
+            return (method != null && method.DeclaringType.Name != typeof(BaseComponent).Name);
+        }
+
+        /// <summary>
+        /// Get a list of frame-based events this component implements.
+        /// </summary>
+        /// <returns>Array with the names of the implemented events.</returns>
+        public string[] GetImplementedFrameBasedEvents()
+        {
+            var ret = new List<string>();
+            foreach (var eventName in FrameBasedEvents)
+            {
+                if (HasMethodImplemented(eventName)) { ret.Add(eventName); }
+            }
+            return ret.ToArray();
         }
 
         /// <summary>
