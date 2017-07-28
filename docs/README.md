@@ -1441,7 +1441,7 @@ As you can see the implementation is pretty simple:
 That's it. The tricky part here is to implement the Effect itself, which is outside of *GeonBit*'s scope.
 
 
-## Combined Meshes Optimizer
+## Combined Meshes
 
 For some 3d games you might want to build the levels from lots of static, modular models: floor tiles, wall parts, trees, doodads, etc.
 
@@ -1449,7 +1449,7 @@ Without any optimizations, a large level made like this can cause a lot of draw 
 
 To tackle that issue, *GeonBit* comes with a built-in mesh combiner, that takes a list of models to draw with transformations and combine them into a single, larger mesh, thus reducing the draw calls.
 
-To create a ```CombinedMeshesRenderer``` optimizer:
+To create a ```CombinedMeshesRenderer``` component:
 
 ```cs
 // create a combined mesh renderer and attach to a gameobject called 'level'
@@ -1481,6 +1481,14 @@ And you can even add primitives directly, without using meshes:
 ```cs
 combined.AddVertices(vertices, indexes, transformations, material);
 ```
+
+When done adding all the parts, you must call ```Build()```, which will actually create the internal combined buffers:
+
+```cs
+combined.Build();
+```
+
+Note that once ```Build()``` is called you can no longer add new parts to the combined mesh, unless you call ```Clear()``` (which will remove everything from it).
 
 ### Warnings
 

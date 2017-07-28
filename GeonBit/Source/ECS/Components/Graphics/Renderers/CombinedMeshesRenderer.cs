@@ -42,7 +42,17 @@ namespace GeonBit.ECS.Components.Graphics
         protected override BaseRenderableEntity Entity { get { return _entity; } }
 
         /// <summary>
+        /// Build the combined meshes.
+        /// </summary>
+        public void Build()
+        {
+            _entity.Build();
+            if (_GameObject != null) _GameObject.SceneNode.ForceFullUpdate(false);
+        }
+
+        /// <summary>
         /// Add a model to the combined mesh.
+        /// Note: will not take effect until 'Build()' is called.
         /// </summary>
         /// <param name="model">Model to add.</param>
         /// <param name="transform">World transformations.</param>
@@ -50,11 +60,11 @@ namespace GeonBit.ECS.Components.Graphics
         public void AddModel(Model model, Matrix transform, MaterialAPI material = null)
         {
             _entity.AddModel(model, transform, material);
-            if (_GameObject != null) _GameObject.SceneNode.ForceFullUpdate(false);
         }
 
         /// <summary>
         /// Add a model mesh to the combined mesh.
+        /// Note: will not take effect until 'Build()' is called.
         /// </summary>
         /// <param name="mesh">Mesh to add.</param>
         /// <param name="transform">World transformations.</param>
@@ -62,11 +72,11 @@ namespace GeonBit.ECS.Components.Graphics
         public void AddModelMesh(ModelMesh mesh, Matrix transform, MaterialAPI material = null)
         {
             _entity.AddModelMesh(mesh, transform, material);
-            if (_GameObject != null) _GameObject.SceneNode.ForceFullUpdate(false);
         }
 
         /// <summary>
         /// Add array of vertices to the combined mesh.
+        /// Note: will not take effect until 'Build()' is called.
         /// </summary>
         /// <param name="vertices">Vertices array to add.</param>
         /// <param name="indexes">Draw order / indexes array.</param>
@@ -74,11 +84,11 @@ namespace GeonBit.ECS.Components.Graphics
         public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, MaterialAPI material)
         {
             _entity.AddVertices(vertices, indexes, material);
-            if (_GameObject != null) _GameObject.SceneNode.ForceFullUpdate(false);
         }
 
         /// <summary>
         /// Add array of vertices to the combined mesh.
+        /// Note: will not take effect until 'Build()' is called.
         /// </summary>
         /// <param name="vertices">Vertices array to add.</param>
         /// <param name="indexes">Draw order / indexes array.</param>
@@ -87,7 +97,6 @@ namespace GeonBit.ECS.Components.Graphics
         public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, Matrix transform, MaterialAPI material)
         {
             _entity.AddVertices(vertices, indexes, transform, material);
-            if (_GameObject != null) _GameObject.SceneNode.ForceFullUpdate(false);
         }
 
         /// <summary>

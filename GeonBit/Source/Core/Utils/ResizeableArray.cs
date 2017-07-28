@@ -58,6 +58,15 @@ namespace GeonBit.Core.Utils
         public int Count { get { return m_count; } }
 
         /// <summary>
+        /// Clear the array.
+        /// </summary>
+        public void Clear()
+        {
+            m_array = new T[4];
+            m_count = 0;
+        }
+
+        /// <summary>
         /// Remove the extra buffer from array and resize it to actual size.
         /// </summary>
         public void Trim()

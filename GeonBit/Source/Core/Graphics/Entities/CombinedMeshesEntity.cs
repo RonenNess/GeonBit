@@ -52,6 +52,16 @@ namespace GeonBit.Core.Graphics
             public ResizableArray<short> Indexes { get; internal set; } = new ResizableArray<short>();
 
             /// <summary>
+            /// Vertex buffer.
+            /// </summary>
+            public VertexBuffer _VertexBuffer;
+
+            /// <summary>
+            /// Index buffer.
+            /// </summary>
+            public IndexBuffer _IndexBuffer;
+
+            /// <summary>
             /// Primitives count.
             /// </summary>
             public int PrimitiveCount { get; internal set; } = 0;
@@ -60,13 +70,34 @@ namespace GeonBit.Core.Graphics
             /// Count index offset while building the combined mesh.
             /// </summary>
             public int IndexOffset { get; internal set; } = 0;
+
+            /// <summary>
+            /// Build vertex and indexes buffer and clear lists.
+            /// </summary>
+            public void Build()
+            {
+                // get device
+                var device = Graphics.GraphicsManager.GraphicsDevice;
+
+                // build vertex buffer
+                Vertices.Trim();
+                _VertexBuffer = new VertexBuffer(device, typeof(VertexPositionNormalTexture), Vertices.Count, BufferUsage.WriteOnly);
+                _VertexBuffer.SetData<VertexPositionNormalTexture>(Vertices.InternalArray);
+                Vertices.Clear();
+
+                // build indexes buffer
+                Indexes.Trim();
+                _IndexBuffer = new IndexBuffer(device, typeof(short), Indexes.Count, BufferUsage.WriteOnly);
+                _IndexBuffer.SetData(Indexes.InternalArray);
+                Indexes.Clear();
+            }
         }
 
         // dictionary to hold the combined parts and their materials.
         // key is material so we can draw them in chunks sharing the same material and texture.
         Dictionary<Materials.MaterialAPI, CombinedMeshesPart> _parts = new Dictionary<Materials.MaterialAPI, CombinedMeshesPart>();
 
-        // store all vertices positions - needed to calculate bounding box / sphere.
+        // store all vertices positions - needed to calculate bounding box / sphere. This list is cleared once built.
         List<Vector3> _allPoints = new List<Vector3>();
 
         /// <summary>
@@ -80,9 +111,9 @@ namespace GeonBit.Core.Graphics
         BoundingSphere _boundingSphere;
 
         /// <summary>
-        /// Do we need to rebuild bounding box or bounding sphere?
+        /// Did we already build this combined mesh entity? happens on first draw, or when "build" is called.
         /// </summary>
-        bool _isBoundingDirty = true;
+        bool _wasBuilt = false;
 
         /// <summary>
         /// Clone this combined entity.
@@ -91,11 +122,11 @@ namespace GeonBit.Core.Graphics
         public CombinedMeshesEntity Clone()
         {
             CombinedMeshesEntity ret = new CombinedMeshesEntity();
-            ret._isBoundingDirty = false;
             ret._boundingBox = _boundingBox;
             ret._boundingSphere = _boundingSphere;
             ret._allPoints = new List<Vector3>(_allPoints);
             ret._parts = new Dictionary<Materials.MaterialAPI, CombinedMeshesPart>(_parts);
+            ret._wasBuilt = _wasBuilt;
             return ret;
         }
 
@@ -107,6 +138,10 @@ namespace GeonBit.Core.Graphics
         /// <param name="material">Optional material to use instead of the model default materials.</param>
         public void AddModel(Model model, Matrix transform, Materials.MaterialAPI material = null)
         {
+            // sanity check - if build was called assert
+            if (_wasBuilt) { throw new Exceptions.InvalidActionException("Cannot add model to Combined Mesh Entity after it was built!"); }
+
+            // iterate model meshes and add them
             foreach (var mesh in model.Meshes)
             {
                 AddModelMesh(mesh, transform, material);
@@ -121,6 +156,9 @@ namespace GeonBit.Core.Graphics
         /// <param name="material">Optional material to use instead of the mesh default materials.</param>
         public void AddModelMesh(ModelMesh mesh, Matrix transform, Materials.MaterialAPI material = null)
         {
+            // sanity check - if build was called assert
+            if (_wasBuilt) { throw new Exceptions.InvalidActionException("Cannot add meshes to Combined Mesh Entity after it was built!"); }
+
             // extract transformation parts (scale, rotation, translate)
             Vector3 scale; Quaternion rotation; Vector3 translate;
             transform.Decompose(out scale, out rotation, out translate);
@@ -195,9 +233,6 @@ namespace GeonBit.Core.Graphics
                 // set primitives count
                 combinedPart.PrimitiveCount += meshPart.PrimitiveCount;
             }
-
-            // mark as dirty
-            _isBoundingDirty = true;
         }
 
         /// <summary>
@@ -209,6 +244,9 @@ namespace GeonBit.Core.Graphics
         /// <param name="material">Material to use with the vertices.</param>
         public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, Matrix transform, Materials.MaterialAPI material)
         {
+            // sanity check - if build was called assert
+            if (_wasBuilt) { throw new Exceptions.InvalidActionException("Cannot add vertices to Combined Mesh Entity after it was built!"); }
+
             // if transform is identity skip everything here
             if (transform == Matrix.Identity)
             {
@@ -246,6 +284,9 @@ namespace GeonBit.Core.Graphics
         /// <param name="material">Material to use with the vertices.</param>
         public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, Materials.MaterialAPI material)
         {
+            // sanity check - if build was called assert
+            if (_wasBuilt) { throw new Exceptions.InvalidActionException("Cannot add vertices to Combined Mesh Entity after it was built!"); }
+
             // get the combined chunk to add these vertices to
             CombinedMeshesPart combinedPart = GetCombinedPart(material);
 
@@ -267,9 +308,6 @@ namespace GeonBit.Core.Graphics
 
             // update primitives count
             combinedPart.PrimitiveCount += indexes.Length / 3;
-
-            // mark as dirty
-            _isBoundingDirty = true;
         }
 
         /// <summary>
@@ -298,6 +336,29 @@ namespace GeonBit.Core.Graphics
         {
             _parts.Clear();
             _allPoints.Clear();
+            RebuildBoundingBoxAndSphere();
+            _wasBuilt = false;
+        }
+
+        /// <summary>
+        /// Build the combined meshes renderer.
+        /// </summary>
+        public void Build()
+        {
+            // build parts
+            foreach (var combinedPart in _parts)
+            {
+                combinedPart.Value.Build();
+            }
+
+            // build bounding box and sphere
+            RebuildBoundingBoxAndSphere();
+
+            // clear points
+            _allPoints.Clear();
+
+            // mark as built
+            _wasBuilt = true;
         }
 
         /// <summary>
@@ -306,6 +367,9 @@ namespace GeonBit.Core.Graphics
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
         public override void DoEntityDraw(ref Matrix worldTransformations)
         {
+            // get graphic device
+            var device = Graphics.GraphicsManager.GraphicsDevice;
+
             // iterate combined parts
             foreach (var combinedPart in _parts)
             {
@@ -316,14 +380,14 @@ namespace GeonBit.Core.Graphics
                 // get vertices and indexes
                 var buffers = combinedPart.Value;
 
+                // set vertex and indices buffers
+                device.SetVertexBuffer(buffers._VertexBuffer);
+                device.Indices = buffers._IndexBuffer;
+
                 // draw with material
                 material.IterateEffectPasses((EffectPass pass) =>
                 {
-                    GraphicsManager.GraphicsDevice.DrawUserIndexedPrimitives
-                        <VertexPositionNormalTexture>(
-                        PrimitiveType.TriangleList,
-                        buffers.Vertices.InternalArray, 0, buffers.Vertices.Count,
-                        buffers.Indexes.InternalArray, 0, buffers.PrimitiveCount);
+                    device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, buffers.PrimitiveCount);
                 });
             }
         }
@@ -354,13 +418,6 @@ namespace GeonBit.Core.Graphics
         /// <returns>Bounding box of the entity.</returns>
         protected override BoundingSphere CalcBoundingSphere(Node parent, ref Matrix localTransformations, ref Matrix worldTransformations)
         {
-            // check if need to rebuild bounding sphere
-            if (_isBoundingDirty)
-            {
-                RebuildBoundingBoxAndSphere();
-                _isBoundingDirty = false;
-            }
-
             // get bounding sphere in local space
             BoundingSphere modelBoundingSphere = _boundingSphere;
 
@@ -379,13 +436,6 @@ namespace GeonBit.Core.Graphics
         /// <returns>Bounding box of the entity.</returns>
         protected override BoundingBox CalcBoundingBox(Node parent, ref Matrix localTransformations, ref Matrix worldTransformations)
         {
-            // check if need to rebuild bounding box
-            if (_isBoundingDirty)
-            {
-                RebuildBoundingBoxAndSphere();
-                _isBoundingDirty = false;
-            }
-
             // get bounding box in local space
             BoundingBox modelBoundingBox = _boundingBox;
 
