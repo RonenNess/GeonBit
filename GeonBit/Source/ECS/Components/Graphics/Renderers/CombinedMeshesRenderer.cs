@@ -50,7 +50,7 @@ namespace GeonBit.ECS.Components.Graphics
         public void AddModel(Model model, Matrix transform, MaterialAPI material = null)
         {
             _entity.AddModel(model, transform, material);
-            _GameObject.SceneNode.ForceFullUpdate(false);
+            if (_GameObject != null) _GameObject.SceneNode.ForceFullUpdate(false);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace GeonBit.ECS.Components.Graphics
         public void AddModelMesh(ModelMesh mesh, Matrix transform, MaterialAPI material = null)
         {
             _entity.AddModelMesh(mesh, transform, material);
-            _GameObject.SceneNode.ForceFullUpdate(false);
+            if (_GameObject != null) _GameObject.SceneNode.ForceFullUpdate(false);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace GeonBit.ECS.Components.Graphics
         public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, MaterialAPI material)
         {
             _entity.AddVertices(vertices, indexes, material);
-            _GameObject.SceneNode.ForceFullUpdate(false);
+            if (_GameObject != null) _GameObject.SceneNode.ForceFullUpdate(false);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace GeonBit.ECS.Components.Graphics
         public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, Matrix transform, MaterialAPI material)
         {
             _entity.AddVertices(vertices, indexes, transform, material);
-            _GameObject.SceneNode.ForceFullUpdate(false);
+            if (_GameObject != null) _GameObject.SceneNode.ForceFullUpdate(false);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace GeonBit.ECS.Components.Graphics
         public void Clear()
         {
             _entity.Clear();
-            _GameObject.SceneNode.ForceFullUpdate(false);
+            if (_GameObject != null) _GameObject.SceneNode.ForceFullUpdate(false);
         }
 
         /// <summary>
