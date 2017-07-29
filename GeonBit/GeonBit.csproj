@@ -135,6 +135,7 @@
     <Compile Include="Source\Core\Physics\CollisionShapes\ICollisionShape.cs" />
     <Compile Include="Source\Core\Physics\Convert.cs" />
     <Compile Include="Source\Core\Physics\DebugDrawer.cs" />
+    <Compile Include="Source\Core\Physics\StaticCollisionObject.cs" />
     <Compile Include="Source\Core\Physics\PhysicalBody.cs" />
     <Compile Include="Source\Core\Physics\World.cs" />
     <Compile Include="Source\Core\Resources\ResourcesManager.cs" />

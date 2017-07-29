@@ -379,6 +379,15 @@ namespace GeonBit.Core.Physics
         }
 
         /// <summary>
+        /// Add a static collision object to the physics world.
+        /// </summary>
+        /// <param name="obj">Object to add.</param>
+        public void AddStaticCollision(StaticCollisionObject obj)
+        {
+            _world.AddCollisionObject(obj.BulletCollisionObject);
+        }
+
+        /// <summary>
         /// Remove a physical body from the world.
         /// </summary>
         /// <param name="body"></param>
@@ -387,6 +396,15 @@ namespace GeonBit.Core.Physics
             // remove physical body, but only if world wasn't already destroyed (so we won't crash on leftovers).
             if (_world != null) _world.RemoveRigidBody(body.BulletRigidBody);
             body._world = null;
+        }
+
+        /// <summary>
+        /// Remove a static collision object from the physics world.
+        /// </summary>
+        /// <param name="obj">Object to remove.</param>
+        public void RemoveStaticCollision(StaticCollisionObject obj)
+        {
+            _world.RemoveCollisionObject(obj.BulletCollisionObject);
         }
 
         /// <summary>
