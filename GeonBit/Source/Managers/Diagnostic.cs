@@ -68,9 +68,6 @@ namespace GeonBit.Managers
         {
             // update enabled / disabled state
             UpdateEnabledState();
-
-            // set default debug modes
-            DebugRenderPhysics = GeonBitMain.Instance.DebugMode;
         }
 
         /// <summary>
