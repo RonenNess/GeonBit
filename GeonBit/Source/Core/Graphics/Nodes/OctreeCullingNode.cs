@@ -59,7 +59,7 @@ namespace GeonBit.Core.Graphics
         public static bool DebugRenderOctreeParts = false;
 
         /// <summary>
-        /// The child octrees that make this octree.
+        /// The child octrees under this octree node.
         /// </summary>
         OctreeCullingNode[,,] _childOctrees = null;
 

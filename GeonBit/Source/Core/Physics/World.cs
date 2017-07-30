@@ -252,6 +252,7 @@ namespace GeonBit.Core.Physics
         /// <param name="timeFactor">How much to advance this world step (or: time since last frame).</param>
         public void Update(float timeFactor)
         {
+            if (TimeFactor == 0) { return; }
             _world.StepSimulation(timeFactor * TimeFactor, MaxSubStep, FixedTimeStep);
         }
 
