@@ -32,6 +32,9 @@ namespace GeonBit.Core.Physics
         // the collision object itself
         BulletSharp.CollisionObject _body = null;
 
+        // collision shape
+        CollisionShapes.ICollisionShape _shape;
+
         /// <summary>
         /// Get the rigid body in bullet format.
         /// </summary>
@@ -45,11 +48,10 @@ namespace GeonBit.Core.Physics
         public StaticCollisionObject(CollisionShapes.ICollisionShape shape, Matrix? transformations = null)
         {
             // create the collision object
+            _shape = shape;
             _body = new CollisionObject();
             _body.CollisionShape = shape.BulletCollisionShape;
             if (transformations != null) _body.WorldTransform = ToBullet.Matrix(transformations.Value);
         }
-
-        
     }
 }
