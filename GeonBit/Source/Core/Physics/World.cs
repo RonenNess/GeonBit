@@ -124,10 +124,25 @@ namespace GeonBit.Core.Physics
         PhysicsDebugDraw _debugDraw;
 
         /// <summary>
+        /// Physics max sub steps per frame.
+        /// </summary>
+        public static int MaxSubStep = 32;
+
+        /// <summary>
+        /// Physics time factor.
+        /// </summary>
+        public static float TimeFactor = 1f;
+
+        /// <summary>
+        /// Physics fixed timestep interval.
+        /// </summary>
+        public static float FixedTimeStep = 1f / 60f;
+
+        /// <summary>
         /// Init the physics world.
         /// </summary>
         public PhysicsWorld()
-        { 
+        {
             // init components
             _config = new BulletSharp.DefaultCollisionConfiguration();
             _dispatcher = new BulletSharp.CollisionDispatcher(_config);
@@ -197,6 +212,9 @@ namespace GeonBit.Core.Physics
                 PhysicalBody body0 = ((PhysicalBody)obj0.CollisionObject.UserObject);
                 PhysicalBody body1 = ((PhysicalBody)obj1.CollisionObject.UserObject);
 
+                // if one of the bodies don't support collision skip
+                if (body0 == null || body1 == null) { return; }
+
                 // store both bodies for the collision end event
                 cp.UserPersistentData = new CollisionPersistData(body0, body1);
 
@@ -234,7 +252,7 @@ namespace GeonBit.Core.Physics
         /// <param name="timeFactor">How much to advance this world step (or: time since last frame).</param>
         public void Update(float timeFactor)
         {
-            _world.StepSimulation(timeFactor, 10);
+            _world.StepSimulation(timeFactor * TimeFactor, MaxSubStep, FixedTimeStep);
         }
 
         /// <summary>
