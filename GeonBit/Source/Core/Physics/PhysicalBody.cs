@@ -91,7 +91,22 @@ namespace GeonBit.Core.Physics
                 Scale = value.Scale;
             }
         }
-        
+
+        /// <summary>
+        /// Get / set body restitution.
+        /// </summary>
+        public float Restitution
+        {
+            get
+            {
+                return _body.Restitution;
+            }
+            set
+            {
+                _body.Restitution = value;
+            }
+        }
+
         /// <summary>
         /// Get / Set body scale.
         /// </summary>

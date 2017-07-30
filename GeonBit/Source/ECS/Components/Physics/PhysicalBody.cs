@@ -154,6 +154,15 @@ namespace GeonBit.ECS.Components.Physics
         }
 
         /// <summary>
+        /// Get / set body restitution.
+        /// </summary>
+        public float Restitution
+        {
+            get { return _body.Restitution; }
+            set { _body.Restitution = value; }
+        }
+
+        /// <summary>
         /// Optional constant velocity to set for this physical body.
         /// </summary>
         public Vector3? ConstVelocity = null;
@@ -266,6 +275,7 @@ namespace GeonBit.ECS.Components.Physics
             ret.ConstVelocity = ConstVelocity;
             ret.ConstTorqueForce = ConstTorqueForce;
             ret.ConstAngularVelocity = ConstAngularVelocity;
+            ret.Restitution = Restitution;
 
             // return the cloned body
             return ret;
