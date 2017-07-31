@@ -41,6 +41,21 @@ namespace GeonBit.Core.Physics
         internal BulletSharp.CollisionObject BulletCollisionObject { get { return _body; } }
 
         /// <summary>
+        /// Get / set object world transformations.
+        /// </summary>
+        public Matrix WorldTransformations
+        {
+            get
+            {
+                return ToMonoGame.Matrix(_body.WorldTransform);
+            }
+            set
+            {
+                _body.WorldTransform = ToBullet.Matrix(value);
+            }
+        }
+
+        /// <summary>
         /// Create the static collision object from shape.
         /// </summary>
         /// <param name="shape">Collision shape that define this body.</param>
