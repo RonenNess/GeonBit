@@ -43,13 +43,13 @@ namespace GeonBit.Core.Graphics
         /// <summary>
         /// Callback that triggers every time a node updates its matrix.
         /// </summary>
-        public static NodeEventCallback OnTransformationsUpdate;
+        internal static NodeEventCallback __OnNodeTransformationsUpdate;
 
         /// <summary>
         /// Callback that triggers every time a node is rendered.
         /// Note: nodes that are culled out should not trigger this.
         /// </summary>
-        public static NodeEventCallback OnDraw;
+        internal static NodeEventCallback __OnNodeDraw;
 
         /// <summary>
         /// Last frame this node was drawn.
@@ -314,7 +314,7 @@ namespace GeonBit.Core.Graphics
             }
 
             // trigger draw event
-            OnDraw?.Invoke(this);
+            __OnNodeDraw?.Invoke(this);
 
             // draw all child entities
             foreach (IEntity entity in _childEntities)
@@ -471,7 +471,7 @@ namespace GeonBit.Core.Graphics
             _transformVersion++;
 
             // trigger update event
-            OnTransformationsUpdate?.Invoke(this);
+            __OnNodeTransformationsUpdate?.Invoke(this);
 
             // mark bounding-box and bounding-sphere as dirty
             _boundingBoxDirty = true;

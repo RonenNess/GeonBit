@@ -483,7 +483,7 @@ namespace GeonBit.Core.Graphics
             }
 
             // trigger draw event
-            OnDraw?.Invoke(this);
+            __OnNodeDraw?.Invoke(this);
 
             // draw the octree subdivisions (but only if we have them, eg if this is not the smallest octree node)
             if (_childOctrees != null)

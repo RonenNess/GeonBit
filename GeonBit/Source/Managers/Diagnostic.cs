@@ -79,13 +79,13 @@ namespace GeonBit.Managers
             if (_enabled)
             {
                 // register callback to count transformations update
-                Core.Graphics.Node.OnTransformationsUpdate = (Core.Graphics.Node node) =>
+                Core.Graphics.Node.__OnNodeTransformationsUpdate = (Core.Graphics.Node node) =>
                 {
                     _transformUpdated++;
                 };
 
                 // register callback to count node draw calls
-                Core.Graphics.Node.OnDraw = (Core.Graphics.Node node) =>
+                Core.Graphics.Node.__OnNodeDraw = (Core.Graphics.Node node) =>
                 {
                     _renderedNodes++;
                     if (node.HaveEntities)
@@ -108,8 +108,8 @@ namespace GeonBit.Managers
             else
             {
                 // clear callbacks
-                Core.Graphics.Node.OnDraw = null;
-                Core.Graphics.Node.OnTransformationsUpdate = null;
+                Core.Graphics.Node.__OnNodeDraw = null;
+                Core.Graphics.Node.__OnNodeTransformationsUpdate = null;
                 Core.Graphics.BaseRenderableEntity.OnDraw = null;
 
             }

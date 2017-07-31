@@ -124,6 +124,12 @@ namespace GeonBit.ECS
         private float _timeForHeartbeat = 0f;
 
         /// <summary>
+        /// Scene node last transformation version.
+        /// Used to spawn TransformUpdate events.
+        /// </summary>
+        private uint _lastNodeTransformVersion = 0;
+
+        /// <summary>
         /// Get the currently active scene instance.
         /// </summary>
         public GameScene ActiveScene
@@ -517,6 +523,13 @@ namespace GeonBit.ECS
                 return;
             }
 
+            // check if we need to trigger transformations update event
+            if (_lastNodeTransformVersion != SceneNode.TransformVersion)
+            {
+                _lastNodeTransformVersion = SceneNode.TransformVersion;
+                OnTransformationUpdate();   
+            }
+
             // prepare children and components array before iteration
             PrepareChildrenAndComponentsArray();
 
@@ -597,6 +610,18 @@ namespace GeonBit.ECS
             {
                 child.FixedUpdate();
                 if (_destroyed) return;
+            }
+        }
+
+        /// <summary>
+        /// Called when the scene node transformations update.
+        /// </summary>
+        private void OnTransformationUpdate()
+        {
+            foreach (var component in _componentsArray)
+            {
+                if (!component.Enabled) { continue; }
+                component.TransformationUpdate();
             }
         }
 

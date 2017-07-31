@@ -90,7 +90,7 @@ namespace GeonBit.Core.Graphics
             }
 
             // call draw callback
-            Node.OnDraw?.Invoke(this);
+            Node.__OnNodeDraw?.Invoke(this);
 
             // draw all child entities
             foreach (IEntity entity in _childEntities)

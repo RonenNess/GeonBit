@@ -110,6 +110,12 @@ namespace GeonBit.ECS.Components
         protected abstract void OnBeforeDraw();
 
         /// <summary>
+        /// Called every time scene node transformation updates.
+        /// Note: this is called only if GameObject is enabled and have Update events enabled.
+        /// </summary>
+        protected abstract void OnTransformationUpdate();
+
+        /// <summary>
         /// Called when this component is effectively removed from scene, eg when removed
         /// from a GameObject or when its GameObject is removed from scene.
         /// </summary>

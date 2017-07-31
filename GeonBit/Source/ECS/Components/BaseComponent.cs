@@ -226,6 +226,15 @@ namespace GeonBit.ECS.Components
         }
 
         /// <summary>
+        /// Called every time scene node transformation updates.
+        /// Note: this is called only if GameObject is enabled and have Update events enabled.
+        /// </summary>
+        internal void TransformationUpdate()
+        {
+            OnTransformationUpdate();
+        }
+
+        /// <summary>
         /// Change component parent GameObject.
         /// </summary>
         /// <param name="gameObject">New parent or null if removed from parent.</param>
@@ -409,6 +418,14 @@ namespace GeonBit.ECS.Components
         /// Note: this is called only if GameObject is enabled.
         /// </summary>
         protected override void OnFixedUpdate()
+        {
+        }
+
+        /// <summary>
+        /// Called every time scene node transformation updates.
+        /// Note: this is called only if GameObject is enabled and have Update events enabled.
+        /// </summary>
+        protected override void OnTransformationUpdate()
         {
         }
 
