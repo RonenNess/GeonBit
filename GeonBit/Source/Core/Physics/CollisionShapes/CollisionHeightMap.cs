@@ -126,7 +126,7 @@ namespace GeonBit.Core.Physics.CollisionShapes
             // create heightmap
             var heightmap = new BulletSharp.HeightfieldTerrainShape(size.X, size.Y, address,
                 heightScale, minHeight, maxHeight, upIndex,
-                BulletSharp.PhyScalarType.UChar, false);
+                BulletSharp.PhyScalarType.Byte, false);
 
             // set transform and diamond subdivision
             heightmap.SetUseDiamondSubdivision(useDiamondSubdivision);
@@ -198,7 +198,7 @@ namespace GeonBit.Core.Physics.CollisionShapes
             // create heightmap
             var heightmap = new BulletSharp.HeightfieldTerrainShape(size.X, size.Y, address,
                 heightScale, minHeight, maxHeight, upIndex,
-                BulletSharp.PhyScalarType.Float, false);
+                BulletSharp.PhyScalarType.Single, false);
 
             // set transform and diamond subdivision
             heightmap.SetUseDiamondSubdivision(useDiamondSubdivision);

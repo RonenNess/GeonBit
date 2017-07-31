@@ -202,8 +202,8 @@
     <Compile Include="Source\Main\MonoGameWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="BulletSharp, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BulletSharp.0.9\lib\net40-client\BulletSharp.dll</HintPath>
+    <Reference Include="BulletSharp, Version=0.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BulletSharp.0.10\lib\net40-client\BulletSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DataTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -293,12 +293,12 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
-  <Import Project="..\packages\BulletSharp.0.9\build\net40-client\BulletSharp.targets" Condition="Exists('..\packages\BulletSharp.0.9\build\net40-client\BulletSharp.targets')" />
+  <Import Project="..\packages\BulletSharp.0.10\build\net40-client\BulletSharp.targets" Condition="Exists('..\packages\BulletSharp.0.10\build\net40-client\BulletSharp.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\BulletSharp.0.9\build\net40-client\BulletSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\BulletSharp.0.9\build\net40-client\BulletSharp.targets'))" />
+    <Error Condition="!Exists('..\packages\BulletSharp.0.10\build\net40-client\BulletSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\BulletSharp.0.10\build\net40-client\BulletSharp.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
