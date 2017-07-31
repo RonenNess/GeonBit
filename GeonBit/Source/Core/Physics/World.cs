@@ -126,7 +126,7 @@ namespace GeonBit.Core.Physics
         /// <summary>
         /// Physics max sub steps per frame.
         /// </summary>
-        public static int MaxSubStep = 32;
+        public static int MaxSubStep = 14;
 
         /// <summary>
         /// Physics time factor.
@@ -136,7 +136,7 @@ namespace GeonBit.Core.Physics
         /// <summary>
         /// Physics fixed timestep interval.
         /// </summary>
-        public static float FixedTimeStep = 1f / 60f;
+        public static float FixedTimeStep = 1f / 32f;
 
         /// <summary>
         /// Init the physics world.
