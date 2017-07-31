@@ -66,6 +66,7 @@ namespace GeonBit.Core.Physics
             _shape = shape;
             _body = new CollisionObject();
             _body.CollisionShape = shape.BulletCollisionShape;
+            _body.ActivationState = ActivationState.DisableSimulation;
             if (transformations != null) _body.WorldTransform = ToBullet.Matrix(transformations.Value);
         }
     }
