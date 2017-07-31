@@ -32,32 +32,9 @@ namespace GeonBit.ECS.Components.Physics
         internal Core.Physics.PhysicalBody _body = null;
 
         /// <summary>
-        /// Store the info object used to initialize this body.
+        /// The shape used for this physical body.
         /// </summary>
-        protected IBodyShapeInfo _shapeInfo;
-
-        /// <summary>
-        /// Get the shape info used to create this physical body.
-        /// </summary>
-        /// <typeparam name="T">Shape info type.</typeparam>
-        /// <returns>Shape info.</returns>
-        public T GetShapeInfo<T>() where T : IBodyShapeInfo
-        {
-            return (T)_shapeInfo;
-        }
-
-        /// <summary>
-        /// The shape type of this physical body.
-        /// </summary>
-        private PhysicalBodyShapeTypes _shapeType;
-
-        /// <summary>
-        /// Get the physical body shape type.
-        /// </summary>
-        public PhysicalBodyShapeTypes ShapeType
-        {
-            get { return _shapeType; }
-        }
+        private Core.Physics.CollisionShapes.ICollisionShape _shape = null;
 
         /// <summary>
         /// Set / get body scale.
@@ -194,9 +171,19 @@ namespace GeonBit.ECS.Components.Physics
         /// <param name="friction">Body friction.</param>
         public PhysicalBody(IBodyShapeInfo shapeInfo, float mass = 0f, float inertia = 0f, float friction = 1f)
         {
-            _shapeInfo = shapeInfo;
-            _shapeType = shapeInfo.ShapeType;
             CreateBody(shapeInfo.CreateShape(), mass, inertia, friction);
+        }
+
+        /// <summary>
+        /// Create the physical body from shape instance.
+        /// </summary>
+        /// <param name="shape">Physical shape to use.</param>
+        /// <param name="mass">Body mass (0 for static).</param>
+        /// <param name="inertia">Body inertia (0 for static).</param>
+        /// <param name="friction">Body friction.</param>
+        public PhysicalBody(Core.Physics.CollisionShapes.ICollisionShape shape, float mass = 0f, float inertia = 0f, float friction = 1f)
+        {
+            CreateBody(shape, mass, inertia, friction);
         }
 
         /// <summary>
@@ -213,6 +200,7 @@ namespace GeonBit.ECS.Components.Physics
             _intertia = inertia;
             _body = new Core.Physics.PhysicalBody(shape, mass, inertia);
             _body.Friction = friction;
+            _shape = shape;
 
             // set self as attached data (needed for collision events)
             _body.EcsComponent = this;
@@ -262,7 +250,7 @@ namespace GeonBit.ECS.Components.Physics
         override public BaseComponent Clone()
         {
             // create cloned component to return
-            PhysicalBody ret = (PhysicalBody)CopyBasics(new PhysicalBody(_shapeInfo, Mass, Inertia, _body.Friction));
+            PhysicalBody ret = (PhysicalBody)CopyBasics(new PhysicalBody(_shape, Mass, Inertia, _body.Friction));
 
             // copy current state
             ret._body.CopyConditionFrom(_body);
