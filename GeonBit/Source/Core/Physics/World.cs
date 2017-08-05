@@ -62,7 +62,7 @@ namespace GeonBit.Core.Physics
             /// <summary>
             /// Physical body we collided with.
             /// </summary>
-            public ECS.Components.Physics.PhysicalBody CollisionBody;
+            public ECS.Components.Physics.RigidBody CollisionBody;
 
             /// <summary>
             /// Collision normal.
@@ -184,9 +184,9 @@ namespace GeonBit.Core.Physics
         /// </summary>
         class CollisionPersistData
         {
-            public PhysicalBody Body0;
-            public PhysicalBody Body1;
-            public CollisionPersistData(PhysicalBody body0, PhysicalBody body1)
+            public RigidBody Body0;
+            public RigidBody Body1;
+            public CollisionPersistData(RigidBody body0, RigidBody body1)
             {
                 Body0 = body0;
                 Body1 = body1;
@@ -209,8 +209,8 @@ namespace GeonBit.Core.Physics
                 int index1) =>
             {
                 // get physical bodies
-                PhysicalBody body0 = ((PhysicalBody)obj0.CollisionObject.UserObject);
-                PhysicalBody body1 = ((PhysicalBody)obj1.CollisionObject.UserObject);
+                RigidBody body0 = ((RigidBody)obj0.CollisionObject.UserObject);
+                RigidBody body1 = ((RigidBody)obj1.CollisionObject.UserObject);
 
                 // if one of the bodies don't support collision skip
                 if (body0 == null || body1 == null) { return; }
@@ -293,7 +293,7 @@ namespace GeonBit.Core.Physics
         /// <param name="start">Start ray vector.</param>
         /// <param name="end">End ray vector.</param>
         /// <param name="self">Physical body to ignore.</param>
-        public RaycastResults Raycast(Vector3 start, Vector3 end, ECS.Components.Physics.PhysicalBody self)
+        public RaycastResults Raycast(Vector3 start, Vector3 end, ECS.Components.Physics.RigidBody self)
         {
             // convert start and end vectors to bullet vectors
             BulletSharp.Math.Vector3 bStart = ToBullet.Vector(start);
@@ -352,7 +352,7 @@ namespace GeonBit.Core.Physics
                     results.Collisions[0].HitFraction = closestReults.ClosestHitFraction;
                     results.Collisions[0].CollisionNormal = ToMonoGame.Vector(closestReults.HitNormalWorld);
                     results.Collisions[0].CollisionPoint = ToMonoGame.Vector(closestReults.HitPointWorld);
-                    results.Collisions[0].CollisionBody = (closestReults.CollisionObject.UserObject as PhysicalBody).EcsComponent;
+                    results.Collisions[0].CollisionBody = (closestReults.CollisionObject.UserObject as RigidBody).EcsComponent;
                 }
             }
             // all results type
@@ -371,7 +371,7 @@ namespace GeonBit.Core.Physics
                         results.Collisions[i].HitFraction = allResults.HitFractions[i];
                         results.Collisions[i].CollisionNormal = ToMonoGame.Vector(allResults.HitNormalWorld[i]);
                         results.Collisions[i].CollisionPoint = ToMonoGame.Vector(allResults.HitPointWorld[i]);
-                        results.Collisions[i].CollisionBody = (allResults.CollisionObjects[i].UserObject as PhysicalBody).EcsComponent;
+                        results.Collisions[i].CollisionBody = (allResults.CollisionObjects[i].UserObject as RigidBody).EcsComponent;
                     }
                 }
             }
@@ -384,7 +384,7 @@ namespace GeonBit.Core.Physics
         /// Add a new body to the world.
         /// </summary>
         /// <param name="body">Physics entity to add.</param>
-        public void AddBody(PhysicalBody body)
+        public void AddBody(RigidBody body)
         {
             // add to world
             _world.AddRigidBody(body.BulletRigidBody, body.CollisionGroup, body.CollisionMask);
@@ -410,7 +410,7 @@ namespace GeonBit.Core.Physics
         /// Remove a physical body from the world.
         /// </summary>
         /// <param name="body"></param>
-        public void RemoveBody(PhysicalBody body)
+        public void RemoveBody(RigidBody body)
         {
             // remove physical body, but only if world wasn't already destroyed (so we won't crash on leftovers).
             if (_world != null) _world.RemoveRigidBody(body.BulletRigidBody);

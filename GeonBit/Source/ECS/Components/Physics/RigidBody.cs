@@ -11,7 +11,7 @@
 #endregion
 #region File Description
 //-----------------------------------------------------------------------------
-// Physical body component.
+// Rigid body component.
 //
 // Author: Ronen Ness.
 // Since: 2017.
@@ -22,14 +22,14 @@ using Microsoft.Xna.Framework;
 namespace GeonBit.ECS.Components.Physics
 {
     /// <summary>
-    /// A physical body component.
+    /// A rigid body component.
     /// </summary>
-    public class PhysicalBody : BaseComponent
+    public class RigidBody : BaseComponent
     {
         /// <summary>
         /// The physical body in the core layer.
         /// </summary>
-        internal Core.Physics.PhysicalBody _body = null;
+        internal Core.Physics.RigidBody _body = null;
 
         /// <summary>
         /// The shape used for this physical body.
@@ -62,6 +62,17 @@ namespace GeonBit.ECS.Components.Physics
         {
             get { return _mass; }
             set { _mass = value; _body.SetMassAndInertia(_mass, _intertia); }
+        }
+
+        /// <summary>
+        /// Get / set simulation state.
+        /// If true, will simulate forces etc on this body (default).
+        /// If false, will not simulate forces and basically behave like a kinematic body.
+        /// </summary>
+        public bool EnableSimulation
+        {
+            get { return _body.EnableSimulation; }
+            set { _body.EnableSimulation = value; }
         }
 
         /// <summary>
@@ -169,7 +180,7 @@ namespace GeonBit.ECS.Components.Physics
         /// <param name="mass">Body mass (0 for static).</param>
         /// <param name="inertia">Body inertia (0 for static).</param>
         /// <param name="friction">Body friction.</param>
-        public PhysicalBody(IBodyShapeInfo shapeInfo, float mass = 0f, float inertia = 0f, float friction = 1f)
+        public RigidBody(IBodyShapeInfo shapeInfo, float mass = 0f, float inertia = 0f, float friction = 1f)
         {
             CreateBody(shapeInfo.CreateShape(), mass, inertia, friction);
         }
@@ -181,7 +192,7 @@ namespace GeonBit.ECS.Components.Physics
         /// <param name="mass">Body mass (0 for static).</param>
         /// <param name="inertia">Body inertia (0 for static).</param>
         /// <param name="friction">Body friction.</param>
-        public PhysicalBody(Core.Physics.CollisionShapes.ICollisionShape shape, float mass = 0f, float inertia = 0f, float friction = 1f)
+        public RigidBody(Core.Physics.CollisionShapes.ICollisionShape shape, float mass = 0f, float inertia = 0f, float friction = 1f)
         {
             CreateBody(shape, mass, inertia, friction);
         }
@@ -198,7 +209,7 @@ namespace GeonBit.ECS.Components.Physics
             // store params and create the body
             _mass = mass;
             _intertia = inertia;
-            _body = new Core.Physics.PhysicalBody(shape, mass, inertia);
+            _body = new Core.Physics.RigidBody(shape, mass, inertia);
             _body.Friction = friction;
             _shape = shape;
 
@@ -211,7 +222,7 @@ namespace GeonBit.ECS.Components.Physics
         /// </summary>
         /// <param name="other">The other body we collide with.</param>
         /// <param name="data">Extra collision data.</param>
-        public void CallCollisionStart(PhysicalBody other, Core.Physics.CollisionData data)
+        public void CallCollisionStart(RigidBody other, Core.Physics.CollisionData data)
         {
             if (_GameObject != null)
             {
@@ -223,7 +234,7 @@ namespace GeonBit.ECS.Components.Physics
         /// Called when this physical body stop colliding with another body.
         /// </summary>
         /// <param name="other">The other body we collided with, but no longer.</param>
-        public void CallCollisionEnd(PhysicalBody other)
+        public void CallCollisionEnd(RigidBody other)
         {
             if (_GameObject != null)
             {
@@ -235,7 +246,7 @@ namespace GeonBit.ECS.Components.Physics
         /// Called while this physical body is colliding with another body.
         /// </summary>
         /// <param name="other">The other body we are colliding with.</param>
-        public void CallCollisionProcess(PhysicalBody other)
+        public void CallCollisionProcess(RigidBody other)
         {
             if (_GameObject != null)
             {
@@ -250,7 +261,7 @@ namespace GeonBit.ECS.Components.Physics
         override public BaseComponent Clone()
         {
             // create cloned component to return
-            PhysicalBody ret = (PhysicalBody)CopyBasics(new PhysicalBody(_shape, Mass, Inertia, _body.Friction));
+            RigidBody ret = (RigidBody)CopyBasics(new RigidBody(_shape, Mass, Inertia, _body.Friction));
 
             // copy current state
             ret._body.CopyConditionFrom(_body);
@@ -260,6 +271,7 @@ namespace GeonBit.ECS.Components.Physics
             ret.CollisionGroup = CollisionGroup;
             ret.CollisionMask = CollisionMask;
             ret.ConstForce = ConstForce;
+            ret.EnableSimulation = EnableSimulation;
             ret.ConstVelocity = ConstVelocity;
             ret.ConstTorqueForce = ConstTorqueForce;
             ret.ConstAngularVelocity = ConstAngularVelocity;

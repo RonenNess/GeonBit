@@ -28,10 +28,10 @@ namespace GeonBit.Core.Physics
     /// They are affected by forces and collide with each other.
     /// Physical Entity = Rigid Body + Collision Shape.
     /// </summary>
-    public class PhysicalBody
+    public class RigidBody
     {
-        // the rigid body itself
-        RigidBody _body = null;
+        // the bullet3d rigid body we wrap
+        BulletSharp.RigidBody _body = null;
 
         // collision shape
         CollisionShapes.ICollisionShape _shape;
@@ -42,7 +42,7 @@ namespace GeonBit.Core.Physics
         /// <summary>
         /// Get the rigid body in bullet format.
         /// </summary>
-        internal RigidBody BulletRigidBody { get { return _body; } }
+        internal BulletSharp.RigidBody BulletRigidBody { get { return _body; } }
 
         // containing world instance.
         internal PhysicsWorld _world;
@@ -89,6 +89,21 @@ namespace GeonBit.Core.Physics
 
                 // set scale
                 Scale = value.Scale;
+            }
+        }
+
+        /// <summary>
+        /// If false, will not simulate forces on this body and will make it behave like a kinematic body.
+        /// </summary>
+        public bool EnableSimulation
+        {
+            set
+            {
+                _body.ActivationState = value ? ActivationState.ActiveTag : ActivationState.DisableSimulation;
+            }
+            get
+            {
+                return _body.ActivationState != ActivationState.DisableSimulation;
             }
         }
 
@@ -234,7 +249,7 @@ namespace GeonBit.Core.Physics
         /// Copy transformation, forces, velocity etc. from another physical body.
         /// </summary>
         /// <param name="other">Other physical body to copy condition from.</param>
-        public void CopyConditionFrom(PhysicalBody other)
+        public void CopyConditionFrom(RigidBody other)
         {
             BulletSharp.Math.Matrix trans = _body.WorldTransform;
             other._body.GetWorldTransform(out trans);
@@ -451,7 +466,7 @@ namespace GeonBit.Core.Physics
         /// <summary>
         /// The physical body component associated with this physical body.
         /// </summary>
-        internal ECS.Components.Physics.PhysicalBody EcsComponent;
+        internal ECS.Components.Physics.RigidBody EcsComponent;
 
         // current collision group
         short _collisionGroup = short.MaxValue;
@@ -500,7 +515,7 @@ namespace GeonBit.Core.Physics
         /// <param name="mass">Body mass (in kg), or 0 for static.</param>
         /// <param name="inertia">Body inertia, or 0 for static.</param>
         /// <param name="transformations">Starting transformations.</param>
-        public PhysicalBody(CollisionShapes.ICollisionShape shape, float mass = 10f, float inertia = 1f, Matrix? transformations = null)
+        public RigidBody(CollisionShapes.ICollisionShape shape, float mass = 10f, float inertia = 1f, Matrix? transformations = null)
         {
             // store collision shape
             _shape = shape;
@@ -519,7 +534,7 @@ namespace GeonBit.Core.Physics
                 shape.BulletCollisionShape.CalculateLocalInertia(mass) * inertia);
 
             // create the rigid body itself and attach self to UserObject
-            _body = new RigidBody(info);
+            _body = new BulletSharp.RigidBody(info);
             _body.UserObject = this;
 
             // set some defaults
@@ -532,7 +547,7 @@ namespace GeonBit.Core.Physics
         /// </summary>
         /// <param name="other">The other body we collide with.</param>
         /// <param name="data">Extra collision data.</param>
-        public void CallCollisionStart(PhysicalBody other, CollisionData data)
+        public void CallCollisionStart(RigidBody other, CollisionData data)
         {
             EcsComponent.CallCollisionStart(other.EcsComponent, data);
         }
@@ -541,7 +556,7 @@ namespace GeonBit.Core.Physics
         /// Called when this physical body stop colliding with another body.
         /// </summary>
         /// <param name="other">The other body we collided with, but no longer.</param>
-        public void CallCollisionEnd(PhysicalBody other)
+        public void CallCollisionEnd(RigidBody other)
         {
             EcsComponent.CallCollisionEnd(other.EcsComponent);
         }
@@ -550,7 +565,7 @@ namespace GeonBit.Core.Physics
         /// Called while this physical body is colliding with another body.
         /// </summary>
         /// <param name="other">The other body we are colliding with.</param>
-        public void CallCollisionProcess(PhysicalBody other)
+        public void CallCollisionProcess(RigidBody other)
         {
             EcsComponent.CallCollisionProcess(other.EcsComponent);
         }

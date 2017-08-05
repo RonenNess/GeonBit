@@ -137,7 +137,7 @@
     <Compile Include="Source\Core\Physics\Convert.cs" />
     <Compile Include="Source\Core\Physics\DebugDrawer.cs" />
     <Compile Include="Source\Core\Physics\StaticCollisionObject.cs" />
-    <Compile Include="Source\Core\Physics\PhysicalBody.cs" />
+    <Compile Include="Source\Core\Physics\RigidBody.cs" />
     <Compile Include="Source\Core\Physics\World.cs" />
     <Compile Include="Source\Core\Resources\ResourcesManager.cs" />
     <Compile Include="Source\Core\Sound\SoundPlayer.cs" />
@@ -178,8 +178,8 @@
     <Compile Include="Source\ECS\Components\Physics\BodyShapesInfo.cs" />
     <Compile Include="Source\ECS\Components\Physics\CollisionGroups.cs" />
     <Compile Include="Source\ECS\Components\Physics\Docs.cs" />
-    <Compile Include="Source\ECS\Components\Physics\StaticCollisionBody.cs" />
-    <Compile Include="Source\ECS\Components\Physics\PhysicalBody.cs" />
+    <Compile Include="Source\ECS\Components\Physics\KinematicBody.cs" />
+    <Compile Include="Source\ECS\Components\Physics\RigidBody.cs" />
     <Compile Include="Source\ECS\Components\Sound\BackgroundMusic.cs" />
     <Compile Include="Source\ECS\Components\Sound\Docs.cs" />
     <Compile Include="Source\ECS\Components\Sound\SoundEffect.cs" />

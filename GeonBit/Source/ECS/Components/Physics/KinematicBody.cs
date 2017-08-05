@@ -11,7 +11,7 @@
 #endregion
 #region File Description
 //-----------------------------------------------------------------------------
-// Static physical body component.
+// Kinematic body component.
 //
 // Author: Ronen Ness.
 // Since: 2017.
@@ -22,10 +22,10 @@ using Microsoft.Xna.Framework;
 namespace GeonBit.ECS.Components.Physics
 {
     /// <summary>
-    /// A static physical body component.
+    /// A Kinematic Body body component.
     /// This body will not respond to forces, and will always copy the transformations of the parent Game Object.
     /// </summary>
-    public class StaticCollisionBody : BaseComponent
+    public class KinematicBody : BaseComponent
     {
         /// <summary>
         /// The physical body in the core layer.
@@ -44,7 +44,7 @@ namespace GeonBit.ECS.Components.Physics
         /// Create the static collision body from shape info.
         /// </summary>
         /// <param name="shapeInfo">Body shape info.</param>
-        public StaticCollisionBody(IBodyShapeInfo shapeInfo)
+        public KinematicBody(IBodyShapeInfo shapeInfo)
         {
             CreateBody(shapeInfo.CreateShape());
         }
@@ -53,7 +53,7 @@ namespace GeonBit.ECS.Components.Physics
         /// Create the static collision body from shape instance.
         /// </summary>
         /// <param name="shape">Shape to use.</param>
-        public StaticCollisionBody(Core.Physics.CollisionShapes.ICollisionShape shape)
+        public KinematicBody(Core.Physics.CollisionShapes.ICollisionShape shape)
         {
             CreateBody(shape);
         }
@@ -73,7 +73,7 @@ namespace GeonBit.ECS.Components.Physics
         /// </summary>
         /// <param name="other">The other body we collide with.</param>
         /// <param name="data">Extra collision data.</param>
-        public void CallCollisionStart(PhysicalBody other, Core.Physics.CollisionData data)
+        public void CallCollisionStart(KinematicBody other, Core.Physics.CollisionData data)
         {
             if (_GameObject != null)
             {
@@ -85,7 +85,7 @@ namespace GeonBit.ECS.Components.Physics
         /// Called when this physical body stop colliding with another body.
         /// </summary>
         /// <param name="other">The other body we collided with, but no longer.</param>
-        public void CallCollisionEnd(PhysicalBody other)
+        public void CallCollisionEnd(KinematicBody other)
         {
             if (_GameObject != null)
             {
@@ -97,7 +97,7 @@ namespace GeonBit.ECS.Components.Physics
         /// Called while this physical body is colliding with another body.
         /// </summary>
         /// <param name="other">The other body we are colliding with.</param>
-        public void CallCollisionProcess(PhysicalBody other)
+        public void CallCollisionProcess(KinematicBody other)
         {
             if (_GameObject != null)
             {
@@ -112,7 +112,7 @@ namespace GeonBit.ECS.Components.Physics
         override public BaseComponent Clone()
         {
             // create cloned component to return
-            StaticCollisionBody ret = (StaticCollisionBody)CopyBasics(new StaticCollisionBody(_shape));
+            KinematicBody ret = (KinematicBody)CopyBasics(new KinematicBody(_shape));
 
             // return the cloned object
             return ret;
@@ -153,7 +153,7 @@ namespace GeonBit.ECS.Components.Physics
                 _GameObject.ParentScene.Physics.AddStaticCollision(_body);
                 _isInWorld = true;
             }
-
+            
             // transform to match game object transformations
             OnTransformationUpdate();
         }

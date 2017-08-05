@@ -773,19 +773,37 @@ Managers.GraphicsManager.CreateSkybox("texture_path", scene.Root);
 
 The following is a list with few of the built-in physics-related components:
 
-#### PhysicalBody
+#### Rigid Body
 
-A physical body that attaches to a game object and controls its transformations (position & rotation).
+A Rigid Body is a physical body that has mass, friction, etc. and respond to forces and collisions in the physical world.
+Once you attach a rigid body to a *GameObject* it will take over its transformations and will control its position and rotation.
+
+Rigid body is what you want to use for all "dynamic" objects - monsters, bullets, moveable objects, etc.
 
 Usage example:
 
 ```cs
-PhysicalBody playerPhysics = new PhysicalBody(new BoxInfo(bodySize), inertia: 0f);
+RigidBody playerPhysics = new RigidBody(new BoxInfo(bodySize), inertia: 0f);
 playerPhysics.SetDamping(0.95f, 0.95f);
 playerPhysics.Gravity = Vector3.Down;
 playerPhysics.CollisionGroup = (short)CollisionGroups.Player;
 playerGameObject.AddComponent(playerPhysics); 
 ```
+
+#### Kinematic Body
+
+A Kinematic Body is a much simpler physical body you can attach to objects, but unlike the Rigid Body it will not simulate forces and will only act as a static collision object.
+
+The Kinematic Body adapts to the *GameObject* transformations, meaning it will take its position, rotation and scale.
+
+Usage example:
+
+```cs
+KinematicBody wallPhysics = new KinematicBody(new BoxInfo(bodySize));
+wallObject.AddComponent(wallPhysics); 
+```
+
+Kinematic Body is what you want to use for "static" objects - floor, walls, immobile objects, etc.
 
 
 ### Sound
@@ -1504,33 +1522,41 @@ Some things to be cautious about with Combined Meshes Optimizer:
 The physics simulation in *GeonBit* uses the open-source Bullet3D library. Physics in *GeonBit* includes:
 
 - Rigid bodies.
+- Kinematic bodies.
 - Collision detection and ray casting.
-- Prevent penetration of solid objects.
 
 This chapter will explain how to use GeonBit physics.
 
 
-### The PhysicalBody Component
+### Rigid Body
 
-A *PhysicalBody* is an entity that creates a rigid body and attach it to a *GameObject*. 
-Once a PhysicalBody is attached to an object, the object's position and rotation will be controlled by the physical body.
+As shortly mentioned before, Rigid Body is a physical body that respond to forces and can be attached to *GameObjects*.
 
-Lets see a basic example of how to add a physical body to an object:
+Once a Rigid Body is attached to a *GameObject* it will control its position and rotation based on the physics simulation.
+
+Rigid bodies are commonly used for dynamic objects (player, enemies, bullets, moveable objects, etc..).
+
+To create a rigid body:
 
 ```cs
-// create a physical body component with a box shape (sized 10x10x10). note: inertia 0 will prevent rotation
-PhysicalBody body = new PhysicalBody(new BoxInfo(new Vector3(10,10,10), mass: 10f, inertia: 0f);
+// create a rigid body component with a box shape (sized 10x10x10). note: inertia 0 will prevent rotation
+RigidBody body = new RigidBody(new BoxInfo(new Vector3(10,10,10), mass: 10f, inertia: 0f);
 go.AddComponent(body);
 ```
 
-#### Static Bodies
+#### Kinematic Body
 
-Static bodies are physical bodies that cannot be moved (like walls, floor, trees, etc.). To create a static body, you simply need to set its mass to 0:
+Kinematic Body is a physical body that does not respond to forces, and only acts to detect collision and "block" othr solid bodies.
+
+Kinematic bodies are commonly used for static objects (walls, floor, trees, etc..).
+
+To create a kinematic body:
 
 ```cs
-// create a static physical body in the shape of a box
-PhysicalBody body = new PhysicalBody(new BoxInfo(new Vector3(10,10,10), mass: 0f, inertia: 0f);
+KinematicBody wallPhysics = new KinematicBody(new BoxInfo(bodySize));
+wallObject.AddComponent(wallPhysics); 
 ```
+
 
 #### Collision Groups
 
