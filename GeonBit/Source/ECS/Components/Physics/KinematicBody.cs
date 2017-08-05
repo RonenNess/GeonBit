@@ -30,7 +30,7 @@ namespace GeonBit.ECS.Components.Physics
         /// <summary>
         /// The physical body in the core layer.
         /// </summary>
-        internal Core.Physics.StaticCollisionObject _body = null;
+        internal Core.Physics.KinematicBody _body = null;
 
         /// <summary>
         /// The shape used for this physical body.
@@ -65,7 +65,7 @@ namespace GeonBit.ECS.Components.Physics
         private void CreateBody(Core.Physics.CollisionShapes.ICollisionShape shape)
         {
             _shape = shape;
-            _body = new Core.Physics.StaticCollisionObject(shape);
+            _body = new Core.Physics.KinematicBody(shape);
         }
 
         /// <summary>

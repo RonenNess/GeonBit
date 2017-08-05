@@ -11,7 +11,7 @@
 #endregion
 #region File Description
 //-----------------------------------------------------------------------------
-// A static collision object.
+// A Kinematic Body object.
 //
 // Author: Ronen Ness.
 // Since: 2017.
@@ -27,7 +27,7 @@ namespace GeonBit.Core.Physics
     /// A static collision object that don't support events and cannot be moved.
     /// This is useful for really static things that can only block and collide, but don't really do anything.
     /// </summary>
-    public class StaticCollisionObject
+    public class KinematicBody
     {
         // the collision object itself
         BulletSharp.CollisionObject _body = null;
@@ -60,7 +60,7 @@ namespace GeonBit.Core.Physics
         /// </summary>
         /// <param name="shape">Collision shape that define this body.</param>
         /// <param name="transformations">Starting transformations.</param>
-        public StaticCollisionObject(CollisionShapes.ICollisionShape shape, Matrix? transformations = null)
+        public KinematicBody(CollisionShapes.ICollisionShape shape, Matrix? transformations = null)
         {
             // create the collision object
             _shape = shape;

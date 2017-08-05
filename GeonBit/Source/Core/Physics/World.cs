@@ -401,7 +401,7 @@ namespace GeonBit.Core.Physics
         /// Add a static collision object to the physics world.
         /// </summary>
         /// <param name="obj">Object to add.</param>
-        public void AddStaticCollision(StaticCollisionObject obj)
+        public void AddStaticCollision(KinematicBody obj)
         {
             _world.AddCollisionObject(obj.BulletCollisionObject);
         }
@@ -421,7 +421,7 @@ namespace GeonBit.Core.Physics
         /// Remove a static collision object from the physics world.
         /// </summary>
         /// <param name="obj">Object to remove.</param>
-        public void RemoveStaticCollision(StaticCollisionObject obj)
+        public void RemoveStaticCollision(KinematicBody obj)
         {
             _world.RemoveCollisionObject(obj.BulletCollisionObject);
         }
