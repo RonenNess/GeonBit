@@ -25,12 +25,15 @@ namespace GeonBit.ECS.Components.Physics
     /// A Kinematic Body body component.
     /// This body will not respond to forces, and will always copy the transformations of the parent Game Object.
     /// </summary>
-    public class KinematicBody : BaseComponent
+    public class KinematicBody : BasePhysicsComponent
     {
+        // the core kinematic body
+        Core.Physics.KinematicBody _body;
+
         /// <summary>
         /// The physical body in the core layer.
         /// </summary>
-        internal Core.Physics.KinematicBody _body = null;
+        internal override Core.Physics.BasicPhysicalBody _PhysicalBody { get { return _body; } }
 
         /// <summary>
         /// The shape used for this physical body.
@@ -124,7 +127,7 @@ namespace GeonBit.ECS.Components.Physics
         /// </summary>
         protected override void OnTransformationUpdate()
         {
-            _body.WorldTransformations = _GameObject.SceneNode.WorldTransformations;
+            _body.WorldTransform = _GameObject.SceneNode.WorldTransformations;
         }
 
         /// <summary>
@@ -136,7 +139,7 @@ namespace GeonBit.ECS.Components.Physics
             // remove from physics world
             if (_isInWorld)
             {
-                _GameObject.ParentScene.Physics.RemoveStaticCollision(_body);
+                _GameObject.ParentScene.Physics.RemoveBody(_body);
                 _isInWorld = false;
             }
         }
@@ -150,7 +153,7 @@ namespace GeonBit.ECS.Components.Physics
             // add to physics world
             if (!_isInWorld)
             {
-                _GameObject.ParentScene.Physics.AddStaticCollision(_body);
+                _GameObject.ParentScene.Physics.AddBody(_body);
                 _isInWorld = true;
             }
             

@@ -194,7 +194,7 @@ namespace GeonBit.ECS
         /// An alias to get the first physical body added to this GameObject.
         /// This is useful for performance and ease of access, since Physical Body is something that you often need to access.
         /// </summary>
-        public ECS.Components.Physics.RigidBody PhysicalBody { get; private set; }
+        public ECS.Components.Physics.BasePhysicsComponent PhysicalBody { get; private set; }
 
         /// <summary>
         /// Count how many GameObject instances currently exist.
@@ -957,9 +957,9 @@ namespace GeonBit.ECS
             component.AsDebug = false;
 
             // set physical body alias
-            if (PhysicalBody == null && component.GetType() == typeof(Components.Physics.RigidBody))
+            if (PhysicalBody == null && component.GetType() == typeof(Components.Physics.BasePhysicsComponent))
             {
-                PhysicalBody = component as Components.Physics.RigidBody;
+                PhysicalBody = component as Components.Physics.BasePhysicsComponent;
             }
 
             // add to list of components

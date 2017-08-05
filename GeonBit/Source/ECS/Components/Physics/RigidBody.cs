@@ -24,27 +24,21 @@ namespace GeonBit.ECS.Components.Physics
     /// <summary>
     /// A rigid body component.
     /// </summary>
-    public class RigidBody : BaseComponent
+    public class RigidBody : BasePhysicsComponent
     {
+        // the core rigid body
+        Core.Physics.RigidBody _body;
+
         /// <summary>
         /// The physical body in the core layer.
         /// </summary>
-        internal Core.Physics.RigidBody _body = null;
+        internal override Core.Physics.BasicPhysicalBody _PhysicalBody { get { return _body; } }
 
         /// <summary>
         /// The shape used for this physical body.
         /// </summary>
         private Core.Physics.CollisionShapes.ICollisionShape _shape = null;
-
-        /// <summary>
-        /// Set / get body scale.
-        /// </summary>
-        public Vector3 Scale
-        {
-            get { return _body.Scale; }
-            set { _body.Scale = value; }
-        }
-
+        
         // body mass
         float _mass;
 
@@ -65,17 +59,6 @@ namespace GeonBit.ECS.Components.Physics
         }
 
         /// <summary>
-        /// Get / set simulation state.
-        /// If true, will simulate forces etc on this body (default).
-        /// If false, will not simulate forces and basically behave like a kinematic body.
-        /// </summary>
-        public bool EnableSimulation
-        {
-            get { return _body.EnableSimulation; }
-            set { _body.EnableSimulation = value; }
-        }
-
-        /// <summary>
         /// Get / set body inertia.
         /// </summary>
         public float Inertia
@@ -83,73 +66,7 @@ namespace GeonBit.ECS.Components.Physics
             get { return _intertia; }
             set { _intertia = value; _body.SetMassAndInertia(_mass, _intertia); }
         }
-
-        /// <summary>
-        /// Get / set physical body world transformation.
-        /// </summary>
-        public Matrix WorldTransform
-        {
-            get { return _body.WorldTransform; }
-            set { _body.WorldTransform = value; }
-        }
-
-        /// <summary>
-        /// Get / set current body position.
-        /// </summary>
-        public Vector3 Position
-        {
-            get { return _body.Position; }
-            set { _body.Position = value; }
-        }
-
-        /// <summary>
-        /// The collision group this body belongs to.
-        /// Note: compare bits mask.
-        /// </summary>
-        public short CollisionGroup
-        {
-            get { return _body.CollisionGroup; }
-            set { _body.CollisionGroup = value; }
-        }
-
-        /// <summary>
-        /// With which collision groups this body will collide?
-        /// Note: compare bits mask.
-        /// </summary>
-        public short CollisionMask
-        {
-            get { return _body.CollisionMask; }
-            set { _body.CollisionMask = value; }
-        }
-
-        /// <summary>
-        /// If true (default) will invoke collision events.
-        /// You can turn this off for optimizations.
-        /// </summary>
-        public bool InvokeCollisionEvents
-        {
-            get { return _body.InvokeCollisionEvents; }
-            set { _body.InvokeCollisionEvents = value; }
-        }
-
-        /// <summary>
-        /// If ethereal, other bodies will be able to pass through this object, but it will still trigger contact events.
-        /// </summary>
-        public bool IsEthereal
-        {
-            get { return _body.IsEthereal; }
-            set { _body.IsEthereal = value; }
-        }
-
-        /// <summary>
-        /// Get / set body restitution.
-        /// </summary>
-        public float Restitution
-        {
-            get { return _body.Restitution; }
-            set { _body.Restitution = value; }
-        }
-
+        
         /// <summary>
         /// Optional constant velocity to set for this physical body.
         /// </summary>
@@ -342,20 +259,11 @@ namespace GeonBit.ECS.Components.Physics
         /// <summary>
         /// Update scene node transformations.
         /// </summary>
-        internal void UpdateNodeTransforms()
+        internal override void UpdateNodeTransforms()
         {
             Matrix newTrans = _body.WorldTransform;
             _GameObject.SceneNode.SetWorldTransforms(ref newTrans);
             _alreadyUpdatedBodyInFrame = true;
-        }
-
-        /// <summary>
-        /// Get / set body friction.
-        /// </summary>
-        public float Friction
-        {
-            get { return _body.Friction; }
-            set { _body.Friction = Friction; }
         }
 
         /// <summary>

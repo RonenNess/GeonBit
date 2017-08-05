@@ -62,7 +62,7 @@ namespace GeonBit.Core.Physics
             /// <summary>
             /// Physical body we collided with.
             /// </summary>
-            public ECS.Components.Physics.RigidBody CollisionBody;
+            public ECS.Components.Physics.BasePhysicsComponent CollisionBody;
 
             /// <summary>
             /// Collision normal.
@@ -293,7 +293,7 @@ namespace GeonBit.Core.Physics
         /// <param name="start">Start ray vector.</param>
         /// <param name="end">End ray vector.</param>
         /// <param name="self">Physical body to ignore.</param>
-        public RaycastResults Raycast(Vector3 start, Vector3 end, ECS.Components.Physics.RigidBody self)
+        public RaycastResults Raycast(Vector3 start, Vector3 end, ECS.Components.Physics.BasePhysicsComponent self)
         {
             // convert start and end vectors to bullet vectors
             BulletSharp.Math.Vector3 bStart = ToBullet.Vector(start);
@@ -301,7 +301,7 @@ namespace GeonBit.Core.Physics
 
             // create class to hold results
             BulletSharp.RayResultCallback resultsCallback = 
-                new BulletSharp.KinematicClosestNotMeRayResultCallback(self._body.BulletRigidBody);
+                new BulletSharp.KinematicClosestNotMeRayResultCallback(self._PhysicalBody._BulletEntity);
 
             // perform ray cast
             return Raycast(bStart, bEnd, resultsCallback);
@@ -352,7 +352,7 @@ namespace GeonBit.Core.Physics
                     results.Collisions[0].HitFraction = closestReults.ClosestHitFraction;
                     results.Collisions[0].CollisionNormal = ToMonoGame.Vector(closestReults.HitNormalWorld);
                     results.Collisions[0].CollisionPoint = ToMonoGame.Vector(closestReults.HitPointWorld);
-                    results.Collisions[0].CollisionBody = (closestReults.CollisionObject.UserObject as RigidBody).EcsComponent;
+                    results.Collisions[0].CollisionBody = (closestReults.CollisionObject.UserObject as BasicPhysicalBody).EcsComponent;
                 }
             }
             // all results type
@@ -371,7 +371,7 @@ namespace GeonBit.Core.Physics
                         results.Collisions[i].HitFraction = allResults.HitFractions[i];
                         results.Collisions[i].CollisionNormal = ToMonoGame.Vector(allResults.HitNormalWorld[i]);
                         results.Collisions[i].CollisionPoint = ToMonoGame.Vector(allResults.HitPointWorld[i]);
-                        results.Collisions[i].CollisionBody = (allResults.CollisionObjects[i].UserObject as RigidBody).EcsComponent;
+                        results.Collisions[i].CollisionBody = (allResults.CollisionObjects[i].UserObject as BasicPhysicalBody).EcsComponent;
                     }
                 }
             }
@@ -381,49 +381,24 @@ namespace GeonBit.Core.Physics
         }
 
         /// <summary>
-        /// Add a new body to the world.
+        /// Add a physical body to the world
         /// </summary>
         /// <param name="body">Physics entity to add.</param>
-        public void AddBody(RigidBody body)
+        public void AddBody(BasicPhysicalBody body)
         {
-            // add to world
-            _world.AddRigidBody(body.BulletRigidBody, body.CollisionGroup, body.CollisionMask);
+            body.AddSelfToBulletWorld(_world);
             body._world = this;
-
-            // fix gravity property if the body was given alternative gravity before added to world.
-            if (body.HasCustomGravity)
-            {
-                body.Gravity = body.Gravity;
-            }
-        }
-
-        /// <summary>
-        /// Add a static collision object to the physics world.
-        /// </summary>
-        /// <param name="obj">Object to add.</param>
-        public void AddStaticCollision(KinematicBody obj)
-        {
-            _world.AddCollisionObject(obj.BulletCollisionObject);
         }
 
         /// <summary>
         /// Remove a physical body from the world.
         /// </summary>
         /// <param name="body"></param>
-        public void RemoveBody(RigidBody body)
+        public void RemoveBody(BasicPhysicalBody body)
         {
-            // remove physical body, but only if world wasn't already destroyed (so we won't crash on leftovers).
-            if (_world != null) _world.RemoveRigidBody(body.BulletRigidBody);
+            // this might happen after the world was destroyed, hence the _world != null test.
+            if (_world != null) body.RemoveSelfFromBulletWorld(_world);
             body._world = null;
-        }
-
-        /// <summary>
-        /// Remove a static collision object from the physics world.
-        /// </summary>
-        /// <param name="obj">Object to remove.</param>
-        public void RemoveStaticCollision(KinematicBody obj)
-        {
-            _world.RemoveCollisionObject(obj.BulletCollisionObject);
         }
 
         /// <summary>

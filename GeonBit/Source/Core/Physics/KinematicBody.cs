@@ -27,31 +27,31 @@ namespace GeonBit.Core.Physics
     /// A static collision object that don't support events and cannot be moved.
     /// This is useful for really static things that can only block and collide, but don't really do anything.
     /// </summary>
-    public class KinematicBody
+    public class KinematicBody : BasicPhysicalBody
     {
-        // the collision object itself
-        BulletSharp.CollisionObject _body = null;
-
-        // collision shape
-        CollisionShapes.ICollisionShape _shape;
+        /// <summary>
+        /// Return the bullet 3d entity.
+        /// </summary>
+        internal override BulletSharp.CollisionObject _BulletEntity { get { return BulletCollisionObject; } }
 
         /// <summary>
         /// Get the rigid body in bullet format.
         /// </summary>
-        internal BulletSharp.CollisionObject BulletCollisionObject { get { return _body; } }
+        internal BulletSharp.CollisionObject BulletCollisionObject { get; private set; }
 
         /// <summary>
         /// Get / set object world transformations.
+        /// Get the rigid body in bullet format.
         /// </summary>
-        public Matrix WorldTransformations
+        public override Matrix WorldTransform
         {
             get
             {
-                return ToMonoGame.Matrix(_body.WorldTransform);
+                return ToMonoGame.Matrix(_BulletEntity.WorldTransform);
             }
             set
             {
-                _body.WorldTransform = ToBullet.Matrix(value);
+                _BulletEntity.WorldTransform = ToBullet.Matrix(value);
             }
         }
 
@@ -64,10 +64,28 @@ namespace GeonBit.Core.Physics
         {
             // create the collision object
             _shape = shape;
-            _body = new CollisionObject();
-            _body.CollisionShape = shape.BulletCollisionShape;
-            _body.ActivationState = ActivationState.DisableSimulation;
-            if (transformations != null) _body.WorldTransform = ToBullet.Matrix(transformations.Value);
+            BulletCollisionObject = new CollisionObject();
+            BulletCollisionObject.CollisionShape = shape.BulletCollisionShape;
+            BulletCollisionObject.ActivationState = ActivationState.DisableSimulation;
+            if (transformations != null) BulletCollisionObject.WorldTransform = ToBullet.Matrix(transformations.Value);
+        }
+
+        /// <summary>
+        ///  Attach self to a bullet3d physics world.
+        /// </summary>
+        /// <param name="world"></param>
+        internal override void AddSelfToBulletWorld(BulletSharp.DynamicsWorld world)
+        {
+            world.AddCollisionObject(BulletCollisionObject, CollisionGroup, CollisionMask);
+        }
+
+        /// <summary>
+        /// Remove self from a bullet3d physics world.
+        /// </summary>
+        /// <param name="world">World to remove from.</param>
+        internal override void RemoveSelfFromBulletWorld(BulletSharp.DynamicsWorld world)
+        {
+            world.RemoveCollisionObject(BulletCollisionObject);
         }
     }
 }

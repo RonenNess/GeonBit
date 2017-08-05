@@ -28,13 +28,12 @@ namespace GeonBit.Core.Physics
     /// They are affected by forces and collide with each other.
     /// Physical Entity = Rigid Body + Collision Shape.
     /// </summary>
-    public class RigidBody
+    public class RigidBody : BasicPhysicalBody
     {
-        // the bullet3d rigid body we wrap
-        BulletSharp.RigidBody _body = null;
-
-        // collision shape
-        CollisionShapes.ICollisionShape _shape;
+        /// <summary>
+        /// Return the bullet 3d entity.
+        /// </summary>
+        internal override BulletSharp.CollisionObject _BulletEntity { get { return BulletRigidBody; } }
 
         // current state (position, rotation, scale).
         MotionState _state;
@@ -42,101 +41,7 @@ namespace GeonBit.Core.Physics
         /// <summary>
         /// Get the rigid body in bullet format.
         /// </summary>
-        internal BulletSharp.RigidBody BulletRigidBody { get { return _body; } }
-
-        // containing world instance.
-        internal PhysicsWorld _world;
-
-        /// <summary>
-        /// Get the collision shape.
-        /// </summary>
-        public CollisionShapes.ICollisionShape Shape { get { return _shape; } }
-
-        /// <summary>
-        /// Return if the physical body is currently active.
-        /// </summary>
-        public bool IsActive
-        {
-            get { return _body.IsActive; }
-        }
-
-        /// <summary>
-        /// Get world transform from physical body.
-        /// </summary>
-        public Matrix WorldTransform
-        {
-            // get world transformations
-            get
-            {
-                // get the bullet transform matrix
-                BulletSharp.Math.Matrix btMatrix;
-                _body.GetWorldTransform(out btMatrix);
-
-                // convert to MonoGame and return (also apply scale, which is stored seperately)
-                return Matrix.CreateScale(Scale) * ToMonoGame.Matrix(btMatrix);
-            }
-
-            // set world transformations
-            set
-            {
-                // convert to bullet matrix
-                BulletSharp.Math.Matrix btMatrix = ToBullet.Matrix(value);
-
-                // set motion state
-               // _body.MotionState.WorldTransform = btMatrix;
-                _body.WorldTransform = btMatrix;
-                // _body.MotionState.SetWorldTransform(ref btMatrix);
-
-                // set scale
-                Scale = value.Scale;
-            }
-        }
-
-        /// <summary>
-        /// If false, will not simulate forces on this body and will make it behave like a kinematic body.
-        /// </summary>
-        public bool EnableSimulation
-        {
-            set
-            {
-                _body.ActivationState = value ? ActivationState.ActiveTag : ActivationState.DisableSimulation;
-            }
-            get
-            {
-                return _body.ActivationState != ActivationState.DisableSimulation;
-            }
-        }
-
-        /// <summary>
-        /// Get / set body restitution.
-        /// </summary>
-        public float Restitution
-        {
-            get
-            {
-                return _body.Restitution;
-            }
-            set
-            {
-                _body.Restitution = value;
-            }
-        }
-
-        /// <summary>
-        /// Get / Set body scale.
-        /// </summary>
-        public Vector3 Scale
-        {
-            get
-            {
-                return ToMonoGame.Vector(_body.CollisionShape.LocalScaling);
-            }
-            set
-            {
-                _body.CollisionShape.LocalScaling = ToBullet.Vector(value);
-                if (_world != null) { _world._world.UpdateSingleAabb(_body); }
-            }
-        }
+        internal BulletSharp.RigidBody BulletRigidBody { get; private set; }
 
         /// <summary>
         /// Get if the physical body currently have any forces on it.
@@ -145,7 +50,7 @@ namespace GeonBit.Core.Physics
         {
             get
             {
-                return _body.AngularVelocity.Length != 0 || _body.LinearVelocity.Length != 0;
+                return BulletRigidBody.AngularVelocity.Length != 0 || BulletRigidBody.LinearVelocity.Length != 0;
             }
         }
 
@@ -155,8 +60,8 @@ namespace GeonBit.Core.Physics
         /// <param name="force">Force to apply.</param>
         public void ApplyForce(Vector3 force)
         {
-            _body.ApplyCentralForce(ToBullet.Vector(force));
-            _body.Activate();
+            BulletRigidBody.ApplyCentralForce(ToBullet.Vector(force));
+            BulletRigidBody.Activate();
         }
 
         /// <summary>
@@ -166,8 +71,8 @@ namespace GeonBit.Core.Physics
         /// <param name="from">Force source position.</param>
         public void ApplyForce(Vector3 force, Vector3 from)
         {
-            _body.ApplyForce(ToBullet.Vector(force), ToBullet.Vector(from));
-            _body.Activate();
+            BulletRigidBody.ApplyForce(ToBullet.Vector(force), ToBullet.Vector(from));
+            BulletRigidBody.Activate();
         }
 
         /// <summary>
@@ -176,8 +81,8 @@ namespace GeonBit.Core.Physics
         /// <param name="impulse">Impulse to apply.</param>
         public void ApplyImpulse(Vector3 impulse)
         {
-            _body.ApplyCentralImpulse(ToBullet.Vector(impulse));
-            _body.Activate();
+            BulletRigidBody.ApplyCentralImpulse(ToBullet.Vector(impulse));
+            BulletRigidBody.Activate();
         }
 
         /// <summary>
@@ -189,13 +94,13 @@ namespace GeonBit.Core.Physics
         {
             if (asImpulse)
             {
-                _body.ApplyTorqueImpulse(ToBullet.Vector(torque));
+                BulletRigidBody.ApplyTorqueImpulse(ToBullet.Vector(torque));
             }
             else
             {
-                _body.ApplyTorque(ToBullet.Vector(torque));
+                BulletRigidBody.ApplyTorque(ToBullet.Vector(torque));
             }
-            _body.Activate();
+            BulletRigidBody.Activate();
         }
 
         /// <summary>
@@ -205,8 +110,8 @@ namespace GeonBit.Core.Physics
         /// <param name="from">Impulse source position.</param>
         public void ApplyImpulse(Vector3 impulse, Vector3 from)
         {
-            _body.ApplyImpulse(ToBullet.Vector(impulse), ToBullet.Vector(from));
-            _body.Activate();
+            BulletRigidBody.ApplyImpulse(ToBullet.Vector(impulse), ToBullet.Vector(from));
+            BulletRigidBody.Activate();
         }
 
         /// <summary>
@@ -218,19 +123,10 @@ namespace GeonBit.Core.Physics
             {
                 BulletSharp.Math.Vector3 min;
                 BulletSharp.Math.Vector3 max;
-                _body.GetAabb(out min, out max);
+                BulletRigidBody.GetAabb(out min, out max);
                 return new BoundingBox(ToMonoGame.Vector(min), ToMonoGame.Vector(max));
             }
-        }
-
-        /// <summary>
-        /// Get / set body friction.
-        /// </summary>
-        public float Friction
-        {
-            get { return _body.Friction; }
-            set { _body.Friction = Friction; }
-        }
+        } 
 
         /// <summary>
         /// Clear all forces from the body.
@@ -238,7 +134,7 @@ namespace GeonBit.Core.Physics
         /// <param name="clearVelocity">If true, will also clear current velocity.</param>
         public void ClearForces(bool clearVelocity = true)
         {
-            _body.ClearForces();
+            BulletRigidBody.ClearForces();
             if (clearVelocity)
             {
                 ClearVelocity();
@@ -251,46 +147,18 @@ namespace GeonBit.Core.Physics
         /// <param name="other">Other physical body to copy condition from.</param>
         public void CopyConditionFrom(RigidBody other)
         {
-            BulletSharp.Math.Matrix trans = _body.WorldTransform;
-            other._body.GetWorldTransform(out trans);
-            _body.MotionState.SetWorldTransform(ref trans);
-            _body.WorldTransform = trans;
+            BulletSharp.Math.Matrix trans = BulletRigidBody.WorldTransform;
+            other.BulletRigidBody.GetWorldTransform(out trans);
+            BulletRigidBody.MotionState.SetWorldTransform(ref trans);
+            BulletRigidBody.WorldTransform = trans;
         }
-
-        /// <summary>
-        /// Get / set body position.
-        /// </summary>
-        public Vector3 Position
-        {
-            get
-            {
-                // get transform
-                BulletSharp.Math.Matrix world;
-                _body.GetWorldTransform(out world);
-
-                // return position
-                return ToMonoGame.Vector(world.Origin);
-            }
-            set
-            {
-                // get transform
-                BulletSharp.Math.Matrix world;
-                _body.GetWorldTransform(out world);
-
-                // update origin
-                world.Origin = ToBullet.Vector(value);
-
-                // set position
-                _body.WorldTransform = world;
-            }
-        }
-
+        
         /// <summary>
         /// Clear current velocity.
         /// </summary>
         public void ClearVelocity()
         {
-            _body.AngularVelocity = _body.LinearVelocity = BulletSharp.Math.Vector3.Zero;
+            BulletRigidBody.AngularVelocity = BulletRigidBody.LinearVelocity = BulletSharp.Math.Vector3.Zero;
         }
 
         /// <summary>
@@ -298,8 +166,8 @@ namespace GeonBit.Core.Physics
         /// </summary>
         public Vector3 LinearVelocity
         {
-            get { return ToMonoGame.Vector(_body.LinearVelocity); }
-            set { _body.LinearVelocity = ToBullet.Vector(value); }
+            get { return ToMonoGame.Vector(BulletRigidBody.LinearVelocity); }
+            set { BulletRigidBody.LinearVelocity = ToBullet.Vector(value); }
         }
 
         /// <summary>
@@ -307,8 +175,8 @@ namespace GeonBit.Core.Physics
         /// </summary>
         public Vector3 LinearFactor
         {
-            get { return ToMonoGame.Vector(_body.LinearFactor); }
-            set { _body.LinearFactor = ToBullet.Vector(value); }
+            get { return ToMonoGame.Vector(BulletRigidBody.LinearFactor); }
+            set { BulletRigidBody.LinearFactor = ToBullet.Vector(value); }
         }
 
         /// <summary>
@@ -316,8 +184,8 @@ namespace GeonBit.Core.Physics
         /// </summary>
         public Vector3 AngularVelocity
         {
-            get { return ToMonoGame.Vector(_body.AngularVelocity); }
-            set { _body.AngularVelocity = ToBullet.Vector(value); }
+            get { return ToMonoGame.Vector(BulletRigidBody.AngularVelocity); }
+            set { BulletRigidBody.AngularVelocity = ToBullet.Vector(value); }
         }
 
         /// <summary>
@@ -325,8 +193,8 @@ namespace GeonBit.Core.Physics
         /// </summary>
         public Vector3 AngularFactor
         {
-            get { return ToMonoGame.Vector(_body.AngularFactor); }
-            set { _body.AngularFactor = ToBullet.Vector(value); }
+            get { return ToMonoGame.Vector(BulletRigidBody.AngularFactor); }
+            set { BulletRigidBody.AngularFactor = ToBullet.Vector(value); }
         }
 
         /// <summary>
@@ -336,64 +204,13 @@ namespace GeonBit.Core.Physics
         /// <param name="angular">Angular damping.</param>
         public void SetDamping(float linear, float angular)
         {
-            _body.SetDamping(linear, angular);
+            BulletRigidBody.SetDamping(linear, angular);
         }
 
         // alternative gravity specific for this object.
         // note: we need to store it internally because this must be set to the body AFTER its added to the 
         // world, otherwise this property is ignored. 
         Vector3? _bodyGravity = null;
-
-        /// <summary>
-        /// If true (default) will invoke collision events.
-        /// You can turn this off for optimizations.
-        /// </summary>
-        public bool InvokeCollisionEvents
-        {
-            // get if this body invoke collision events
-            get
-            {
-                return (_body.CollisionFlags & CollisionFlags.CustomMaterialCallback) != 0;
-            }
-
-            // set if this body invoke collision events
-            set
-            {
-                if (value)
-                {
-                    _body.CollisionFlags |= CollisionFlags.CustomMaterialCallback;
-                }
-                else
-                {
-                    _body.CollisionFlags &=  ~CollisionFlags.CustomMaterialCallback;
-                }
-            }
-        }
-
-        /// <summary>
-        /// If true, this object will not have a physical body (eg other objects will pass through it), but will still trigger contact events. 
-        /// </summary>
-        public bool IsEthereal
-        {
-            // get if this body is ethereal
-            get
-            {
-                return (_body.CollisionFlags & CollisionFlags.NoContactResponse) != 0;
-            }
-
-            // set if this body is ethereal
-            set
-            {
-                if (value)
-                {
-                    _body.CollisionFlags |= CollisionFlags.NoContactResponse;
-                }
-                else
-                {
-                    _body.CollisionFlags &= ~CollisionFlags.NoContactResponse;
-                }
-            }
-        }
 
         /// <summary>
         /// Return true if this body has alternative gravity (instead of default world gravity).
@@ -417,7 +234,7 @@ namespace GeonBit.Core.Physics
                 // if we got a new valid value, set it on body
                 if (value != null)
                 {
-                    _body.Gravity = ToBullet.Vector((Vector3)value);
+                    BulletRigidBody.Gravity = ToBullet.Vector((Vector3)value);
                 }
                 // if got null, set body to be world default gravity
                 else
@@ -426,7 +243,7 @@ namespace GeonBit.Core.Physics
                     {
                         BulletSharp.Math.Vector3 grav = new BulletSharp.Math.Vector3();
                         _world._world.GetGravity(out grav);
-                        _body.Gravity = grav;
+                        BulletRigidBody.Gravity = grav;
                     }
                 }
 
@@ -440,8 +257,8 @@ namespace GeonBit.Core.Physics
         /// </summary>
         public float LinearDamping
         {
-            get { return _body.LinearDamping; }
-            set { SetDamping(value, _body.AngularDamping); }
+            get { return BulletRigidBody.LinearDamping; }
+            set { SetDamping(value, BulletRigidBody.AngularDamping); }
         }
 
         /// <summary>
@@ -449,8 +266,8 @@ namespace GeonBit.Core.Physics
         /// </summary>
         public float AngularDamping
         {
-            get { return _body.AngularDamping; }
-            set { SetDamping(_body.LinearDamping, value); }
+            get { return BulletRigidBody.AngularDamping; }
+            set { SetDamping(BulletRigidBody.LinearDamping, value); }
         }
 
         /// <summary>
@@ -460,52 +277,7 @@ namespace GeonBit.Core.Physics
         /// <param name="inertia">New body inertia.</param>
         public void SetMassAndInertia(float mass, float inertia)
         {
-            _body.SetMassProps(mass, _shape.BulletCollisionShape.CalculateLocalInertia(mass) * inertia);
-        }
-
-        /// <summary>
-        /// The physical body component associated with this physical body.
-        /// </summary>
-        internal ECS.Components.Physics.RigidBody EcsComponent;
-
-        // current collision group
-        short _collisionGroup = short.MaxValue;
-
-        /// <summary>
-        /// The collision group this body belongs to.
-        /// Note: compare bits mask.
-        /// </summary>
-        public short CollisionGroup
-        {
-            get { return _collisionGroup; }
-            set { _collisionGroup = value; AddBodyAgain(); }
-        }
-
-        // current collision mask
-        short _collisionMask = short.MaxValue;
-
-        /// <summary>
-        /// With which collision groups this body will collide?
-        /// Note: compare bits mask.
-        /// </summary>
-        public short CollisionMask
-        {
-            get { return _collisionMask; }
-            set { _collisionMask = value; AddBodyAgain(); }
-        }
-
-        /// <summary>
-        /// Called internally to remove and add this body again to the collision world.
-        /// This action is required when some of the properties require an updated.
-        /// </summary>
-        protected void AddBodyAgain()
-        {
-            if (_world != null)
-            {
-                PhysicsWorld world = _world;
-                world.RemoveBody(this);
-                world.AddBody(this);
-            }
+            BulletRigidBody.SetMassProps(mass, _shape.BulletCollisionShape.CalculateLocalInertia(mass) * inertia);
         }
 
         /// <summary>
@@ -534,8 +306,8 @@ namespace GeonBit.Core.Physics
                 shape.BulletCollisionShape.CalculateLocalInertia(mass) * inertia);
 
             // create the rigid body itself and attach self to UserObject
-            _body = new BulletSharp.RigidBody(info);
-            _body.UserObject = this;
+            BulletRigidBody = new BulletSharp.RigidBody(info);
+            BulletRigidBody.UserObject = this;
 
             // set some defaults
             InvokeCollisionEvents = true;
@@ -543,31 +315,28 @@ namespace GeonBit.Core.Physics
         }
 
         /// <summary>
-        /// Called when this physical body start colliding with another body.
+        ///  Attach self to a bullet3d physics world.
         /// </summary>
-        /// <param name="other">The other body we collide with.</param>
-        /// <param name="data">Extra collision data.</param>
-        public void CallCollisionStart(RigidBody other, CollisionData data)
+        /// <param name="world"></param>
+        internal override void AddSelfToBulletWorld(BulletSharp.DynamicsWorld world)
         {
-            EcsComponent.CallCollisionStart(other.EcsComponent, data);
+            // add to world
+            world.AddRigidBody(BulletRigidBody, CollisionGroup, CollisionMask);
+
+            // fix gravity property if the body was given alternative gravity before added to world.
+            if (HasCustomGravity)
+            {
+                BulletRigidBody.Gravity = BulletRigidBody.Gravity;
+            }
         }
 
         /// <summary>
-        /// Called when this physical body stop colliding with another body.
+        /// Remove self from a bullet3d physics world.
         /// </summary>
-        /// <param name="other">The other body we collided with, but no longer.</param>
-        public void CallCollisionEnd(RigidBody other)
+        /// <param name="world">World to remove from.</param>
+        internal override void RemoveSelfFromBulletWorld(BulletSharp.DynamicsWorld world)
         {
-            EcsComponent.CallCollisionEnd(other.EcsComponent);
-        }
-
-        /// <summary>
-        /// Called while this physical body is colliding with another body.
-        /// </summary>
-        /// <param name="other">The other body we are colliding with.</param>
-        public void CallCollisionProcess(RigidBody other)
-        {
-            EcsComponent.CallCollisionProcess(other.EcsComponent);
+            world.RemoveRigidBody(BulletRigidBody);
         }
     }
 }
