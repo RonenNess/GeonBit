@@ -228,5 +228,22 @@ namespace GeonBit.ECS.Components.Physics
                 _isInWorld = true;
             }
         }
+
+        /// <summary>
+        /// Copy basic properties to another component (helper function to help with Cloning).
+        /// </summary>
+        /// <param name="copyTo">Other component to copy values to.</param>
+        /// <returns>The object we are copying properties to.</returns>
+        protected override BaseComponent CopyBasics(BaseComponent copyTo)
+        {
+            BasePhysicsComponent ret = copyTo as BasePhysicsComponent;
+            ret.InvokeCollisionEvents = InvokeCollisionEvents;
+            ret.IsEthereal = IsEthereal;
+            ret.CollisionGroup = CollisionGroup;
+            ret.CollisionMask = CollisionMask;
+            ret.EnableSimulation = EnableSimulation;
+            ret.Restitution = Restitution;
+            return base.CopyBasics(ret);
+        }
     }
 }

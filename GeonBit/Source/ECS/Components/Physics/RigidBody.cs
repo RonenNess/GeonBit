@@ -182,17 +182,11 @@ namespace GeonBit.ECS.Components.Physics
 
             // copy current state
             ret._body.CopyConditionFrom(_body);
-            ret.InvokeCollisionEvents = InvokeCollisionEvents;
-            ret.IsEthereal = IsEthereal;
             ret.Gravity = Gravity;
-            ret.CollisionGroup = CollisionGroup;
-            ret.CollisionMask = CollisionMask;
             ret.ConstForce = ConstForce;
-            ret.EnableSimulation = EnableSimulation;
             ret.ConstVelocity = ConstVelocity;
             ret.ConstTorqueForce = ConstTorqueForce;
             ret.ConstAngularVelocity = ConstAngularVelocity;
-            ret.Restitution = Restitution;
 
             // return the cloned body
             return ret;

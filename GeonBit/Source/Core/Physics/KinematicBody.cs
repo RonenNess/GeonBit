@@ -66,7 +66,12 @@ namespace GeonBit.Core.Physics
             _shape = shape;
             BulletCollisionObject = new CollisionObject();
             BulletCollisionObject.CollisionShape = shape.BulletCollisionShape;
+
+            // by default turn off activation and collision events
             BulletCollisionObject.ActivationState = ActivationState.DisableSimulation;
+            InvokeCollisionEvents = false;
+
+            // if provided, set transformations
             if (transformations != null) BulletCollisionObject.WorldTransform = ToBullet.Matrix(transformations.Value);
         }
 
