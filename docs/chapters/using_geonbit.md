@@ -523,19 +523,37 @@ Managers.GraphicsManager.CreateSkybox("texture_path", scene.Root);
 
 The following is a list with few of the built-in physics-related components:
 
-#### PhysicalBody
+#### Rigid Body
 
-A physical body that attaches to a game object and controls its transformations (position & rotation).
+A Rigid Body is a physical body that has mass, friction, etc. and respond to forces and collisions in the physical world.
+Once you attach a rigid body to a *GameObject* it will take over its transformations and will control its position and rotation.
+
+Rigid body is what you want to use for all "dynamic" objects - monsters, bullets, moveable objects, etc.
 
 Usage example:
 
 ```cs
-PhysicalBody playerPhysics = new PhysicalBody(new BoxInfo(bodySize), inertia: 0f);
+RigidBody playerPhysics = new RigidBody(new BoxInfo(bodySize), inertia: 0f);
 playerPhysics.SetDamping(0.95f, 0.95f);
 playerPhysics.Gravity = Vector3.Down;
 playerPhysics.CollisionGroup = (short)CollisionGroups.Player;
 playerGameObject.AddComponent(playerPhysics); 
 ```
+
+#### Kinematic Body
+
+A Kinematic Body is a much simpler physical body you can attach to objects, but unlike the Rigid Body it will not simulate forces and will only act as a static collision object.
+
+The Kinematic Body adapts to the *GameObject* transformations, meaning it will take its position, rotation and scale.
+
+Usage example:
+
+```cs
+KinematicBody wallPhysics = new KinematicBody(new BoxInfo(bodySize));
+wallObject.AddComponent(wallPhysics); 
+```
+
+Kinematic Body is what you want to use for "static" objects - floor, walls, immobile objects, etc.
 
 
 ### Sound
