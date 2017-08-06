@@ -12,6 +12,7 @@
 - Added OnTransformationUpdate event.
 - Disable physics rendering by default even in debug mode.
 - Improved Combined Meshes performance by using vertex / index buffers.
+- Optimized some lists-to-array conversion by using custom list that don't copy memory.
 - 
 
 
