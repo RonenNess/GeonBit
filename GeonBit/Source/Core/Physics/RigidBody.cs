@@ -323,10 +323,11 @@ namespace GeonBit.Core.Physics
             // add to world
             world.AddRigidBody(BulletRigidBody, CollisionGroup, CollisionMask);
 
-            // fix gravity property if the body was given alternative gravity before added to world.
+            // if this rigid body has custom gravity, override it by self value after adding to world.
+            // this is because when you add a body to Bullet3d world its gravity gets overriden.
             if (HasCustomGravity)
             {
-                BulletRigidBody.Gravity = BulletRigidBody.Gravity;
+                Gravity = Gravity;
             }
         }
 
