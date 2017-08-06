@@ -45,7 +45,7 @@ namespace GeonBit.ECS.Components.Graphics
         public SkyBox(string texture = null) : base(ShapeRenderer.ShapeModelsRoot + "Skybox")
         {
             TexturePath = texture ?? DefaultTexture;
-            _entity.RenderingQueue = Core.Graphics.RenderingQueue.BackgroundNoCull;
+            _entity.RenderingQueue = Core.Graphics.RenderingQueue.SolidBackNoCull;
             _entity.SetMaterial(new Core.Graphics.Materials.SkyboxMaterial(TexturePath, true));
         }
 

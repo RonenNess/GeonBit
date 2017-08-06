@@ -161,12 +161,23 @@ namespace GeonBit.Core.Physics
             // set self as the debug drawer
             world.DebugDrawer = this;
 
+            // reset depth stencil and rasterizer states
+            RasterizerState RasterizerState = new RasterizerState();
+            DepthStencilState DepthStencilState = new DepthStencilState();
+            RasterizerState.CullMode = CullMode.None;
+            RasterizerState.DepthClipEnable = true;
+            RasterizerState.FillMode = FillMode.Solid;
+            DepthStencilState.DepthBufferEnable = true;
+            DepthStencilState.DepthBufferWriteEnable = true;
+            Graphics.GraphicsManager.GraphicsDevice.RasterizerState = RasterizerState;
+            Graphics.GraphicsManager.GraphicsDevice.DepthStencilState = DepthStencilState;
+
             // apply effect
             foreach (EffectPass pass in _effect.CurrentTechnique.Passes)
             {
                 // draw current pass
                 pass.Apply();
-
+                
                 // draw world
                 world.DebugDrawWorld();
             }

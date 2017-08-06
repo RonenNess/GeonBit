@@ -192,7 +192,7 @@ namespace GeonBit.Core.Graphics
                 queue.RasterizerState.CullMode = CullMode.None;
                 queue.RasterizerState.DepthClipEnable = false;
                 queue.RasterizerState.FillMode = FillMode.Solid;
-                queue.DepthStencilState.DepthBufferEnable = false;
+                queue.DepthStencilState.DepthBufferEnable = true;
                 queue.DepthStencilState.DepthBufferWriteEnable = false;
                 _renderingQueues.Add(queue);
             }
