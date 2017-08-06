@@ -1,6 +1,6 @@
 # ChangeLog
 
-## 0.1.0.1
+## 0.1.0.2
 
 - Fixed physics debug renderings.
 - Renamed physical body to Rigid body.
@@ -13,7 +13,6 @@
 - Disable physics rendering by default even in debug mode.
 - Improved Combined Meshes performance by using vertex / index buffers.
 - Optimized some lists-to-array conversion by using custom list that don't copy memory.
-- 
 
 
 ## 0.0.0.4
