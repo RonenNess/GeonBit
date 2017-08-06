@@ -1,5 +1,20 @@
 # ChangeLog
 
+## 0.1.0.1
+
+- Fixed physics debug renderings.
+- Renamed physical body to Rigid body.
+- Added kinematic body component.
+- Added more options to physics world simulation.
+- Added physics height map shape.
+- Updated to Bullet 0.10.0 version.
+- Refactored some node-related functions and API.
+- Added OnTransformationUpdate event.
+- Disable physics rendering by default even in debug mode.
+- Improved Combined Meshes performance by using vertex / index buffers.
+- 
+
+
 ## 0.0.0.4
 
 - Minor fixes in ```TileMap``` component.
