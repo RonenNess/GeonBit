@@ -82,7 +82,9 @@ namespace GeonBit.Core.Physics
                 _BulletEntity.WorldTransform = btMatrix;
 
                 // set scale
-                Scale = value.Scale;
+                Vector3 scale; Vector3 position; Quaternion rotation;
+                value.Decompose(out scale, out rotation, out position);
+                Scale = scale;
             }
         }
         
