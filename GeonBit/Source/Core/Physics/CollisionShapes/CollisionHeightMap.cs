@@ -207,5 +207,14 @@ namespace GeonBit.Core.Physics.CollisionShapes
             // set shape
             _shape = heightmap;
         }
+
+        /// <summary>
+        /// Clone the physical shape.
+        /// </summary>
+        /// <returns>Cloned shape.</returns>
+        public override ICollisionShape Clone()
+        {
+            throw new Exceptions.InvalidActionException("Cannot clone height-map physical shape!");
+        }
     }
 }

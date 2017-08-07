@@ -36,5 +36,16 @@ namespace GeonBit.Core.Physics.CollisionShapes
         {
             _shape = new BulletSharp.BoxShape(width / 2f, height / 2f, depth / 2f);
         }
+
+        /// <summary>
+        /// Clone the physical shape.
+        /// </summary>
+        /// <returns>Cloned shape.</returns>
+        public override ICollisionShape Clone()
+        {
+            var shape = _shape as BulletSharp.BoxShape;
+            Vector3 halfExtent = ToMonoGame.Vector(shape.HalfExtentsWithoutMargin);
+            return new CollisionBox(halfExtent.X * 2f, halfExtent.Y * 2f, halfExtent.Z * 2f);
+        }
     }
 }

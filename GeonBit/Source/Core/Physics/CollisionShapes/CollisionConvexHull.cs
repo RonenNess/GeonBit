@@ -37,5 +37,24 @@ namespace GeonBit.Core.Physics.CollisionShapes
             BulletSharp.Math.Vector3[] bvectors = ToBullet.Vectors(points);
             _shape = new BulletSharp.ConvexHullShape(bvectors);
         }
+
+        /// <summary>
+        /// Clone the physical shape.
+        /// </summary>
+        /// <returns>Cloned shape.</returns>
+        public override ICollisionShape Clone()
+        {
+            // extract points from shape
+            var shape = _shape as BulletSharp.ConvexHullShape;
+            Vector3[] points = new Vector3[shape.NumPoints];
+            int i = 0;
+            foreach (var point in shape.Points)
+            {
+                points[i++] = ToMonoGame.Vector(point);
+            }
+
+            // create and return clone
+            return new CollisionConvexHull(points);
+        }
     }
 }

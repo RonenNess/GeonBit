@@ -115,7 +115,7 @@ namespace GeonBit.ECS.Components.Physics
         override public BaseComponent Clone()
         {
             // create cloned component to return
-            KinematicBody ret = (KinematicBody)CopyBasics(new KinematicBody(_shape));
+            KinematicBody ret = (KinematicBody)CopyBasics(new KinematicBody(_shape.Clone()));
 
             // return the cloned object
             return ret;

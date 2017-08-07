@@ -36,5 +36,15 @@ namespace GeonBit.Core.Physics.CollisionShapes
         {
             _shape = new BulletSharp.TriangleShape(ToBullet.Vector(p1), ToBullet.Vector(p2), ToBullet.Vector(p3));
         }
+
+        /// <summary>
+        /// Clone the physical shape.
+        /// </summary>
+        /// <returns>Cloned shape.</returns>
+        public override ICollisionShape Clone()
+        {
+            var shape = _shape as BulletSharp.TriangleShape;
+            return new CollisionTriangle(ToMonoGame.Vector(shape.Vertices[0]), ToMonoGame.Vector(shape.Vertices[1]), ToMonoGame.Vector(shape.Vertices[2]));
+        }
     }
 }

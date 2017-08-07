@@ -47,6 +47,9 @@ namespace GeonBit.Core.Physics.CollisionShapes
     /// </summary>
     public class CollisionCylinder : ICollisionShape
     {
+        // cylinder axis type
+        private CylinderDirectionAxis _axisType;
+
         /// <summary>
         /// Create the collision cylinder.
         /// </summary>
@@ -54,7 +57,8 @@ namespace GeonBit.Core.Physics.CollisionShapes
         /// <param name="axis">Cylinder axis direction.</param>
         public CollisionCylinder(Vector3 halfExtent, CylinderDirectionAxis axis = CylinderDirectionAxis.Y)
         {
-            switch (axis)
+            _axisType = axis;
+            switch (_axisType)
             {
                 case CylinderDirectionAxis.X:
                     _shape = new BulletSharp.CylinderShapeX(halfExtent.X, halfExtent.Y, halfExtent.Z);
@@ -68,6 +72,16 @@ namespace GeonBit.Core.Physics.CollisionShapes
                     _shape = new BulletSharp.CylinderShapeZ(halfExtent.X, halfExtent.Y, halfExtent.Z);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Clone the physical shape.
+        /// </summary>
+        /// <returns>Cloned shape.</returns>
+        public override ICollisionShape Clone()
+        {
+            var shape = _shape as BulletSharp.CylinderShape;
+            return new CollisionCylinder(ToMonoGame.Vector(shape.HalfExtentsWithoutMargin), _axisType);
         }
     }
 }
