@@ -79,7 +79,7 @@ namespace GeonBit.Core.Physics.CollisionShapes
         /// Clone the physical shape.
         /// </summary>
         /// <returns>Cloned shape.</returns>
-        public override ICollisionShape Clone()
+        protected override ICollisionShape CloneImp()
         {
             var shape = _shape as BulletSharp.ConeShape;
             return new CollisionCone(shape.Radius, shape.Height, _axisType);

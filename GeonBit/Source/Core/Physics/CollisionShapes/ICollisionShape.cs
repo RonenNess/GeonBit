@@ -47,6 +47,24 @@ namespace GeonBit.Core.Physics.CollisionShapes
         /// Clone the physical shape.
         /// </summary>
         /// <returns>Cloned shape.</returns>
-        public abstract ICollisionShape Clone();
+        public ICollisionShape Clone()
+        {
+            // store old scale and reset scaling
+            var oldScale = _shape.LocalScaling;
+            _shape.LocalScaling = BulletSharp.Math.Vector3.One;
+
+            // call the per-shape cloning logic
+            var ret = CloneImp();
+
+            // turn scale back to normal and return cloned shape
+            _shape.LocalScaling = oldScale;
+            return ret;
+        }
+
+        /// <summary>
+        /// Implement per-shape cloning logic.
+        /// </summary>
+        /// <returns>Cloned shape.</returns>
+        protected abstract ICollisionShape CloneImp();
     }
 }

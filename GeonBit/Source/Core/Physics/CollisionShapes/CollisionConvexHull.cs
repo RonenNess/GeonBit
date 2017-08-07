@@ -42,7 +42,7 @@ namespace GeonBit.Core.Physics.CollisionShapes
         /// Clone the physical shape.
         /// </summary>
         /// <returns>Cloned shape.</returns>
-        public override ICollisionShape Clone()
+        protected override ICollisionShape CloneImp()
         {
             // extract points from shape
             var shape = _shape as BulletSharp.ConvexHullShape;

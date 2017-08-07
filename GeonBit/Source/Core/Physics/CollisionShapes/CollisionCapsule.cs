@@ -79,7 +79,7 @@ namespace GeonBit.Core.Physics.CollisionShapes
         /// Clone the physical shape.
         /// </summary>
         /// <returns>Cloned shape.</returns>
-        public override ICollisionShape Clone()
+        protected override ICollisionShape CloneImp()
         {
             var shape = _shape as BulletSharp.CapsuleShape;
             return new CollisionCapsule(shape.Radius, shape.HalfHeight * 2f, _axisType);
