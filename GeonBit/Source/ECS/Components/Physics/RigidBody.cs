@@ -411,6 +411,7 @@ namespace GeonBit.ECS.Components.Physics
 
                 // set its node to relay on external transformations.
                 newParent.SceneNode.UseExternalTransformations = true;
+                UpdateNodeTransforms();
             }
         }
 
@@ -438,6 +439,7 @@ namespace GeonBit.ECS.Components.Physics
             if (!_isInWorld)
             {
                 _GameObject.ParentScene.Physics.AddBody(_body);
+                UpdateNodeTransforms();
                 _isInWorld = true;
             }
         }

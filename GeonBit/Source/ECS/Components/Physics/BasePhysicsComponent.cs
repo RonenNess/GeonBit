@@ -243,6 +243,8 @@ namespace GeonBit.ECS.Components.Physics
             ret.CollisionMask = CollisionMask;
             ret.EnableSimulation = EnableSimulation;
             ret.Restitution = Restitution;
+            ret.WorldTransform = WorldTransform;
+            ret.Scale = Scale;
             return base.CopyBasics(ret);
         }
     }
