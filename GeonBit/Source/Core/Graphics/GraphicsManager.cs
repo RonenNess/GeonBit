@@ -73,6 +73,12 @@ namespace GeonBit.Core.Graphics
         static SpriteBatch _spriteBatch;
 
         /// <summary>
+        /// Manage lights and serve them to materials.
+        /// You can override this property to provide your own custom lights manager class.
+        /// </summary>
+        public static Lights.LightsManager LightsManager = new Lights.LightsManager();
+
+        /// <summary>
         /// Init GraphicsManager.
         /// </summary>
         /// <param name="graphics">Graphic device manager.</param>

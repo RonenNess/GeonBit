@@ -370,12 +370,15 @@ namespace GeonBit.Core.Graphics
             // get graphic device
             var device = Graphics.GraphicsManager.GraphicsDevice;
 
+            // get bounding sphere
+            var bs = GetLastBoundingSphere();
+
             // iterate combined parts
             foreach (var combinedPart in _parts)
             {
                 // get and setup material
                 var material = combinedPart.Key;
-                material.Apply(ref worldTransformations);
+                material.Apply(ref worldTransformations, bs);
 
                 // get vertices and indexes
                 var buffers = combinedPart.Value;

@@ -129,6 +129,9 @@ namespace GeonBit.Core.Graphics
             _lastRadius = 0f;
             float scaleLen = worldTransformations.Scale.Length();
 
+            // get bounding sphere
+            var bs = GetLastBoundingSphere();
+
             // check if in this mesh we have shared materials, eg same effects used for several mesh parts
             bool gotSharedEffects = Mesh.Effects.Count != Mesh.MeshParts.Count;
 
@@ -147,7 +150,7 @@ namespace GeonBit.Core.Graphics
                 material = MaterialOverride.Apply(material);
 
                 // if we don't have shared effects, eg every mesh part has its own effect, update material transformations
-                if (!gotSharedEffects) material.Apply(ref worldTransformations);
+                if (!gotSharedEffects) material.Apply(ref worldTransformations, bs);
 
                 // apply material effect on the mesh part. note: we first store original effect in mesh part's tag.
                 meshPart.Tag = meshPart.Effect;
@@ -163,7 +166,7 @@ namespace GeonBit.Core.Graphics
             {
                 foreach (var effect in Mesh.Effects)
                 {
-                    effect.GetMaterial().Apply(ref worldTransformations);
+                    effect.GetMaterial().Apply(ref worldTransformations, bs);
                 }
             }
 

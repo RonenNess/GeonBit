@@ -164,6 +164,16 @@ namespace GeonBit.Core.Graphics
         }
 
         /// <summary>
+        /// Return the last calculated bounding box.
+        /// Note: this value may be out-of-date if transformations changed since last calculation.
+        /// </summary>
+        /// <returns>Last known bounding box.</returns>
+        public BoundingBox GetLastBoundingBox()
+        {
+            return _lastBoundingBox;
+        }
+
+        /// <summary>
         /// Calculate and return the bounding box of this entity (in world space).
         /// </summary>
         /// <param name="parent">Parent node that's currently drawing this entity.</param>
@@ -192,6 +202,16 @@ namespace GeonBit.Core.Graphics
             }
 
             // return bounding sphere
+            return _lastBoundingSphere;
+        }
+
+        /// <summary>
+        /// Return the last calculated bounding sphere.
+        /// Note: this value may be out-of-date if transformations changed since last calculation.
+        /// </summary>
+        /// <returns>Last known bounding sphere.</returns>
+        public BoundingSphere GetLastBoundingSphere()
+        {
             return _lastBoundingSphere;
         }
 

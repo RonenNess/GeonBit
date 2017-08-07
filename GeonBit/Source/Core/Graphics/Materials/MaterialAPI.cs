@@ -162,6 +162,11 @@ namespace GeonBit.Core.Graphics.Materials
         public SamplerState SamplerState = DefaultSamplerState;
 
         /// <summary>
+        /// If true, will use the currently set lights manager in `Graphics.GraphicsManager.LightsManager` and call ApplyLights() with the lights from manager.
+        /// </summary>
+        protected virtual bool UseDefaultLightsManager { get { return true; } }
+
+        /// <summary>
         /// Set materials view and projection matrixes (shared by all materials).
         /// </summary>
         /// <param name="view">Current view matrix.</param>
@@ -182,7 +187,9 @@ namespace GeonBit.Core.Graphics.Materials
         /// Apply all new properties on the material effect.
         /// Call this whenever you want to draw using this material.
         /// </summary>
-        public void Apply(ref Matrix worldMatrix)
+        /// <param name="worldMatrix">The world transformations of the currently rendered entity.</param>
+        /// <param name="boundingSphere">The bounding sphere (should be already transformed) of the rendered entity.</param>
+        public void Apply(ref Matrix worldMatrix, BoundingSphere boundingSphere)
         {
             // set world matrix
             World = worldMatrix;
@@ -194,8 +201,26 @@ namespace GeonBit.Core.Graphics.Materials
             if (Effect.Tag == null) { Effect.Tag = this; }
             MaterialSpecificApply(_lastMaterialApplied == this);
 
+            // if support light get lights and set them
+            if (LightingEnabled && UseDefaultLightsManager)
+            {
+                // get lights in rendering range
+                var lightsManager = Graphics.GraphicsManager.LightsManager;
+                var lights = lightsManager.GetLights(boundingSphere);
+                ApplyLights(lightsManager.AmbientLight, lights);
+            }
+
             // set last material applied to self
             _lastMaterialApplied = this;
+        }
+
+        /// <summary>
+        /// Apply light sources on this material.
+        /// </summary>
+        /// <param name="ambient">Ambient light.</param>
+        /// <param name="lights">Array of light sources to apply.</param>
+        virtual protected void ApplyLights(Color ambient, Lights.LightSource[] lights)
+        {
         }
 
         /// <summary>

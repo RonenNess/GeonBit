@@ -77,6 +77,9 @@ namespace GeonBit.Core.Graphics
             _lastRadius = 0f;
             float scaleLen = worldTransformations.Scale.Length();
 
+            // get bounding sphere
+            var bs = GetLastBoundingSphere();
+
             // iterate model meshes
             foreach (var mesh in Model.Meshes)
             {
@@ -84,7 +87,7 @@ namespace GeonBit.Core.Graphics
                 foreach (var effect in mesh.Effects)
                 {
                     Materials.MaterialAPI material = effect.GetMaterial();
-                    material.Apply(ref worldTransformations);
+                    material.Apply(ref worldTransformations, bs);
                 }
 
                 // update last radius
