@@ -31,7 +31,7 @@ namespace GeonBit.Core.Physics.CollisionShapes
     /// <summary>
     /// The interface of a physical collision shape.
     /// </summary>
-    public class ICollisionShape
+    public abstract class ICollisionShape
     {
         /// <summary>
         /// Get the bullet collision shape.
@@ -42,5 +42,11 @@ namespace GeonBit.Core.Physics.CollisionShapes
         /// Bullet shape instance (must be set by the inheriting class).
         /// </summary>
         protected BulletSharp.CollisionShape _shape;
+
+        /// <summary>
+        /// Clone the physical shape.
+        /// </summary>
+        /// <returns>Cloned shape.</returns>
+        public abstract ICollisionShape Clone();
     }
 }

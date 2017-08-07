@@ -47,6 +47,9 @@ namespace GeonBit.Core.Physics.CollisionShapes
     /// </summary>
     public class CollisionCapsule : ICollisionShape
     {
+        // cylinder axis type
+        private CapsuleDirectionAxis _axisType;
+
         /// <summary>
         /// Create the collision capsule.
         /// </summary>
@@ -55,7 +58,8 @@ namespace GeonBit.Core.Physics.CollisionShapes
         /// <param name="axis">Capsule axis direction.</param>
         public CollisionCapsule(float radius = 1f, float height = 1f, CapsuleDirectionAxis axis = CapsuleDirectionAxis.Y)
         {
-            switch (axis)
+            _axisType = axis;
+            switch (_axisType)
             {
                 case CapsuleDirectionAxis.X:
                     _shape = new BulletSharp.CapsuleShapeX(radius, height);
@@ -69,6 +73,16 @@ namespace GeonBit.Core.Physics.CollisionShapes
                     _shape = new BulletSharp.CapsuleShapeZ(radius, height);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Clone the physical shape.
+        /// </summary>
+        /// <returns>Cloned shape.</returns>
+        public override ICollisionShape Clone()
+        {
+            var shape = _shape as BulletSharp.CapsuleShape;
+            return new CollisionCapsule(shape.Radius, shape.HalfHeight * 2f, _axisType);
         }
     }
 }

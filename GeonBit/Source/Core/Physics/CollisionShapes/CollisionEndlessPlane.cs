@@ -38,5 +38,15 @@ namespace GeonBit.Core.Physics.CollisionShapes
             // create the plane shape
             _shape = new BulletSharp.StaticPlaneShape(ToBullet.Vector((Vector3)normal), 1);
         }
+
+        /// <summary>
+        /// Clone the physical shape.
+        /// </summary>
+        /// <returns>Cloned shape.</returns>
+        public override ICollisionShape Clone()
+        {
+            var shape = _shape as BulletSharp.StaticPlaneShape;
+            return new CollisionEndlessPlane(ToMonoGame.Vector(shape.PlaneNormal));
+        }
     }
 }

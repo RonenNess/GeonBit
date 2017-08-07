@@ -47,6 +47,9 @@ namespace GeonBit.Core.Physics.CollisionShapes
     /// </summary>
     public class CollisionCone : ICollisionShape
     {
+        // cylinder axis type
+        private ConeDirectionAxis _axisType;
+
         /// <summary>
         /// Create the collision cone.
         /// </summary>
@@ -55,7 +58,8 @@ namespace GeonBit.Core.Physics.CollisionShapes
         /// <param name="axis">Cone axis direction.</param>
         public CollisionCone(float radius = 1f, float height = 1f, ConeDirectionAxis axis = ConeDirectionAxis.Y)
         {
-            switch (axis)
+            _axisType = axis;
+            switch (_axisType)
             {
                 case ConeDirectionAxis.X:
                     _shape = new BulletSharp.ConeShapeX(radius, height);
@@ -69,6 +73,16 @@ namespace GeonBit.Core.Physics.CollisionShapes
                     _shape = new BulletSharp.ConeShapeZ(radius, height);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Clone the physical shape.
+        /// </summary>
+        /// <returns>Cloned shape.</returns>
+        public override ICollisionShape Clone()
+        {
+            var shape = _shape as BulletSharp.ConeShape;
+            return new CollisionCone(shape.Radius, shape.Height, _axisType);
         }
     }
 }

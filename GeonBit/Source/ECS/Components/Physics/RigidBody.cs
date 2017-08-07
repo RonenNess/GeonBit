@@ -135,50 +135,13 @@ namespace GeonBit.ECS.Components.Physics
         }
 
         /// <summary>
-        /// Called when this physical body start colliding with another body.
-        /// </summary>
-        /// <param name="other">The other body we collide with.</param>
-        /// <param name="data">Extra collision data.</param>
-        public void CallCollisionStart(RigidBody other, Core.Physics.CollisionData data)
-        {
-            if (_GameObject != null)
-            {
-                _GameObject.CallCollisionStart(other._GameObject, data);
-            }
-        }
-        
-        /// <summary>
-        /// Called when this physical body stop colliding with another body.
-        /// </summary>
-        /// <param name="other">The other body we collided with, but no longer.</param>
-        public void CallCollisionEnd(RigidBody other)
-        {
-            if (_GameObject != null)
-            {
-                _GameObject.CallCollisionEnd(other._GameObject);
-            }
-        }
-
-        /// <summary>
-        /// Called while this physical body is colliding with another body.
-        /// </summary>
-        /// <param name="other">The other body we are colliding with.</param>
-        public void CallCollisionProcess(RigidBody other)
-        {
-            if (_GameObject != null)
-            {
-                _GameObject.CallCollisionProcess(other._GameObject);
-            }
-        }
-
-        /// <summary>
         /// Clone this component.
         /// </summary>
         /// <returns>Cloned copy of this component.</returns>
         override public BaseComponent Clone()
         {
             // create cloned component to return
-            RigidBody ret = (RigidBody)CopyBasics(new RigidBody(_shape, Mass, Inertia, _body.Friction));
+            RigidBody ret = (RigidBody)CopyBasics(new RigidBody(_shape.Clone(), Mass, Inertia, _body.Friction));
 
             // copy current state
             ret._body.CopyConditionFrom(_body);
@@ -407,7 +370,7 @@ namespace GeonBit.ECS.Components.Physics
         }
 
         /// <summary>
-        /// Force the scene node to calculate world transformations and copy them to the physical body matrix.
+        /// Force the scene node to calculate world transformations and copy them into the rigid body transformations.
         /// This will make the scene node world transform override the current physical body state.
         /// </summary>
         /// <param name="clearForces">If true, will also clear all forces and velocity currently applied on body.</param>
