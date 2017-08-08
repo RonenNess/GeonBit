@@ -378,7 +378,7 @@ namespace GeonBit.Core.Graphics
             {
                 // get and setup material
                 var material = combinedPart.Key;
-                material.Apply(ref worldTransformations, bs);
+                material.Apply(ref worldTransformations, ref bs);
 
                 // get vertices and indexes
                 var buffers = combinedPart.Value;

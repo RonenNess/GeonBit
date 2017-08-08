@@ -189,7 +189,7 @@ namespace GeonBit.Core.Graphics.Materials
         /// </summary>
         /// <param name="worldMatrix">The world transformations of the currently rendered entity.</param>
         /// <param name="boundingSphere">The bounding sphere (should be already transformed) of the rendered entity.</param>
-        public void Apply(ref Matrix worldMatrix, BoundingSphere boundingSphere)
+        public void Apply(ref Matrix worldMatrix, ref BoundingSphere boundingSphere)
         {
             // set world matrix
             World = worldMatrix;
@@ -206,7 +206,7 @@ namespace GeonBit.Core.Graphics.Materials
             {
                 // get lights in rendering range
                 var lightsManager = Graphics.GraphicsManager.LightsManager;
-                var lights = lightsManager.GetLights(boundingSphere);
+                var lights = lightsManager.GetLights(this, ref boundingSphere);
                 ApplyLights(lightsManager.AmbientLight, lights);
             }
 

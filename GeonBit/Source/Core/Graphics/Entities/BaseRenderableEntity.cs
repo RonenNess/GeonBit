@@ -129,6 +129,9 @@ namespace GeonBit.Core.Graphics
             // call draw callback
             OnDraw?.Invoke(this);
 
+            // make sure we have up-to-date bounding sphere, which is important for lightings
+            GetBoundingSphere(parent, ref localTransformations, ref worldTransformations);
+
             // call to draw this entity - this will either add to the corresponding rendering queue, or draw immediately if have no drawing queue.
             GraphicsManager.DrawEntity(this, worldTransformations);
         }

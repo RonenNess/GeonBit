@@ -150,7 +150,7 @@ namespace GeonBit.Core.Graphics
                 material = MaterialOverride.Apply(material);
 
                 // if we don't have shared effects, eg every mesh part has its own effect, update material transformations
-                if (!gotSharedEffects) material.Apply(ref worldTransformations, bs);
+                if (!gotSharedEffects) material.Apply(ref worldTransformations, ref bs);
 
                 // apply material effect on the mesh part. note: we first store original effect in mesh part's tag.
                 meshPart.Tag = meshPart.Effect;
@@ -166,7 +166,7 @@ namespace GeonBit.Core.Graphics
             {
                 foreach (var effect in Mesh.Effects)
                 {
-                    effect.GetMaterial().Apply(ref worldTransformations, bs);
+                    effect.GetMaterial().Apply(ref worldTransformations, ref bs);
                 }
             }
 

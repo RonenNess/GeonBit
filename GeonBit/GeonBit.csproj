@@ -103,6 +103,7 @@
     <Compile Include="Source\Core\Graphics\Entities\SkinnedModelEntity.cs" />
     <Compile Include="Source\Core\Graphics\Entities\CombinedMeshesEntity.cs" />
     <Compile Include="Source\Core\Graphics\GraphicsManager.cs" />
+    <Compile Include="Source\Core\Graphics\Lights\ILightsManager.cs" />
     <Compile Include="Source\Core\Graphics\Lights\LightsManager.cs" />
     <Compile Include="Source\Core\Graphics\Lights\LightSource.cs" />
     <Compile Include="Source\Core\Graphics\Materials\MaterialAPI.cs" />

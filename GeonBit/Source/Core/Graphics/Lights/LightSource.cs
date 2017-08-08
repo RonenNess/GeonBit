@@ -35,7 +35,7 @@ namespace GeonBit.Core.Graphics.Lights
         /// <summary>
         /// Parent lights manager.
         /// </summary>
-        internal LightsManager _manager;
+        public ILightsManager LightsManager = null;
 
         /// <summary>
         /// Light bounding sphere.
@@ -104,7 +104,7 @@ namespace GeonBit.Core.Graphics.Lights
             BoundingSphere = new BoundingSphere(position, scale.Length());
 
             // notify manager on update
-            _manager.UpdateLightTransform(this);
+            if (LightsManager != null) { LightsManager.UpdateLightTransform(this); }
         }
     }
 }

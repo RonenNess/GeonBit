@@ -87,7 +87,7 @@ namespace GeonBit.Core.Graphics
                 foreach (var effect in mesh.Effects)
                 {
                     Materials.MaterialAPI material = effect.GetMaterial();
-                    material.Apply(ref worldTransformations, bs);
+                    material.Apply(ref worldTransformations, ref bs);
                 }
 
                 // update last radius
