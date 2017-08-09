@@ -36,6 +36,14 @@ namespace GeonBit.Core.Physics.CollisionShapes
         }
 
         /// <summary>
+        /// Clear the compound shape and remove all children from it.
+        /// </summary>
+        public void Clear()
+        {
+            _shape = new BulletSharp.CompoundShape();
+        }
+
+        /// <summary>
         /// Add a child shape to this compound shape.
         /// </summary>
         /// <param name="shape">Collision shape to add.</param>
