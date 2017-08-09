@@ -11,7 +11,7 @@
 #endregion
 #region File Description
 //-----------------------------------------------------------------------------
-// Kinematic body component.
+// Static body component.
 //
 // Author: Ronen Ness.
 // Since: 2017.
@@ -22,13 +22,14 @@ using Microsoft.Xna.Framework;
 namespace GeonBit.ECS.Components.Physics
 {
     /// <summary>
-    /// A Kinematic Body component.
+    /// A Static Body component.
     /// This body will not respond to forces, and will always copy the transformations of the parent Game Object.
+    /// It is optimized for static, constant things like terrain, trees, rocks, walls, etc.
     /// </summary>
-    public class KinematicBody : BasePhysicsComponent
+    public class StaticBody : BasePhysicsComponent
     {
-        // the core kinematic body
-        Core.Physics.KinematicBody _body;
+        // the core static body
+        Core.Physics.StaticBody _body;
 
         /// <summary>
         /// The physical body in the core layer.
@@ -44,19 +45,19 @@ namespace GeonBit.ECS.Components.Physics
         bool _isInWorld = false;
 
         /// <summary>
-        /// Create the kinematic body from shape info.
+        /// Create the static collision body from shape info.
         /// </summary>
         /// <param name="shapeInfo">Body shape info.</param>
-        public KinematicBody(IBodyShapeInfo shapeInfo)
+        public StaticBody(IBodyShapeInfo shapeInfo)
         {
             CreateBody(shapeInfo.CreateShape());
         }
 
         /// <summary>
-        /// Create the kinematic body from shape instance.
+        /// Create the static collision body from shape instance.
         /// </summary>
         /// <param name="shape">Shape to use.</param>
-        public KinematicBody(Core.Physics.CollisionShapes.ICollisionShape shape)
+        public StaticBody(Core.Physics.CollisionShapes.ICollisionShape shape)
         {
             CreateBody(shape);
         }
@@ -68,7 +69,7 @@ namespace GeonBit.ECS.Components.Physics
         private void CreateBody(Core.Physics.CollisionShapes.ICollisionShape shape)
         {
             _shape = shape;
-            _body = new Core.Physics.KinematicBody(shape);
+            _body = new Core.Physics.StaticBody(shape);
         }
 
         /// <summary>

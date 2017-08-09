@@ -106,6 +106,7 @@
     <Compile Include="Source\Core\Graphics\Lights\ILightsManager.cs" />
     <Compile Include="Source\Core\Graphics\Lights\LightsManager.cs" />
     <Compile Include="Source\Core\Graphics\Lights\LightSource.cs" />
+    <Compile Include="Source\Core\Graphics\Materials\LitMaterial.cs" />
     <Compile Include="Source\Core\Graphics\Materials\MaterialAPI.cs" />
     <Compile Include="Source\Core\Graphics\Materials\DefaultMaterialsFactory.cs" />
     <Compile Include="Source\Core\Graphics\Materials\SkyboxMaterial.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Source\Core\Physics\CollisionShapes\ICollisionShape.cs" />
     <Compile Include="Source\Core\Physics\Convert.cs" />
     <Compile Include="Source\Core\Physics\DebugDrawer.cs" />
+    <Compile Include="Source\Core\Physics\StaticBody.cs" />
     <Compile Include="Source\Core\Physics\KinematicBody.cs" />
     <Compile Include="Source\Core\Physics\BasicPhysicalBody.cs" />
     <Compile Include="Source\Core\Physics\RigidBody.cs" />
@@ -182,6 +184,7 @@
     <Compile Include="Source\ECS\Components\Physics\BodyShapesInfo.cs" />
     <Compile Include="Source\ECS\Components\Physics\CollisionGroups.cs" />
     <Compile Include="Source\ECS\Components\Physics\Docs.cs" />
+    <Compile Include="Source\ECS\Components\Physics\StaticBody.cs" />
     <Compile Include="Source\ECS\Components\Physics\KinematicBody.cs" />
     <Compile Include="Source\ECS\Components\Physics\BasePhysicsComponent.cs" />
     <Compile Include="Source\ECS\Components\Physics\RigidBody.cs" />

@@ -91,7 +91,7 @@ namespace GeonBit.Core.Physics
         /// <summary>
         /// If false, will not simulate forces on this body and will make it behave like a kinematic body.
         /// </summary>
-        public bool EnableSimulation
+        virtual public bool EnableSimulation
         {
             set
             {
@@ -172,54 +172,72 @@ namespace GeonBit.Core.Physics
         }
 
         /// <summary>
+        /// Return if this is a static object.
+        /// </summary>
+        virtual public bool IsStatic { get { return false; } }
+
+        /// <summary>
+        /// Return if this is a kinematic object.
+        /// </summary>
+        virtual public bool IsKinematic { get { return false; } }
+
+        /// <summary>
+        /// Get collision flags based on current state.
+        /// </summary>
+        protected CollisionFlags CollisionFlags
+        {
+            get
+            {
+                CollisionFlags ret = CollisionFlags.None;
+                if (IsStatic) ret |= CollisionFlags.StaticObject;
+                if (IsKinematic) ret |= CollisionFlags.KinematicObject;
+                if (IsEthereal) ret |= CollisionFlags.NoContactResponse;
+                if (InvokeCollisionEvents) ret |= CollisionFlags.CustomMaterialCallback;
+                return ret;
+            }
+        }
+
+        /// <summary>
         /// If true (default) will invoke collision events.
         /// You can turn this off for optimizations.
         /// </summary>
         public bool InvokeCollisionEvents
         {
-            // get if this body invoke collision events
             get
             {
-                return (_BulletEntity.CollisionFlags & CollisionFlags.CustomMaterialCallback) != 0;
+                return _invokeCollisionEvents;
             }
-
-            // set if this body invoke collision events
             set
             {
-                if (value)
-                {
-                    _BulletEntity.CollisionFlags |= CollisionFlags.CustomMaterialCallback;
-                }
-                else
-                {
-                    _BulletEntity.CollisionFlags &=  ~CollisionFlags.CustomMaterialCallback;
-                }
+                _invokeCollisionEvents = value;
+                UpdateCollisionFlags();
             }
         }
+        private bool _invokeCollisionEvents = true;
 
         /// <summary>
         /// If true, this object will not have a physical body (eg other objects will pass through it), but will still trigger contact events. 
         /// </summary>
         public bool IsEthereal
         {
-            // get if this body is ethereal
             get
             {
-                return (_BulletEntity.CollisionFlags & CollisionFlags.NoContactResponse) != 0;
+                return _isEthereal;
             }
-
-            // set if this body is ethereal
             set
             {
-                if (value)
-                {
-                    _BulletEntity.CollisionFlags |= CollisionFlags.NoContactResponse;
-                }
-                else
-                {
-                    _BulletEntity.CollisionFlags &= ~CollisionFlags.NoContactResponse;
-                }
+                _isEthereal = value;
+                UpdateCollisionFlags();
             }
+        }
+        private bool _isEthereal = false;
+
+        /// <summary>
+        /// Update collision flags.
+        /// </summary>
+        protected void UpdateCollisionFlags()
+        {
+            _BulletEntity.CollisionFlags = CollisionFlags;
         }
 
         /// <summary>
@@ -242,7 +260,7 @@ namespace GeonBit.Core.Physics
 
         // current collision mask
         short _collisionMask = short.MaxValue;
-
+        
         /// <summary>
         /// With which collision groups this body will collide?
         /// Note: compare bits mask.

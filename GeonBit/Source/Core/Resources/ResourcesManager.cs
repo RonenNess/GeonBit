@@ -116,6 +116,16 @@ namespace GeonBit.Core
         }
 
         /// <summary>
+        /// Get an effect (shader).
+        /// </summary>
+        /// <param name="path">Asset path / name.</param>
+        /// <returns>Effect instance.</returns>
+        public Effect GetEffect(string path)
+        {
+            return _content.Load<Effect>(path);
+        }
+
+        /// <summary>
         /// Get any other custom type.
         /// </summary>
         /// <typeparam name="T">Type to load.</typeparam>

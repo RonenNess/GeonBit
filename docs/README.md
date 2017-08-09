@@ -792,18 +792,34 @@ playerGameObject.AddComponent(playerPhysics);
 
 #### Kinematic Body
 
-A Kinematic Body is a much simpler physical body you can attach to objects, but unlike the Rigid Body it will not simulate forces and will only act as a static collision object.
+A Kinematic Body is a physical body that does not respond to external forces.
 
 The Kinematic Body adapts to the *GameObject* transformations, meaning it will take its position, rotation and scale.
 
 Usage example:
 
 ```cs
-KinematicBody wallPhysics = new KinematicBody(new BoxInfo(bodySize));
+KinematicBody platformPhysics = new KinematicBody(new BoxInfo(bodySize));
+movingPlatform.AddComponent(platformPhysics); 
+```
+
+Kinematic Body is what you want to use for things like moving platforms, elevators, etc.. Sometimes the player itself is a kinematic body, but that's game-dependant.
+
+
+#### Static Body
+
+A Static Body is a physical body that does not respond to external forces and is optimized to be immobile.
+
+The Static Body adapts to the *GameObject* transformations, meaning it will take its position, rotation and scale.
+
+Usage example:
+
+```cs
+StaticBody wallPhysics = new StaticBody(new BoxInfo(bodySize));
 wallObject.AddComponent(wallPhysics); 
 ```
 
-Kinematic Body is what you want to use for "static" objects - floor, walls, immobile objects, etc.
+Kinematic Body is what you want to use for static things like the level itself, walls, trees, rocks, etc..
 
 
 ### Sound
@@ -1523,6 +1539,7 @@ The physics simulation in *GeonBit* uses the open-source Bullet3D library. Physi
 
 - Rigid bodies.
 - Kinematic bodies.
+- Static bodies.
 - Collision detection and ray casting.
 
 This chapter will explain how to use GeonBit physics.
@@ -1534,7 +1551,7 @@ As shortly mentioned before, Rigid Body is a physical body that respond to force
 
 Once a Rigid Body is attached to a *GameObject* it will control its position and rotation based on the physics simulation.
 
-Rigid bodies are commonly used for dynamic objects (player, enemies, bullets, moveable objects, etc..).
+Rigid bodies are commonly used for dynamic objects (player, enemies, projectiles, moveable objects, etc..).
 
 To create a rigid body:
 
@@ -1546,17 +1563,29 @@ go.AddComponent(body);
 
 #### Kinematic Body
 
-Kinematic Body is a physical body that does not respond to forces, and only acts to detect collision and "block" othr solid bodies.
+Kinematic Body is a physical body that does not respond to external forces. A kinematic body will simply take the transformations of its parent *GameObject*.
 
-Kinematic bodies are commonly used for static objects (walls, floor, trees, etc..).
+It is useful for elevators, moving platforms, etc.
 
 To create a kinematic body:
 
 ```cs
-KinematicBody wallPhysics = new KinematicBody(new BoxInfo(bodySize));
-wallObject.AddComponent(wallPhysics); 
+KinematicBody elevatorPhysics = new KinematicBody(new BoxInfo(bodySize));
+elevator.AddComponent(elevatorPhysics); 
 ```
 
+#### Static Body
+
+Static Body is similar to a Kinematic Body, but will not produce collision events by default (can be changed) and is optimized for immobile objects.
+
+It is useful for things like walls, trees, rocks, etc.
+
+To create a static body:
+
+```cs
+StaticBody wallPhysics = new StaticBody(new BoxInfo(bodySize));
+wall.AddComponent(wallPhysics); 
+```
 
 #### Collision Groups
 

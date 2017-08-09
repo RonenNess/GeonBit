@@ -180,3 +180,9 @@
 /processorParam:TextureFormat=Compressed
 /build:GeonBit.Core/BasicMeshes/SphereSmooth.fbx
 
+#begin GeonBit.Core/Effects/LitEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:GeonBit.Core/Effects/LitEffect.fx
+

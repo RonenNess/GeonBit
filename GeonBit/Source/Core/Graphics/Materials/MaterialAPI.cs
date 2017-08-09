@@ -81,6 +81,11 @@ namespace GeonBit.Core.Graphics.Materials
         internal static MaterialAPI _lastMaterialApplied = null;
 
         /// <summary>
+        /// Path of GeonBit built-in effects.
+        /// </summary>
+        public static readonly string EffectsPath = "GeonBit.Core/Effects/";
+
+        /// <summary>
         /// Get the effect instance.
         /// </summary>
         abstract public Effect Effect { get; }

@@ -33,6 +33,21 @@ namespace GeonBit.ECS.Components.Physics
         internal virtual Core.Physics.BasicPhysicalBody _PhysicalBody { get; }
 
         /// <summary>
+        /// Return if this is a static object.
+        /// </summary>
+        public bool IsStatic { get { return _PhysicalBody.IsStatic; } }
+
+        /// <summary>
+        /// Return if this is a kinematic object.
+        /// </summary>
+        public bool IsKinematic { get { return _PhysicalBody.IsKinematic; } }
+
+        /// <summary>
+        /// Return true if you want this physical body to take over node transformations.
+        /// </summary>
+        protected virtual bool TakeOverNodeTransformations { get { return false; } }
+
+        /// <summary>
         /// Set / get body scale.
         /// </summary>
         public Vector3 Scale
@@ -184,7 +199,7 @@ namespace GeonBit.ECS.Components.Physics
             // make previous parent scene node no longer use external transformations
             if (prevParent != null)
             {
-                prevParent.SceneNode.UseExternalTransformations = false;
+                prevParent.SceneNode.UseExternalTransformations = TakeOverNodeTransformations;
             }
 
             // if we got a new parent:
@@ -197,7 +212,8 @@ namespace GeonBit.ECS.Components.Physics
                 }
 
                 // set its node to relay on external transformations.
-                newParent.SceneNode.UseExternalTransformations = true;
+                newParent.SceneNode.UseExternalTransformations = TakeOverNodeTransformations;
+                if (TakeOverNodeTransformations) { UpdateNodeTransforms(); }
             }
         }
 

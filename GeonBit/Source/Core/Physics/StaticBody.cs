@@ -11,7 +11,7 @@
 #endregion
 #region File Description
 //-----------------------------------------------------------------------------
-// A Kinematic Body object.
+// A static Body object.
 //
 // Author: Ronen Ness.
 // Since: 2017.
@@ -24,11 +24,10 @@ using Microsoft.Xna.Framework;
 namespace GeonBit.Core.Physics
 {
     /// <summary>
-    /// A kinematic collision object that don't respond to forces.
-    /// This is useful for things like elevators, moving platforms, etc. 
-    /// In other words - objects that move and interact, but ignore outside forces.
+    /// A static collision object that does not respond to events and can't be moved.
+    /// This is useful for really static things that can only block and collide, but don't really do anything else (trees, rocks, etc..).
     /// </summary>
-    public class KinematicBody : BasicPhysicalBody
+    public class StaticBody : BasicPhysicalBody
     {
         /// <summary>
         /// Return the bullet 3d entity.
@@ -41,6 +40,11 @@ namespace GeonBit.Core.Physics
         internal BulletSharp.CollisionObject BulletCollisionObject { get; private set; }
 
         /// <summary>
+        /// Return if this is a static object.
+        /// </summary>
+        override public bool IsStatic { get { return true; } }
+
+        /// <summary>
         /// Return if this is a kinematic object.
         /// </summary>
         override public bool IsKinematic { get { return true; } }
@@ -51,7 +55,7 @@ namespace GeonBit.Core.Physics
         override public bool EnableSimulation
         {
             get { return false; }
-            set { throw new Exceptions.InvalidActionException("Cannot change the simulation state of a kinematic body!"); }
+            set { throw new Exceptions.InvalidActionException("Cannot change the simulation state of a static body!"); }
         }
 
         /// <summary>
@@ -75,15 +79,16 @@ namespace GeonBit.Core.Physics
         /// </summary>
         /// <param name="shape">Collision shape that define this body.</param>
         /// <param name="transformations">Starting transformations.</param>
-        public KinematicBody(CollisionShapes.ICollisionShape shape, Matrix? transformations = null)
+        public StaticBody(CollisionShapes.ICollisionShape shape, Matrix? transformations = null)
         {
             // create the collision object
             _shape = shape;
             BulletCollisionObject = new CollisionObject();
             BulletCollisionObject.CollisionShape = shape.BulletCollisionShape;
 
-            // turn of simulation
+            // turn off simulation and collision events
             base.EnableSimulation = false;
+            InvokeCollisionEvents = false;
 
             // if provided, set transformations
             if (transformations != null) BulletCollisionObject.WorldTransform = ToBullet.Matrix(transformations.Value);

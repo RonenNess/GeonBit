@@ -50,6 +50,11 @@ namespace GeonBit.ECS.Components.Physics
         bool _alreadyUpdatedBodyInFrame = false;
 
         /// <summary>
+        /// Return true if you want this physical body to take over node transformations.
+        /// </summary>
+        protected override bool TakeOverNodeTransformations { get { return true; } }
+
+        /// <summary>
         /// Get / set body mass.
         /// </summary>
         public float Mass
@@ -391,28 +396,8 @@ namespace GeonBit.ECS.Components.Physics
         /// <param name="newParent">New parent.</param>
         protected override void OnParentChange(GameObject prevParent, GameObject newParent)
         {
-            // make previous parent scene node no longer use external transformations
-            if (prevParent != null)
-            {
-                prevParent.SceneNode.UseExternalTransformations = false;
-            }
-
-            // reset the already-updated flag
             _alreadyUpdatedBodyInFrame = false;
-
-            // if we got a new parent:
-            if (newParent != null)
-            {
-                // make sure it doesn't already have a physical body
-                if (newParent.PhysicalBody != null && newParent.PhysicalBody != this)
-                {
-                    throw new Exceptions.InvalidActionException("Cannot add multiple physical bodies to a single Game Object!");
-                }
-
-                // set its node to relay on external transformations.
-                newParent.SceneNode.UseExternalTransformations = true;
-                UpdateNodeTransforms();
-            }
+            base.OnParentChange(prevParent, newParent);
         }
 
         /// <summary>

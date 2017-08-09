@@ -11,7 +11,7 @@
 #endregion
 #region File Description
 //-----------------------------------------------------------------------------
-// Physical Body is the basic object of the physics world.
+// Rigid body object.
 //
 // Author: Ronen Ness.
 // Since: 2017.
@@ -24,9 +24,8 @@ using Microsoft.Xna.Framework;
 namespace GeonBit.Core.Physics
 {
     /// <summary>
-    /// A Physical body is the basic object of the physics world.
-    /// They are affected by forces and collide with each other.
-    /// Physical Entity = Rigid Body + Collision Shape.
+    /// A rigid body is the basic dynamic object of the physics world.
+    /// They are affected by forces, collide with each other, and trigger different events.
     /// </summary>
     public class RigidBody : BasicPhysicalBody
     {
@@ -320,6 +319,9 @@ namespace GeonBit.Core.Physics
         /// <param name="world"></param>
         internal override void AddSelfToBulletWorld(BulletSharp.DynamicsWorld world)
         {
+            // update flags
+            UpdateCollisionFlags();
+
             // add to world
             world.AddRigidBody(BulletRigidBody, CollisionGroup, CollisionMask);
 
