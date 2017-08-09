@@ -18,7 +18,7 @@
 //-----------------------------------------------------------------------------
 #endregion
 
-namespace GeonBit.ECS.Components.Physics
+namespace GeonBit.Core.Physics
 {
     /// <summary>
     /// Contain a set of pre-defined collision groups.

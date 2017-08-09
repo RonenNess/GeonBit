@@ -90,6 +90,10 @@ namespace GeonBit.Core.Physics
             base.EnableSimulation = false;
             InvokeCollisionEvents = false;
 
+            // set default group and mask
+            CollisionGroup = CollisionGroups.StaticObjects;
+            CollisionMask = CollisionMasks.Targets;
+
             // if provided, set transformations
             if (transformations != null) BulletCollisionObject.WorldTransform = ToBullet.Matrix(transformations.Value);
         }

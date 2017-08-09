@@ -308,6 +308,10 @@ namespace GeonBit.Core.Physics
             BulletRigidBody = new BulletSharp.RigidBody(info);
             BulletRigidBody.UserObject = this;
 
+            // set default group and mask
+            CollisionGroup = CollisionGroups.DynamicObjects;
+            CollisionMask = CollisionMasks.Targets;
+
             // set some defaults
             InvokeCollisionEvents = true;
             IsEthereal = false;

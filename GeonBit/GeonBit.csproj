@@ -183,7 +183,7 @@
     <Compile Include="Source\ECS\Components\Particles\Docs.cs" />
     <Compile Include="Source\ECS\Components\Particles\ParticleSystem.cs" />
     <Compile Include="Source\ECS\Components\Physics\BodyShapesInfo.cs" />
-    <Compile Include="Source\ECS\Components\Physics\CollisionGroups.cs" />
+    <Compile Include="Source\Core\Physics\CollisionGroups.cs" />
     <Compile Include="Source\ECS\Components\Physics\Docs.cs" />
     <Compile Include="Source\ECS\Components\Physics\StaticBody.cs" />
     <Compile Include="Source\ECS\Components\Physics\KinematicBody.cs" />

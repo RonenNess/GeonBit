@@ -82,8 +82,12 @@ namespace GeonBit.Core.Physics
             BulletCollisionObject = new CollisionObject();
             BulletCollisionObject.CollisionShape = shape.BulletCollisionShape;
 
-            // turn of simulation
+            // turn off simulation
             base.EnableSimulation = false;
+
+            // set default group and mask
+            CollisionGroup = CollisionGroups.DynamicObjects;
+            CollisionMask = CollisionMasks.Targets;
 
             // if provided, set transformations
             if (transformations != null) BulletCollisionObject.WorldTransform = ToBullet.Matrix(transformations.Value);
