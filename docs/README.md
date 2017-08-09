@@ -1612,47 +1612,54 @@ Please note however that the debug rendering are not very optimized and may be h
 
 ### Collision Groups
 
-Collision groups allow you to control which objects can collide with which objects.
+Collision groups allow you to control which objects can collide with which other objects.
 For example, in your game you might decide that enemy bullets will not hit other enemies and just go through them. In other words, you might want to decide that enemy bullets only collide with player and static objects (walls etc).
 
-To do so, you use collision groups and masks.
+Controlling collision groups is not just for gameplay features, its also crucial for performance. For example, if you have a huge level with lots of static objects (trees, rocks, etc.), you can actually boost couple hundred FPS just by making those static objects collision groups mismatch.
 
-- Collision Group is a short you assign to bodies that identify their "type".
-- Collision Mask is a short you assign to bodies that control with which other bodies it may collide.
+To control collisions, you need to set two flags: collision Groups and Masks.
+
+- Collision Group represent the physical object "type".
+- Collision Mask tells the body with which other types it may collide.
 
 When two bodies collide, the physics simulator will do an ```AND``` operator between the collision group of one body and the mask of the other, and if the result is not 0, they will collide.
 This means that a body can be in multiple collision groups and all it takes is one match to make a collision.
 
-Given the example with the enemy bullets above, lets show an example of how to set a collision group for the bullets:
+So if we go back to the example above of optimizing trees not to collide with each other, how would we do it?
+
+We could define two object types: ```static``` and ```dynamic```. Dynamic objects (monsters, player, projectile, etc..) will collide with everything. Static objects (floor, trees, rocks, etc) will only collide with dynamic objects, but not with each other.
+
+Lets see an example of how to set the collision group of a physical body:
 
 ```cs
 bulletBody.CollisionGroup = CollisionGroups.EnemyProjectiles;
 ```
 
-The enum* ```CollisionGroups``` provide a set of predefined collision groups commonly used in games. 
-You don't have to use them though, you can define your own set of collision groups and use whatever you like. They are there only for your convenience.
+The enum-like object ```CollisionGroups``` provide a set of predefined collision groups commonly used in games. 
+You don't have to use the built-in groups, but they should be quite convenient.
 
-Now lets make sure the bullets can't collide with enemies:
+Now lets set the collision mask of the bullet from before:
 
 ```cs
+// CollisionMasks contains a predefined set of useful masks you can use.
 short bulletMask = CollisionGroups.OR(CollisionMasks.NonCharacterTargets, CollisionGroups.Player);
 bulletBody.CollisionMask = bulletMask;
 ```
 
-So what did we do in the lines above? First, we defined a collision mask for the bullet, composed of ```CollisionMasks.NonCharacterTargets``` and ```CollisionGroups.Player``` collision groups.
+So what did we just do? First, we defined a new collision mask for the bullet, composed of ```CollisionMasks.NonCharacterTargets``` and ```CollisionGroups.Player``` groups.
 
 - *CollisionMasks.NonCharacterTargets* is a pre-defined set of collision groups that contain all the possible targets, except for characters.
-- *CollisionGroups.Player* is the collision group we'll use for the player's body.
+- *CollisionGroups.Player* is the collision group we'll later assign for the player's body.
 
-Note that *CollisionMasks* contains a set of useful masks you can use that cover most of basic use cases. And like with the default collision groups, you can also write your own masks and ignore what *GeonBit* offers by default.
+After setting the bullet with this collision mask, it will only collide with non-character targets (terrain, static objects, etc.) and with the player group.
 
-Now we just need to set the players body collision group:
+Now we want to set the player's collision group:
 
 ```cs
 playerBody.CollisionGroup = CollisionGroups.Player;
 ```
 
-And when setting the enemies collision mask, you might want to make sure you don't add *CollisionGroups.EnemyProjectiles* to the bunch.
+Now bullets will be able to hit the player, but not the enemies or each other.
 
 
 ### Collision Callbacks
