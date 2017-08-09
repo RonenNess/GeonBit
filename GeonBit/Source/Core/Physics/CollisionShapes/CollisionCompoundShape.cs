@@ -40,7 +40,13 @@ namespace GeonBit.Core.Physics.CollisionShapes
         /// </summary>
         public void Clear()
         {
-            _shape = new BulletSharp.CompoundShape();
+            // note: while its tempting to just do '_shape = new BulletSharp.CompoundShape();' its not recommended,
+            // as it will not apply bodies already using this shape!
+            var shape = _shape as BulletSharp.CompoundShape;
+            foreach (var child in shape.ChildList)
+            {
+                shape.RemoveChildShape(child.ChildShape);
+            }
         }
 
         /// <summary>
