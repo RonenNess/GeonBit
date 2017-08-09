@@ -127,6 +127,7 @@
     <Compile Include="Source\Core\Input\GameKeys.cs" />
     <Compile Include="Source\Core\Input\Keys.cs" />
     <Compile Include="Source\Core\Input\Mouse.cs" />
+    <Compile Include="Source\Core\Physics\CollisionShapes\CollisionCompoundShape.cs" />
     <Compile Include="Source\Core\Physics\CollisionShapes\CollisionHeightMap.cs" />
     <Compile Include="Source\Core\Physics\CollisionShapes\CollisionTriangle.cs" />
     <Compile Include="Source\Core\Physics\CollisionShapes\CollisionCylinder.cs" />

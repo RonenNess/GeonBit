@@ -1561,7 +1561,7 @@ RigidBody body = new RigidBody(new BoxInfo(new Vector3(10,10,10), mass: 10f, ine
 go.AddComponent(body);
 ```
 
-#### Kinematic Body
+### Kinematic Body
 
 Kinematic Body is a physical body that does not respond to external forces. A kinematic body will simply take the transformations of its parent *GameObject*.
 
@@ -1574,7 +1574,7 @@ KinematicBody elevatorPhysics = new KinematicBody(new BoxInfo(bodySize));
 elevator.AddComponent(elevatorPhysics); 
 ```
 
-#### Static Body
+### Static Body
 
 Static Body is similar to a Kinematic Body, but will not produce collision events by default (can be changed) and is optimized for immobile objects.
 
@@ -1587,7 +1587,30 @@ StaticBody wallPhysics = new StaticBody(new BoxInfo(bodySize));
 wall.AddComponent(wallPhysics); 
 ```
 
-#### Collision Groups
+### Collision Shapes
+
+In the examples above we created physical bodies using a simple box shape.
+
+There are several built-in "Shape Infos" classes that help you quickly build basic shapes, or you can use any of the collision shapes defined under the ```GeonBit.Core.Physics.CollisionShapes``` namespace.
+
+Among all the basic predefined shapes (box, sphere, cone, capsule, etc..) there are also few special shapes we should mention here:
+
+- **CollisionCompoundShape**: A shape that combine together several other shapes. This is useful either for complex bodies or to optimize lots of static objects by banding them together.
+- **CollisionConvexHull**: If the built-in shapes are not enough, you can create a convex hull shape from an array of points.
+- **CollisionEndlessPlane**: A quick way to create an endless plane that can prevent things from falling or make an invisible wall block.
+- **CollisionHeightMap**: A heightmap made of matrix of points. Useful to represent terrains.
+
+### Debugging Physics
+
+You can enable a special debug renderer that will draw all physical shapes and forces:
+
+```cs
+Managers.Diagnostic.DebugRenderPhysics = true;
+```
+
+Please note however that the debug rendering are not very optimized and may be heavy on performance.
+
+### Collision Groups
 
 Collision groups allow you to control which objects can collide with which objects.
 For example, in your game you might decide that enemy bullets will not hit other enemies and just go through them. In other words, you might want to decide that enemy bullets only collide with player and static objects (walls etc).
