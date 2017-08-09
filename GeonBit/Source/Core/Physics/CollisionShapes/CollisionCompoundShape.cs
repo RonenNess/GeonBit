@@ -54,7 +54,7 @@ namespace GeonBit.Core.Physics.CollisionShapes
         /// </summary>
         /// <param name="shape">Collision shape to add.</param>
         /// <param name="transform">Transformations for child shape.</param>
-        public void AddShape(ICollisionShape shape, Matrix? transform)
+        public void AddShape(ICollisionShape shape, Matrix? transform = null)
         {
             var comShape = _shape as BulletSharp.CompoundShape;
             comShape.AddChildShape(ToBullet.Matrix(transform ?? Matrix.Identity), shape.BulletCollisionShape);
