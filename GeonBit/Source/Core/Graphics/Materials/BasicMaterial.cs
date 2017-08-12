@@ -50,7 +50,7 @@ namespace GeonBit.Core.Graphics.Materials
         /// <param name="other">Other material to clone.</param>
         public BasicMaterial(BasicMaterial other)
         {
-            _effect = other._effect;
+            _effect = other._effect.Clone() as BasicEffect;
             MaterialAPI asBase = this;
             other.CloneBasics(ref asBase);
         }
@@ -63,7 +63,7 @@ namespace GeonBit.Core.Graphics.Materials
         public BasicMaterial(BasicEffect fromEffect, bool copyEffectProperties = true)
         {
             // store effect and set default properties
-            _effect = fromEffect;
+            _effect = fromEffect.Clone() as BasicEffect;
             SetDefaults();
 
             // copy properties from effect itself

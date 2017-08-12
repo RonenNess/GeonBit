@@ -64,7 +64,7 @@ namespace GeonBit.Core.Graphics.Materials
         /// <param name="other">Other material to clone.</param>
         public SkyboxMaterial(SkyboxMaterial other)
         {
-            _effect = other._effect;
+            _effect = other._effect.Clone() as BasicEffect;
             MaterialAPI asBase = this;
             other.CloneBasics(ref asBase);
             FlipYZ = other.FlipYZ;

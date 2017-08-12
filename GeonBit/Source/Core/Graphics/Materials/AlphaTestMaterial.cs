@@ -72,7 +72,7 @@ namespace GeonBit.Core.Graphics.Materials
         public AlphaTestMaterial(AlphaTestEffect fromEffect, bool copyEffectProperties = true)
         {
             // store effect and set default properties
-            _effect = fromEffect;
+            _effect = fromEffect.Clone() as AlphaTestEffect;
             SetDefaults();
 
             // copy properties from effect itself
@@ -91,7 +91,7 @@ namespace GeonBit.Core.Graphics.Materials
         /// <param name="other">Other material to clone.</param>
         public AlphaTestMaterial(AlphaTestMaterial other)
         {
-            _effect = other._effect;
+            _effect = other._effect.Clone() as AlphaTestEffect;
             MaterialAPI asBase = this;
             other.CloneBasics(ref asBase);
             AlphaFunction = other.AlphaFunction;

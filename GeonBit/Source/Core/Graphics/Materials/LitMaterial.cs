@@ -62,7 +62,7 @@ namespace GeonBit.Core.Graphics.Materials
         /// <summary>
         /// Create the lit material from an empty effect.
         /// </summary>
-        public LitMaterial() : this(ResourcesManager.Instance.GetEffect(EffectsPath + "LitEffect"))
+        public LitMaterial() : this(ResourcesManager.Instance.GetEffect(EffectsPath + "LitEffect").Clone())
         {
             _effectParams = _effect.Parameters;
         }
@@ -73,7 +73,7 @@ namespace GeonBit.Core.Graphics.Materials
         /// <param name="other">Other material to clone.</param>
         public LitMaterial(LitMaterial other)
         {
-            _effect = other._effect;
+            _effect = other._effect.Clone();
             _effectParams = _effect.Parameters;
             MaterialAPI asBase = this;
             other.CloneBasics(ref asBase);
@@ -85,7 +85,7 @@ namespace GeonBit.Core.Graphics.Materials
         /// <param name="fromEffect">Effect to create material from.</param>
         public LitMaterial(Effect fromEffect)
         {
-            _effect = fromEffect;
+            _effect = fromEffect.Clone();
             _effectParams = _effect.Parameters;
             SetDefaults();
         }

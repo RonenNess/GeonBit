@@ -61,7 +61,7 @@ namespace GeonBit.Core.Graphics.Materials
         public SkinnedMaterial(SkinnedEffect fromEffect, bool copyEffectProperties = true)
         {
             // store effect and set default properties
-            _effect = fromEffect; // new SkinnedEffect(fromEffect.GraphicsDevice);
+            _effect = fromEffect.Clone() as SkinnedEffect;
             SetDefaults();
 
             // copy properties from effect itself
@@ -87,7 +87,7 @@ namespace GeonBit.Core.Graphics.Materials
         /// <param name="other">Other material to clone.</param>
         public SkinnedMaterial(SkinnedMaterial other)
         {
-            _effect = other._effect;
+            _effect = other._effect.Clone() as SkinnedEffect;
             MaterialAPI asBase = this;
             other.CloneBasics(ref asBase);
         }
