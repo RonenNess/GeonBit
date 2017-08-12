@@ -82,10 +82,6 @@ namespace GeonBit.Core.Graphics.Materials
                 Texture = fromEffect.Texture;
                 TextureEnabled = fromEffect.Texture != null;
                 Alpha = fromEffect.Alpha;
-
-                // enable lightings by default
-                LightingEnabled = true;
-                SmoothLighting = true;
             }
         }
 

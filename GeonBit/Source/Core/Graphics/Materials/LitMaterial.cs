@@ -46,6 +46,14 @@ namespace GeonBit.Core.Graphics.Materials
         EffectParameterCollection _effectParams;
 
         /// <summary>
+        /// Return if this material support dynamic lighting.
+        /// </summary>
+        override public bool LightingEnabled
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// Create the lit material from an empty effect.
         /// </summary>
         public LitMaterial() : this(ResourcesManager.Instance.GetEffect(EffectsPath + "LitEffect"))
@@ -97,14 +105,8 @@ namespace GeonBit.Core.Graphics.Materials
                 Alpha = fromEffect.Alpha;
                 AmbientLight = new Color(fromEffect.AmbientLightColor.X, fromEffect.AmbientLightColor.Y, fromEffect.AmbientLightColor.Z);
                 DiffuseColor = new Color(fromEffect.DiffuseColor.X, fromEffect.DiffuseColor.Y, fromEffect.DiffuseColor.Z);
-                LightingEnabled = fromEffect.LightingEnabled;
-                SmoothLighting = fromEffect.PreferPerPixelLighting;
                 SpecularColor = new Color(fromEffect.SpecularColor.X, fromEffect.SpecularColor.Y, fromEffect.SpecularColor.Z);
                 SpecularPower = fromEffect.SpecularPower;
-
-                // enable lightings by default
-                LightingEnabled = true;
-                SmoothLighting = true;
             }
         }
 

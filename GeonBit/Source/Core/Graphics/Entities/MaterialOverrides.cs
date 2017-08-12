@@ -37,7 +37,6 @@ namespace GeonBit.Core.Graphics
         Color? _specularColor = null;
         float? _alpha = null;
         Texture2D _texture = null;
-        bool? _lightingEnabled = null;
 
         /// <summary>
         /// Override diffuse color for this specific entity.
@@ -80,15 +79,6 @@ namespace GeonBit.Core.Graphics
         }
 
         /// <summary>
-        /// Override material lighting enabled property for this specific entity.
-        /// </summary>
-        public bool? LightingEnabled
-        {
-            get { return _lightingEnabled; }
-            set { _lightingEnabled = value; UpdateOverridePropertiesState(); }
-        }
-
-        /// <summary>
         /// If true will use the override per-entity properties.
         /// </summary>
         public bool UsingOverrideProperties { get; protected set; }
@@ -99,7 +89,7 @@ namespace GeonBit.Core.Graphics
         /// </summary>
         private bool HaveOverrideProperties
         {
-            get { return Alpha != null || DiffuseColor != null || Texture != null || SpecularColor != null || LightingEnabled != null; }
+            get { return Alpha != null || DiffuseColor != null || Texture != null || SpecularColor != null; }
         }
 
         /// <summary>
@@ -121,7 +111,6 @@ namespace GeonBit.Core.Graphics
             ret._specularColor = _specularColor;
             ret._alpha = _alpha;
             ret._texture = _texture;
-            ret._lightingEnabled = _lightingEnabled;
             ret.UpdateOverridePropertiesState();
             return ret;
         }
@@ -159,12 +148,6 @@ namespace GeonBit.Core.Graphics
             if (Alpha != null)
             {
                 material.Alpha = (float)Alpha;
-            }
-
-            // if got override lighting, set it
-            if (LightingEnabled != null)
-            {
-                material.LightingEnabled = (bool)LightingEnabled;
             }
 
             // if got override texture, set it

@@ -75,15 +75,12 @@ namespace GeonBit.Core.Graphics.Materials
                 Alpha = fromEffect.Alpha;
                 AmbientLight = new Color(fromEffect.AmbientLightColor.X, fromEffect.AmbientLightColor.Y, fromEffect.AmbientLightColor.Z);
                 DiffuseColor = new Color(fromEffect.DiffuseColor.X, fromEffect.DiffuseColor.Y, fromEffect.DiffuseColor.Z);
-                LightingEnabled = fromEffect.LightingEnabled;
-                SmoothLighting = fromEffect.PreferPerPixelLighting;
                 SpecularColor = new Color(fromEffect.SpecularColor.X, fromEffect.SpecularColor.Y, fromEffect.SpecularColor.Z);
                 SpecularPower = fromEffect.SpecularPower;
 
                 // enable lightings by default
-                LightingEnabled = true;
-                SmoothLighting = true;
                 _effect.EnableDefaultLighting();
+                _effect.LightingEnabled = true;
             }
         }
 
@@ -124,11 +121,6 @@ namespace GeonBit.Core.Graphics.Materials
                 _effect.DiffuseColor = DiffuseColor.ToVector3();
                 _effect.SpecularColor = SpecularColor.ToVector3();
                 _effect.SpecularPower = SpecularPower;
-            }
-            if (IsDirty(MaterialDirtyFlags.LightingParams))
-            {
-                _effect.LightingEnabled = LightingEnabled;
-                _effect.PreferPerPixelLighting = SmoothLighting;
             }
         }
 

@@ -162,24 +162,12 @@ namespace GeonBit.Core.Graphics.Materials
         abstract public Effect Effect { get; }
 
         /// <summary>
-        /// Is lightings enabled.
+        /// Return if this material support dynamic lighting.
         /// </summary>
         virtual public bool LightingEnabled
         {
-            get { return _lightingEnabled; }
-            set { _lightingEnabled = value; SetAsDirty(MaterialDirtyFlags.LightingParams); }
+            get { return false; }
         }
-        bool _lightingEnabled;
-
-        /// <summary>
-        /// If true will use per-pixel smooth lighting.
-        /// </summary>
-        virtual public bool SmoothLighting
-        {
-            get { return _smoothLighting; }
-            set { _smoothLighting = value; SetAsDirty(MaterialDirtyFlags.LightingParams); }
-        }
-        bool _smoothLighting;
 
         /// <summary>
         /// Diffuse color.
@@ -511,8 +499,6 @@ namespace GeonBit.Core.Graphics.Materials
             cloned.TextureEnabled = TextureEnabled;
             cloned.Texture = Texture;
             cloned.Alpha = Alpha;
-            cloned.LightingEnabled = LightingEnabled;
-            cloned.SmoothLighting = SmoothLighting;
             cloned.DiffuseColor = DiffuseColor;
             cloned.SpecularColor = SpecularColor;
             cloned.SpecularPower = SpecularPower;
@@ -530,8 +516,6 @@ namespace GeonBit.Core.Graphics.Materials
             TextureEnabled = false;
             Texture = null;
             Alpha = 1f;
-            LightingEnabled = true;
-            SmoothLighting = true;
             DiffuseColor = Color.White;
             SpecularColor = Color.White;
             EmissiveLight = Color.Black;
