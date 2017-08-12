@@ -45,6 +45,12 @@ namespace GeonBit.Core.Graphics.Materials
         // effect parameters
         EffectParameterCollection _effectParams;
 
+        // How many lights we can support at the same time. based on effect definition.
+        static readonly int MaxLightsCount = 7;
+
+        // cache of lights we applied
+        Lights.LightSource[] _lastLights = new Lights.LightSource[MaxLightsCount];
+
         /// <summary>
         /// Return if this material support dynamic lighting.
         /// </summary>
@@ -122,10 +128,22 @@ namespace GeonBit.Core.Graphics.Materials
             if (wasLastMaterial) { return; }
 
             // set all effect params
-            _effectParams["MainTexture"].SetValue(Texture);
-            _effectParams["Alpha"].SetValue(Alpha);
-            _effectParams["AmbientColor"].SetValue(AmbientLight.ToVector3());
-            _effectParams["DiffuseColor"].SetValue(DiffuseColor.ToVector3());
+            if (IsDirty(MaterialDirtyFlags.TextureParams))
+            {
+                _effectParams["MainTexture"].SetValue(Texture);
+            }
+            if (IsDirty(MaterialDirtyFlags.Alpha))
+            {
+                _effectParams["Alpha"].SetValue(Alpha);
+            }
+            if (IsDirty(MaterialDirtyFlags.MaterialColors))
+            {
+                _effectParams["DiffuseColor"].SetValue(DiffuseColor.ToVector3());
+            }
+            if (IsDirty(MaterialDirtyFlags.LightSources))
+            {
+                _effectParams["AmbientColor"].SetValue(AmbientLight.ToVector3());
+            }
         }
 
         /// <summary>
@@ -142,6 +160,29 @@ namespace GeonBit.Core.Graphics.Materials
         /// <param name="projection">New projection to set.</param>
         override protected void UpdateProjection(ref Matrix projection)
         {
+        }
+
+        /// <summary>
+        /// Apply light sources on this material.
+        /// </summary>
+        /// <param name="lights">Array of light sources to apply.</param>
+        /// <param name="worldMatrix">World transforms of the rendering object.</param>
+        /// <param name="boundingSphere">Bounding sphere (after world transformation applied) of the rendering object.</param>
+        override protected void ApplyLights(Lights.LightSource[] lights, ref Matrix worldMatrix, ref BoundingSphere boundingSphere)
+        {
+            // iterate on lights and apply only the changed ones
+            int lightsCount = Math.Min(MaxLightsCount, lights.Length);
+            for (int i = 0; i < lightsCount; ++i)
+            {
+                // only if light changed
+                if (_lastLights[i] != lights[i])
+                {
+                    // copy light properties
+
+                    // store light in cache so we won't copy it next time if it haven't changed
+                    _lastLights[i] = lights[i];
+                }
+            }
         }
 
         /// <summary>

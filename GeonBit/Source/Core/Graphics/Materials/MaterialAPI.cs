@@ -425,7 +425,7 @@ namespace GeonBit.Core.Graphics.Materials
                 var lightsManager = Graphics.GraphicsManager.LightsManager;
                 var lights = lightsManager.GetLights(this, ref boundingSphere);
                 if (AmbientLight != lightsManager.AmbientLight) { AmbientLight = lightsManager.AmbientLight; }
-                ApplyLights(lights);
+                ApplyLights(lights, ref worldMatrix, ref boundingSphere);
             }
 
             // set last material applied to self
@@ -439,7 +439,9 @@ namespace GeonBit.Core.Graphics.Materials
         /// Apply light sources on this material.
         /// </summary>
         /// <param name="lights">Array of light sources to apply.</param>
-        virtual protected void ApplyLights(Lights.LightSource[] lights)
+        /// <param name="worldMatrix">World transforms of the rendering object.</param>
+        /// <param name="boundingSphere">Bounding sphere (after world transformation applied) of the rendering object.</param>
+        virtual protected void ApplyLights(Lights.LightSource[] lights, ref Matrix worldMatrix, ref BoundingSphere boundingSphere)
         {
         }
 

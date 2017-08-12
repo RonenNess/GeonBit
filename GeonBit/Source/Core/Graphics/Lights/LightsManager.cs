@@ -42,6 +42,11 @@ namespace GeonBit.Core.Graphics.Lights
             /// Max lights region index this light is currently in.
             /// </summary>
             public Vector3 MaxRegionIndex;
+
+            /// <summary>
+            /// If true, it means the light is infinite (eg have no range).
+            /// </summary>
+            public bool Infinite;
         }
 
         /// <summary>
@@ -54,6 +59,9 @@ namespace GeonBit.Core.Graphics.Lights
 
         // dictionary of regions and the lights they contain.
         Dictionary<Vector3, List<LightSource>> _regions = new Dictionary<Vector3, List<LightSource>>();
+
+        // list of lights that are infinite, eg have no range limit.
+        List<LightSource> _infiniteLights = new List<LightSource>();
 
         // data about lights in this lights manager
         Dictionary<LightSource, LightSourceMD> _lightsData = new Dictionary<LightSource, LightSourceMD>();
@@ -161,9 +169,15 @@ namespace GeonBit.Core.Graphics.Lights
             // get min and max points of this bounding sphere
             Vector3 min = GetMinRegionIndex(ref boundingSphere);
             Vector3 max = GetMaxRegionIndex(ref boundingSphere);
-            
+
             // build array to return
             Utils.ResizableArray<LightSource> retLights = new Utils.ResizableArray<LightSource>();
+
+            // add all infinite lights first (directional lights etc)
+            foreach (var light in _infiniteLights)
+            {
+                retLights.Add(light);
+            }
 
             // iterate regions and add lights
             bool isFirstRegionWeCheck = true;
@@ -240,6 +254,13 @@ namespace GeonBit.Core.Graphics.Lights
             var min = lightMd.MinRegionIndex;
             var max = lightMd.MaxRegionIndex;
 
+            // if infinite light remove from infinite lights list and stop here
+            if (lightMd.Infinite)
+            {
+                _infiniteLights.Remove(light);
+                return;
+            }
+
             // remove light from previous regions
             Vector3 index = new Vector3();
             for (int x = (int)min.X; x < max.X; ++x)
@@ -275,6 +296,21 @@ namespace GeonBit.Core.Graphics.Lights
             // remove light from previous regions
             RemoveLightFromItsRegions(light);
 
+            // if its infinite light add to infinite list
+            if (light.IsInfinite)
+            {
+                // add to infinite lights
+                _infiniteLights.Add(light);
+
+                // update light's metadata
+                LightSourceMD newMd = new LightSourceMD();
+                newMd.Infinite = true;
+                _lightsData[light] = newMd;
+
+                // stop here
+                return;
+            }
+
             // calc new min and max for the light
             var boundingSphere = light.BoundingSphere;
             var min = GetMinRegionIndex(ref boundingSphere);
@@ -305,10 +341,12 @@ namespace GeonBit.Core.Graphics.Lights
             }
 
             // update light's metadata
-            LightSourceMD newMd = new LightSourceMD();
-            newMd.MinRegionIndex = min;
-            newMd.MaxRegionIndex = max;
-            _lightsData[light] = newMd;
+            {
+                LightSourceMD newMd = new LightSourceMD();
+                newMd.MinRegionIndex = min;
+                newMd.MaxRegionIndex = max;
+                _lightsData[light] = newMd;
+            }
         }
     }
 }

@@ -42,27 +42,50 @@ namespace GeonBit.Core.Graphics.Lights
         /// </summary>
         public BoundingSphere BoundingSphere { get; protected set; }
 
-        // light radius value.
-        private float _radius = 100f;
+        /// <summary>
+        /// Return if this light source is infinite, eg has no range and reach anywhere (like a directional light).
+        /// </summary>
+        virtual public bool IsInfinite
+        {
+            get { return Direction != null; }
+        }
 
         /// <summary>
-        /// Light radius.
+        /// Light direction, if its a directional light.
         /// </summary>
-        public float Radius
+        Vector3? Direction
         {
-            get { return _radius; }
-            set { _radius = value; RecalcBoundingSphere(); }
+            get
+            {
+                return _direction;
+            }
+            set
+            {
+                _direction = value;
+                RecalcBoundingSphere();
+            }
         }
+        private Vector3? _direction = null;
+
+        /// <summary>
+        /// Light range.
+        /// </summary>
+        public float Range
+        {
+            get { return _range; }
+            set
+            {
+                if (value == 0) { throw new Exceptions.InvalidValueException("cannot set light with range of 0!"); }
+                _range = value;
+                RecalcBoundingSphere();
+            }
+        }
+        private float _range = 100f;
 
         /// <summary>
         /// Light color and strength (A field = light strength).
         /// </summary>
         public Color Color = Color.White;
-
-        /// <summary>
-        /// Optional light direction, if its a directional light.
-        /// </summary>
-        public Vector3? Direction = null;
 
         /// <summary>
         /// Light Intensity (equivilent to Color.A).
@@ -101,7 +124,7 @@ namespace GeonBit.Core.Graphics.Lights
             // calc light bounding sphere
             Vector3 scale; Vector3 position; Quaternion rotation;
             _transform.Decompose(out scale, out rotation, out position);
-            BoundingSphere = new BoundingSphere(position, scale.Length());
+            BoundingSphere = new BoundingSphere(position, _range * scale.Length());
 
             // notify manager on update
             if (LightsManager != null) { LightsManager.UpdateLightTransform(this); }
