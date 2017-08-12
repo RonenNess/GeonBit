@@ -60,9 +60,18 @@ namespace GeonBit.Core.Graphics.Materials
         }
 
         /// <summary>
+        /// Create new lit effect instance.
+        /// </summary>
+        /// <returns>New lit effect instance.</returns>
+        public static Effect CreateEffect()
+        {
+            return ResourcesManager.Instance.GetEffect(EffectsPath + "LitEffect").Clone();
+        }
+
+        /// <summary>
         /// Create the lit material from an empty effect.
         /// </summary>
-        public LitMaterial() : this(ResourcesManager.Instance.GetEffect(EffectsPath + "LitEffect").Clone())
+        public LitMaterial() : this(CreateEffect())
         {
             _effectParams = _effect.Parameters;
         }
@@ -98,7 +107,7 @@ namespace GeonBit.Core.Graphics.Materials
         public LitMaterial(BasicEffect fromEffect, bool copyEffectProperties = true)
         {
             // store effect and set default properties
-            _effect = fromEffect;
+            _effect = CreateEffect();
             _effectParams = _effect.Parameters;
             SetDefaults();
 
@@ -181,7 +190,7 @@ namespace GeonBit.Core.Graphics.Materials
                     float[] data = lights[i].GetFloatBuffer();
 
                     // set light's data
-                    _effectParams["LightSorce"].SetValue(data);
+                    _effectParams["LightSorce"].Elements[i].SetValue(data);
 
                     // store light in cache so we won't copy it next time if it haven't changed
                     _lastLights[i] = lights[i];

@@ -414,10 +414,6 @@ namespace GeonBit.Core.Graphics.Materials
                 _projectionMatrixVersion = _globalProjectionMatrixVersion;
             }
 
-            // set effect tag to point on self, and call the per-effect specific apply
-            if (Effect.Tag == null) { Effect.Tag = this; }
-            MaterialSpecificApply(_lastMaterialApplied == this);
-
             // if support light get lights and set them
             if (LightingEnabled && UseDefaultLightsManager)
             {
@@ -427,6 +423,10 @@ namespace GeonBit.Core.Graphics.Materials
                 if (AmbientLight != lightsManager.AmbientLight) { AmbientLight = lightsManager.AmbientLight; }
                 ApplyLights(lights, ref worldMatrix, ref boundingSphere);
             }
+
+            // set effect tag to point on self, and call the per-effect specific apply
+            if (Effect.Tag == null) { Effect.Tag = this; }
+            MaterialSpecificApply(_lastMaterialApplied == this);
 
             // set last material applied to self
             _lastMaterialApplied = this;
