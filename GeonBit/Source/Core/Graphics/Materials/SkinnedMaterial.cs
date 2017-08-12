@@ -50,6 +50,7 @@ namespace GeonBit.Core.Graphics.Materials
         override public void SetBoneTransforms(Matrix[] bones)
         {
             _currBones = bones;
+            SetAsDirty(MaterialDirtyFlags.Bones);
         }
 
         /// <summary>
@@ -100,24 +101,63 @@ namespace GeonBit.Core.Graphics.Materials
         override protected void MaterialSpecificApply(bool wasLastMaterial)
         {
             // set world matrix
-            _effect.World = World;
+            if (IsDirty(MaterialDirtyFlags.World))
+            {
+                _effect.World = World;
+            }
 
             // if it was last material used, stop here - no need for the following settings
             if (wasLastMaterial) { return; }
 
-            // set bone transforms
-            if (_currBones != null) { _effect.SetBoneTransforms(_currBones); }
-
             // set all effect params
+            if (IsDirty(MaterialDirtyFlags.TextureParams))
+            {
+                _effect.Texture = Texture;
+            }
+            if (IsDirty(MaterialDirtyFlags.Alpha))
+            {
+                _effect.Alpha = Alpha;
+            }
+            if (IsDirty(MaterialDirtyFlags.AmbientLight))
+            {
+                _effect.AmbientLightColor = AmbientLight.ToVector3();
+            }
+            if (IsDirty(MaterialDirtyFlags.EmissiveLight))
+            {
+                _effect.EmissiveColor = EmissiveLight.ToVector3();
+            }
+            if (IsDirty(MaterialDirtyFlags.MaterialColors))
+            {
+                _effect.DiffuseColor = DiffuseColor.ToVector3();
+                _effect.SpecularColor = SpecularColor.ToVector3();
+                _effect.SpecularPower = SpecularPower;
+            }
+            if (IsDirty(MaterialDirtyFlags.LightingParams))
+            {
+                _effect.PreferPerPixelLighting = SmoothLighting;
+            }
+            if (_currBones != null && (IsDirty(MaterialDirtyFlags.Bones)))
+            {
+                _effect.SetBoneTransforms(_currBones);
+            }
+        }
+
+        /// <summary>
+        /// Update material view matrix.
+        /// </summary>
+        /// <param name="view">New view to set.</param>
+        override protected void UpdateView(ref Matrix view)
+        {
             _effect.View = View;
+        }
+
+        /// <summary>
+        /// Update material projection matrix.
+        /// </summary>
+        /// <param name="projection">New projection to set.</param>
+        override protected void UpdateProjection(ref Matrix projection)
+        {
             _effect.Projection = Projection;
-            _effect.Texture = Texture;
-            _effect.Alpha = Alpha;
-            _effect.AmbientLightColor = LightingEnabled ? AmbientLight.ToVector3() : Color.White.ToVector3();
-            _effect.DiffuseColor = DiffuseColor.ToVector3();
-            _effect.PreferPerPixelLighting = SmoothLighting;
-            _effect.SpecularColor = LightingEnabled ? SpecularColor.ToVector3() : Color.Black.ToVector3();
-            _effect.SpecularPower = SpecularPower;
         }
 
         /// <summary>

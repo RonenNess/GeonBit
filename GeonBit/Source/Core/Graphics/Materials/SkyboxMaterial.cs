@@ -80,9 +80,23 @@ namespace GeonBit.Core.Graphics.Materials
                 (FlipYZ ? Matrix.CreateRotationX((float)Math.PI * -0.5f) : Matrix.Identity) *
                 Matrix.CreateScale(GraphicsManager.ActiveCamera.FarClipPlane * Vector3.One * 1.5f) *
                 Matrix.CreateTranslation(GraphicsManager.ActiveCamera.Position);
+        }
 
-            // set view and projection
+        /// <summary>
+        /// Update material view matrix.
+        /// </summary>
+        /// <param name="view">New view to set.</param>
+        override protected void UpdateView(ref Matrix view)
+        {
             _effect.View = View;
+        }
+
+        /// <summary>
+        /// Update material projection matrix.
+        /// </summary>
+        /// <param name="projection">New projection to set.</param>
+        override protected void UpdateProjection(ref Matrix projection)
+        {
             _effect.Projection = Projection;
         }
 

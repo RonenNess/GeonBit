@@ -40,12 +40,22 @@ namespace GeonBit.Core.Graphics.Materials
         /// <summary>
         /// The function used to decide which pixels are visible and which are not.
         /// </summary>
-        public CompareFunction AlphaFunction = CompareFunction.GreaterEqual;
+        public CompareFunction AlphaFunction
+        {
+            get { return _alphaFunction; }
+            set { _alphaFunction = value; SetAsDirty(MaterialDirtyFlags.AlphaTest); }
+        }
+        CompareFunction _alphaFunction = CompareFunction.GreaterEqual;
 
         /// <summary>
         /// Alpha value to compare with the AlphaFunction, to decide which pixels are visible and which are not.
         /// </summary>
-        public int ReferenceAlpha = 128;
+        public int ReferenceAlpha
+        {
+            get { return _referenceAlpha; }
+            set { _referenceAlpha = value; SetAsDirty(MaterialDirtyFlags.AlphaTest); }
+        }
+        int _referenceAlpha = 128;
 
         /// <summary>
         /// Create the default material from empty effect.
@@ -98,19 +108,50 @@ namespace GeonBit.Core.Graphics.Materials
         override protected void MaterialSpecificApply(bool wasLastMaterial)
         {
             // set world matrix
-            _effect.World = World;
+            if (IsDirty(MaterialDirtyFlags.World))
+            {
+                _effect.World = World;
+            }
 
             // if it was last material used, stop here - no need for the following settings
             if (wasLastMaterial) { return; }
 
             // set all effect params
+            if (IsDirty(MaterialDirtyFlags.TextureParams))
+            {
+                _effect.Texture = Texture;
+            }
+            if (IsDirty(MaterialDirtyFlags.Alpha))
+            {
+                _effect.Alpha = Alpha;
+            }
+            if (IsDirty(MaterialDirtyFlags.MaterialColors))
+            {
+                _effect.DiffuseColor = DiffuseColor.ToVector3();
+            }
+            if (IsDirty(MaterialDirtyFlags.AlphaTest))
+            {
+                _effect.AlphaFunction = AlphaFunction;
+                _effect.ReferenceAlpha = ReferenceAlpha;
+            }
+        }
+
+        /// <summary>
+        /// Update material view matrix.
+        /// </summary>
+        /// <param name="view">New view to set.</param>
+        override protected void UpdateView(ref Matrix view)
+        {
             _effect.View = View;
+        }
+
+        /// <summary>
+        /// Update material projection matrix.
+        /// </summary>
+        /// <param name="projection">New projection to set.</param>
+        override protected void UpdateProjection(ref Matrix projection)
+        {
             _effect.Projection = Projection;
-            _effect.Texture = Texture;
-            _effect.Alpha = Alpha;
-            _effect.DiffuseColor = DiffuseColor.ToVector3();
-            _effect.AlphaFunction = AlphaFunction;
-            _effect.ReferenceAlpha = ReferenceAlpha;
         }
 
         /// <summary>

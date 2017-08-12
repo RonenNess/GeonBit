@@ -93,23 +93,61 @@ namespace GeonBit.Core.Graphics.Materials
         override protected void MaterialSpecificApply(bool wasLastMaterial)
         {
             // set world matrix
-            _effect.World = World;
+            if (IsDirty(MaterialDirtyFlags.World))
+            {
+                _effect.World = World;
+            }
 
             // if it was last material used, stop here - no need for the following settings
             if (wasLastMaterial) { return; }
 
             // set all effect params
+            if (IsDirty(MaterialDirtyFlags.TextureParams))
+            {
+                _effect.Texture = Texture;
+                _effect.TextureEnabled = TextureEnabled;
+            }
+            if (IsDirty(MaterialDirtyFlags.Alpha))
+            {
+                _effect.Alpha = Alpha;
+            }
+            if (IsDirty(MaterialDirtyFlags.AmbientLight))
+            {
+                _effect.AmbientLightColor = AmbientLight.ToVector3();
+            }
+            if (IsDirty(MaterialDirtyFlags.EmissiveLight))
+            {
+                _effect.EmissiveColor = EmissiveLight.ToVector3();
+            }
+            if (IsDirty(MaterialDirtyFlags.MaterialColors))
+            {
+                _effect.DiffuseColor = DiffuseColor.ToVector3();
+                _effect.SpecularColor = SpecularColor.ToVector3();
+                _effect.SpecularPower = SpecularPower;
+            }
+            if (IsDirty(MaterialDirtyFlags.LightingParams))
+            {
+                _effect.LightingEnabled = LightingEnabled;
+                _effect.PreferPerPixelLighting = SmoothLighting;
+            }
+        }
+
+        /// <summary>
+        /// Update material view matrix.
+        /// </summary>
+        /// <param name="view">New view to set.</param>
+        override protected void UpdateView(ref Matrix view)
+        {
             _effect.View = View;
+        }
+
+        /// <summary>
+        /// Update material projection matrix.
+        /// </summary>
+        /// <param name="projection">New projection to set.</param>
+        override protected void UpdateProjection(ref Matrix projection)
+        {
             _effect.Projection = Projection;
-            _effect.Texture = Texture;
-            _effect.TextureEnabled = TextureEnabled;
-            _effect.Alpha = Alpha;
-            _effect.AmbientLightColor = AmbientLight.ToVector3();
-            _effect.DiffuseColor = DiffuseColor.ToVector3();
-            _effect.LightingEnabled = LightingEnabled;
-            _effect.PreferPerPixelLighting = SmoothLighting;
-            _effect.SpecularColor = SpecularColor.ToVector3();
-            _effect.SpecularPower = SpecularPower;
         }
 
         /// <summary>
