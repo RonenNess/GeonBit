@@ -17,7 +17,7 @@ float4 AmbientColor = float4(1, 1, 1, 1);
 float4 DiffuseColor = float4(1, 1, 1, 1);
 
 // rendering alpha
-float Alpha = 1f;
+float Alpha = 1.0f;
 
 // main texture
 texture MainTexture;
