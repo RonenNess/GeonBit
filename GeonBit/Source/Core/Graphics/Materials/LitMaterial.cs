@@ -177,7 +177,11 @@ namespace GeonBit.Core.Graphics.Materials
                 // only if light changed
                 if (_lastLights[i] != lights[i])
                 {
-                    // copy light properties
+                    // get light data as floats buffer
+                    float[] data = lights[i].GetFloatBuffer();
+
+                    // set light's data
+                    _effectParams["LightSorce"].SetValue(data);
 
                     // store light in cache so we won't copy it next time if it haven't changed
                     _lastLights[i] = lights[i];
