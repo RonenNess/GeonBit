@@ -32,16 +32,15 @@ namespace GeonBit.Core.Graphics.Lights
         /// </summary>
         public bool Visible = true;
 
-        // is light dirty / changed since last time we fetched it as an array?
-        bool _isFloatBufferDirty = true;
-
-        // cached light data as an array of floats.
-        float[] _asFloatBuffer;
-
         /// <summary>
         /// Parent lights manager.
         /// </summary>
         public ILightsManager LightsManager = null;
+
+        /// <summary>
+        /// So we can cache lights and identify when they were changed.
+        /// </summary>
+        public uint ParamsVersion { get; private set; } = 1;
 
         /// <summary>
         /// Light bounding sphere.
@@ -62,7 +61,7 @@ namespace GeonBit.Core.Graphics.Lights
         Vector3? Direction
         {
             get { return _direction; }
-            set { _direction = value; RecalcBoundingSphere(); }
+            set { if (_direction == value) return; _direction = value; ParamsVersion++; RecalcBoundingSphere(); }
         }
         private Vector3? _direction = null;
 
@@ -72,9 +71,19 @@ namespace GeonBit.Core.Graphics.Lights
         public float Range
         {
             get { return _range; }
-            set { _range = value; RecalcBoundingSphere(); }
+            set { if (_range == value) return; _range = value; ParamsVersion++; RecalcBoundingSphere(); }
         }
         private float _range = 100f;
+
+        /// <summary>
+        /// Light position in world space.
+        /// </summary>
+        public Vector3 Position
+        {
+            get { return _position; }
+            set { if (_position == value) return; _position = value; ParamsVersion++; RecalcBoundingSphere(); }
+        }
+        Vector3 _position = Vector3.Zero;
 
         /// <summary>
         /// Light color and strength (A field = light strength).
@@ -82,7 +91,7 @@ namespace GeonBit.Core.Graphics.Lights
         public Color Color
         {
             get { return _color; }
-            set { _isFloatBufferDirty = true; _color = value; }
+            set { if (_color == value) return; _color = value; ParamsVersion++; }
         }
         Color _color = Color.White;
 
@@ -92,7 +101,7 @@ namespace GeonBit.Core.Graphics.Lights
         public float Intensity
         {
             get { return _intensity; }
-            set { _isFloatBufferDirty = true; _intensity = value; }
+            set { if (_intensity == value) return; _intensity = value; ParamsVersion++; }
         }
         float _intensity = 1f;
 
@@ -102,7 +111,7 @@ namespace GeonBit.Core.Graphics.Lights
         public float Specular
         {
             get { return _specular; }
-            set { _isFloatBufferDirty = true; _specular = value; }
+            set { if (_specular == value) return; _specular = value; ParamsVersion++; }
         }
         float _specular = 1f;
 
@@ -118,11 +127,6 @@ namespace GeonBit.Core.Graphics.Lights
         /// </summary>
         virtual public float[] GetFloatBuffer()
         {
-            // if not dirty, return from cache
-            if (!_isFloatBufferDirty) { return _asFloatBuffer; }
-
-            // if dirty we need to rebuild float buffer
-
             // get color as vector
             var color = Color.ToVector3();
 
@@ -130,24 +134,13 @@ namespace GeonBit.Core.Graphics.Lights
             Vector3 pos = Direction ?? Position;
 
             // create data buffer
-            _asFloatBuffer = new float[] {
+            var asFloatBuffer = new float[] {
                 color.X, color.Y, color.Z,
                 pos.X, pos.Y, pos.Z,
                 Intensity, Range, Specular};
 
-            // no longer dirty
-            _isFloatBufferDirty = false;
-
             // return array
-            return _asFloatBuffer;
-        }
-
-        /// <summary>
-        /// Get light position in world space.
-        /// </summary>
-        Vector3 Position
-        {
-            get { return BoundingSphere.Center; }
+            return asFloatBuffer;
         }
 
         /// <summary>
@@ -159,26 +152,28 @@ namespace GeonBit.Core.Graphics.Lights
             // if didn't really change skip
             if (_transform == worldTransformations) { return; }
 
-            // set transformations and recalc bounding sphere
-            _transform = worldTransformations;
-            RecalcBoundingSphere();
+            // break transformation into components
+            Vector3 scale; Vector3 position; Quaternion rotation;
+            _transform.Decompose(out scale, out rotation, out position);
+
+            // set world position. this will also recalc bounding sphere and update lights manager, if needed.
+            Position = position;
         }
 
         /// <summary>
         /// Recalculate light bounding sphere after transformations or radius change.
         /// </summary>
-        protected virtual void RecalcBoundingSphere()
+        /// <param name="updateInLightsManager">If true, will also update light position in lights manager.</param>
+        public virtual void RecalcBoundingSphere(bool updateInLightsManager = true)
         {
-            // buffer is dirty
-            _isFloatBufferDirty = true;
-
             // calc light bounding sphere
-            Vector3 scale; Vector3 position; Quaternion rotation;
-            _transform.Decompose(out scale, out rotation, out position);
-            BoundingSphere = new BoundingSphere(position, _range * scale.Length());
+            BoundingSphere = new BoundingSphere(Position, _range);
 
             // notify manager on update
-            if (LightsManager != null) { LightsManager.UpdateLightTransform(this); }
+            if (updateInLightsManager && LightsManager != null)
+            {
+                LightsManager.UpdateLightTransform(this);
+            }
         }
     }
 }

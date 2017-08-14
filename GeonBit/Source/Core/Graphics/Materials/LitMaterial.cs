@@ -42,6 +42,13 @@ namespace GeonBit.Core.Graphics.Materials
         /// </summary>
         protected override bool UseDefaultLightsManager { get { return true; } }
 
+        // caching of lights-related params from shader
+        EffectParameter _lightsCol;
+        EffectParameter _lightsPos;
+        EffectParameter _lightsIntens;
+        EffectParameter _lightsRange;
+        EffectParameter _lightsSpec;
+
         // effect parameters
         EffectParameterCollection _effectParams;
 
@@ -50,6 +57,9 @@ namespace GeonBit.Core.Graphics.Materials
 
         // cache of lights we applied
         Lights.LightSource[] _lastLights = new Lights.LightSource[MaxLightsCount];
+
+        // cache of lights last known params version
+        uint[] _lastLightVersions = new uint[MaxLightsCount];
 
         /// <summary>
         /// Return if this material support dynamic lighting.
@@ -71,9 +81,11 @@ namespace GeonBit.Core.Graphics.Materials
         /// <summary>
         /// Create the lit material from an empty effect.
         /// </summary>
-        public LitMaterial() : this(CreateEffect())
+        public LitMaterial()
         {
-            _effectParams = _effect.Parameters;
+            _effect = CreateEffect();
+            SetDefaults();
+            InitLightParams();
         }
 
         /// <summary>
@@ -82,10 +94,13 @@ namespace GeonBit.Core.Graphics.Materials
         /// <param name="other">Other material to clone.</param>
         public LitMaterial(LitMaterial other)
         {
+            // clone effect and set defaults
             _effect = other._effect.Clone();
-            _effectParams = _effect.Parameters;
             MaterialAPI asBase = this;
             other.CloneBasics(ref asBase);
+
+            // init light params
+            InitLightParams();
         }
 
         /// <summary>
@@ -94,9 +109,12 @@ namespace GeonBit.Core.Graphics.Materials
         /// <param name="fromEffect">Effect to create material from.</param>
         public LitMaterial(Effect fromEffect)
         {
+            // clone effect and set defaults
             _effect = fromEffect.Clone();
-            _effectParams = _effect.Parameters;
             SetDefaults();
+
+            // init light params
+            InitLightParams();
         }
 
         /// <summary>
@@ -108,7 +126,6 @@ namespace GeonBit.Core.Graphics.Materials
         {
             // store effect and set default properties
             _effect = CreateEffect();
-            _effectParams = _effect.Parameters;
             SetDefaults();
 
             // copy properties from effect itself
@@ -123,6 +140,22 @@ namespace GeonBit.Core.Graphics.Materials
                 SpecularColor = new Color(fromEffect.SpecularColor.X, fromEffect.SpecularColor.Y, fromEffect.SpecularColor.Z);
                 SpecularPower = fromEffect.SpecularPower;
             }
+
+            // init light params
+            InitLightParams();
+        }
+
+        /// <summary>
+        /// Init light-related params from shader.
+        /// </summary>
+        void InitLightParams()
+        {
+            _effectParams = _effect.Parameters;
+            _lightsCol = _effectParams["LightColor"];
+            _lightsPos = _effectParams["LightPosition"];
+            _lightsIntens = _effectParams["LightIntensity"];
+            _lightsRange = _effectParams["LightRange"];
+            _lightsSpec = _effectParams["LightSpecular"];
         }
 
         /// <summary>
@@ -132,6 +165,13 @@ namespace GeonBit.Core.Graphics.Materials
         {
             // set world matrix
             _effectParams["WorldViewProjection"].SetValue(World * ViewProjection);
+
+            // set world matrix
+            if (IsDirty(MaterialDirtyFlags.World))
+            {
+                var world = _effectParams["World"];
+                if (world != null) world.SetValue(World);
+            }
 
             // if it was last material used, stop here - no need for the following settings
             if (wasLastMaterial) { return; }
@@ -184,17 +224,34 @@ namespace GeonBit.Core.Graphics.Materials
             for (int i = 0; i < lightsCount; ++i)
             {
                 // only if light changed
-                if (_lastLights[i] != lights[i])
+                if (_lastLights[i] != lights[i] || _lastLightVersions[i] != lights[i].ParamsVersion)
                 {
-                    // get light data as floats buffer
-                    float[] data = lights[i].GetFloatBuffer();
+                    // get current light
+                    var light = lights[i];
 
-                    // set light's data
-                    _effectParams["LightSorce"].Elements[i].SetValue(data);
+                    // set its params
+                    if (_lightsCol != null)
+                        _lightsCol.Elements[i].SetValue(light.Color.ToVector3());
+                    if (_lightsPos != null)
+                        _lightsPos.Elements[i].SetValue(light.Position);
+                    if (_lightsIntens != null)
+                        _lightsIntens.Elements[i].SetValue(light.Intensity);
+                    if (_lightsRange != null)
+                        _lightsRange.Elements[i].SetValue(light.Range);
+                    if (_lightsSpec != null)
+                        _lightsSpec.Elements[i].SetValue(light.Specular);
 
                     // store light in cache so we won't copy it next time if it haven't changed
                     _lastLights[i] = lights[i];
+                    _lastLightVersions[i] = lights[i].ParamsVersion;
                 }
+            }
+
+            // zero the following light so we won't process it
+            if (lightsCount < MaxLightsCount && _lastLights[lightsCount] != null)
+            {
+                _effectParams["LightIntensity"].Elements[lightsCount].SetValue(0f);
+                _lastLights[lightsCount] = null;
             }
         }
 

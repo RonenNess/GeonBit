@@ -101,14 +101,14 @@ namespace GeonBit.Core.Graphics
         List<Vector3> _allPoints = new List<Vector3>();
 
         /// <summary>
-        /// Combined mesh bounding box.
+        /// Combined mesh bounding box, in local space.
         /// </summary>
-        BoundingBox _boundingBox;
+        BoundingBox _localBoundingBox;
 
         /// <summary>
-        /// Combined mesh bounding sphere.
+        /// Combined mesh bounding sphere, in local space.
         /// </summary>
-        BoundingSphere _boundingSphere;
+        BoundingSphere _localBoundingSphere;
 
         /// <summary>
         /// Did we already build this combined mesh entity? happens on first draw, or when "build" is called.
@@ -122,8 +122,8 @@ namespace GeonBit.Core.Graphics
         public CombinedMeshesEntity Clone()
         {
             CombinedMeshesEntity ret = new CombinedMeshesEntity();
-            ret._boundingBox = _boundingBox;
-            ret._boundingSphere = _boundingSphere;
+            ret._localBoundingBox = _localBoundingBox;
+            ret._localBoundingSphere = _localBoundingSphere;
             ret._allPoints = new List<Vector3>(_allPoints);
             ret._parts = new Dictionary<Materials.MaterialAPI, CombinedMeshesPart>(_parts);
             ret._wasBuilt = _wasBuilt;
@@ -402,13 +402,13 @@ namespace GeonBit.Core.Graphics
         {
             if (_allPoints.Count != 0)
             {
-                _boundingBox = BoundingBox.CreateFromPoints(_allPoints);
-                _boundingSphere = BoundingSphere.CreateFromPoints(_allPoints);
+                _localBoundingBox = BoundingBox.CreateFromPoints(_allPoints);
+                _localBoundingSphere = BoundingSphere.CreateFromPoints(_allPoints);
             }
             else
             {
-                _boundingBox = new BoundingBox();
-                _boundingSphere = new BoundingSphere();
+                _localBoundingBox = new BoundingBox();
+                _localBoundingSphere = new BoundingSphere();
             }
         }
 
@@ -422,10 +422,11 @@ namespace GeonBit.Core.Graphics
         protected override BoundingSphere CalcBoundingSphere(Node parent, ref Matrix localTransformations, ref Matrix worldTransformations)
         {
             // get bounding sphere in local space
-            BoundingSphere modelBoundingSphere = _boundingSphere;
+            BoundingSphere modelBoundingSphere = _localBoundingSphere;
 
-            modelBoundingSphere.Radius *= worldTransformations.Scale.Length();
-            modelBoundingSphere.Center = worldTransformations.Translation;
+            // apply transformations on bounding sphere
+            modelBoundingSphere.Radius *= System.Math.Max(worldTransformations.Scale.X, System.Math.Max(worldTransformations.Scale.Y, worldTransformations.Scale.Z));
+            modelBoundingSphere.Center = Vector3.Transform(modelBoundingSphere.Center, worldTransformations);
             return modelBoundingSphere;
 
         }
@@ -440,7 +441,7 @@ namespace GeonBit.Core.Graphics
         protected override BoundingBox CalcBoundingBox(Node parent, ref Matrix localTransformations, ref Matrix worldTransformations)
         {
             // get bounding box in local space
-            BoundingBox modelBoundingBox = _boundingBox;
+            BoundingBox modelBoundingBox = _localBoundingBox;
 
             // initialize minimum and maximum corners of the bounding box to max and min values
             Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);

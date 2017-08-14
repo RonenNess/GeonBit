@@ -155,7 +155,10 @@ namespace GeonBit.Core.Physics
                 pairCache: _broadphase, 
                 constraintSolver: _solver, 
                 collisionConfiguration: _config);
-            
+
+            // for better performance
+            _world.ForceUpdateAllAabbs = false;
+
             // create debug renderer
             _debugDraw = new PhysicsDebugDraw(Graphics.GraphicsManager.GraphicsDevice);
 

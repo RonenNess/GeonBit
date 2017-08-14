@@ -80,14 +80,18 @@ namespace GeonBit.Core.Graphics
         // last transformation version of parent node that we calculated bounding box for.
         uint _lastWorldTransformForBoundingBox;
 
-        // last bounding box we calculated for this entity.
-        BoundingBox _lastBoundingBox;
+        /// <summary>
+        /// Last bounding box we calculated for this entity.
+        /// </summary>
+        protected BoundingBox _lastBoundingBox;
 
         // last transformation version of parent node that we calculated bounding sphere for.
         uint _lastWorldTransformForBoundingSphere;
 
-        // last bounding sphere we calculated for this entity.
-        BoundingSphere _lastBoundingSphere;
+        /// <summary>
+        /// Last bounding sphere we calculated for this entity.
+        /// </summary>
+        protected BoundingSphere _lastBoundingSphere;
 
         /// <summary>
         /// Get / Set if this entity is visible.
@@ -129,7 +133,7 @@ namespace GeonBit.Core.Graphics
             // call draw callback
             OnDraw?.Invoke(this);
 
-            // make sure we have up-to-date bounding sphere, which is important for lightings
+            // make sure we got up-to-date bounding sphere, which is important for lightings and other optimizations
             GetBoundingSphere(parent, ref localTransformations, ref worldTransformations);
 
             // call to draw this entity - this will either add to the corresponding rendering queue, or draw immediately if have no drawing queue.

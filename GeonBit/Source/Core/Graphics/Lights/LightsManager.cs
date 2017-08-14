@@ -101,6 +101,7 @@ namespace GeonBit.Core.Graphics.Lights
             _lights.Add(light);
 
             // add light to lights map
+            light.RecalcBoundingSphere(false);
             UpdateLightTransform(light);
         }
 
@@ -182,13 +183,13 @@ namespace GeonBit.Core.Graphics.Lights
             // iterate regions and add lights
             bool isFirstRegionWeCheck = true;
             Vector3 index = new Vector3();
-            for (int x = (int)min.X; x < max.X; ++x)
+            for (int x = (int)min.X; x <= max.X; ++x)
             {
                 index.X = x;
-                for (int y = (int)min.Y; y < max.Y; ++y)
+                for (int y = (int)min.Y; y <= max.Y; ++y)
                 {
                     index.Y = y;
-                    for (int z = (int)min.Z; z < max.Z; ++z)
+                    for (int z = (int)min.Z; z <= max.Z; ++z)
                     {
                         index.Z = z;
 
@@ -219,6 +220,7 @@ namespace GeonBit.Core.Graphics.Lights
             }
 
             // return the results array
+            retLights.Trim();
             return retLights.InternalArray;
         }
 
@@ -263,13 +265,13 @@ namespace GeonBit.Core.Graphics.Lights
 
             // remove light from previous regions
             Vector3 index = new Vector3();
-            for (int x = (int)min.X; x < max.X; ++x)
+            for (int x = (int)min.X; x <= max.X; ++x)
             {
                 index.X = x;
-                for (int y = (int)min.Y; y < max.Y; ++y)
+                for (int y = (int)min.Y; y <= max.Y; ++y)
                 {
                     index.Y = y;
-                    for (int z = (int)min.Z; z < max.Z; ++z)
+                    for (int z = (int)min.Z; z <= max.Z; ++z)
                     {
                         index.Z = z;
 
@@ -318,13 +320,13 @@ namespace GeonBit.Core.Graphics.Lights
 
             // add light to new regions
             Vector3 index = new Vector3();
-            for (int x = (int)min.X; x < max.X; ++x)
+            for (int x = (int)min.X; x <= max.X; ++x)
             {
                 index.X = x;
-                for (int y = (int)min.Y; y < max.Y; ++y)
+                for (int y = (int)min.Y; y <= max.Y; ++y)
                 {
                     index.Y = y;
-                    for (int z = (int)min.Z; z < max.Z; ++z)
+                    for (int z = (int)min.Z; z <= max.Z; ++z)
                     {
                         index.Z = z;
 

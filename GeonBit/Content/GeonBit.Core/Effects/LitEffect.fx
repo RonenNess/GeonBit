@@ -7,6 +7,9 @@
 	#define PS_SHADERMODEL ps_4_0_level_9_1
 #endif
 
+// world matrix
+matrix World;
+
 // world / view / projection matrix
 matrix WorldViewProjection;
 
@@ -22,13 +25,22 @@ float Alpha = 1.0f;
 // main texture
 texture MainTexture;
 
+// max lights count
+#define MAX_LIGHTS_COUNT 7
+
+// light sources.
+// note: 
+//	- lights with range 0 = directional lights (in which case light pos is direction).
+//	- lights with intensity 0 = disabled lights.
+float3 LightColor[MAX_LIGHTS_COUNT];
+float3 LightPosition[MAX_LIGHTS_COUNT];
+float LightIntensity[MAX_LIGHTS_COUNT];
+float LightRange[MAX_LIGHTS_COUNT];
+float LightSpecular[MAX_LIGHTS_COUNT];
+
 // main texture sampler
 sampler2D MainTextureSampler = sampler_state {
 	Texture = (MainTexture);
-	MinFilter = Linear;
-	MagFilter = Linear;
-	AddressU = Clamp;
-	AddressV = Clamp;
 };
 
 
@@ -36,7 +48,6 @@ sampler2D MainTextureSampler = sampler_state {
 struct VertexShaderInput
 {
 	float4 Position : POSITION0;
-	float4 Color : COLOR0;
 	float4 Normal : NORMAL0;
 	float2 TextureCoordinate : TEXCOORD0;
 };
@@ -45,9 +56,11 @@ struct VertexShaderInput
 struct VertexShaderOutput
 {
 	float4 Position : SV_POSITION;
-	float4 Color : COLOR0;
 	float3 Normal : TEXCOORD0;
 	float2 TextureCoordinate : TEXCOORD1;
+
+	// the position in world space (in oppose to "Position" which is world-view-projection space) + SV_POSITION is unreachable from pixel shader.
+	float3 WorldPos : TEXCOORD2;
 };
 
 // do basic vertex processing that is relevant for all lighting techniques.
@@ -55,9 +68,9 @@ VertexShaderOutput BasicVertexProcessing(VertexShaderInput input)
 {
 	VertexShaderOutput output;
 	output.Position = mul(input.Position, WorldViewProjection);
-	output.Color = input.Color;
 	output.Normal = input.Normal.xyz;
 	output.TextureCoordinate = input.TextureCoordinate;
+	output.WorldPos = input.Position; // mul(input.Position, World).xyz;
 	return output;
 }
 
@@ -80,8 +93,28 @@ float4 FlatLightingMainPS(VertexShaderOutput input) : COLOR
 	// store original texture alpha
 	float originalAlpha = textureColor.a;
 
+	// get pixel position
+	float3 position = input.WorldPos;
+
+	// calc lights strength
+	float4 LightsColor = AmbientColor;
+	for (int i = 0; i < MAX_LIGHTS_COUNT; ++i) {
+
+		// if we got to unused light, break
+		if (LightIntensity[i] == 0 || LightRange[i] == 0) { break; }
+
+		// calc light strength based on range
+		float disFactor = 1.0f - (distance(position, LightPosition[i]) / LightRange[i]);
+
+		// out of range? skip this light.
+		if (disFactor <= 0) { break; }
+
+		// add light to pixel
+		LightsColor.rgb += (LightColor[i]) * (LightIntensity[i] * (disFactor * disFactor));
+	}
+
 	// multiply by diffuse color, ambient, etc.
-	float4 ret = saturate(textureColor * input.Color * AmbientColor * DiffuseColor);
+	float4 ret = saturate(textureColor * LightsColor * DiffuseColor);
 
 	// reset original alpha so it won't be affected by lighting
 	ret.a = originalAlpha * Alpha;
