@@ -276,13 +276,16 @@ namespace GeonBit.Core.Graphics.Lights
                         index.Z = z;
 
                         // remove light from region
-                        var region = _regions[index];
-                        region.Remove(light);
-
-                        // if region is now empty, remove it
-                        if (region.Count == 0)
+                        List<LightSource> region;
+                        if (_regions.TryGetValue(index, out region))
                         {
-                            _regions.Remove(index);
+                            region.Remove(light);
+
+                            // if region is now empty, remove it
+                            if (region.Count == 0)
+                            {
+                                _regions.Remove(index);
+                            }
                         }
                     }
                 }
