@@ -52,6 +52,16 @@ namespace GeonBit.Core.Graphics.Materials
         // effect parameters
         EffectParameterCollection _effectParams;
 
+        // current active lights counter
+        int _activeLightsCount = 0;
+
+        // caching lights data in arrays ready to be sent to shader.
+        Vector3[] _lightsColArr = new Vector3[MaxLightsCount];
+        Vector3[] _lightsPosArr = new Vector3[MaxLightsCount];
+        float[] _lightsIntensArr = new float[MaxLightsCount];
+        float[] _lightsRangeArr = new float[MaxLightsCount];
+        float[] _lightsSpecArr = new float[MaxLightsCount];
+
         // How many lights we can support at the same time. based on effect definition.
         static readonly int MaxLightsCount = 7;
 
@@ -219,6 +229,9 @@ namespace GeonBit.Core.Graphics.Materials
         /// <param name="boundingSphere">Bounding sphere (after world transformation applied) of the rendering object.</param>
         override protected void ApplyLights(Lights.LightSource[] lights, ref Matrix worldMatrix, ref BoundingSphere boundingSphere)
         {
+            // do we need to update lights data?
+            bool needUpdate = false;
+
             // iterate on lights and apply only the changed ones
             int lightsCount = Math.Min(MaxLightsCount, lights.Length);
             for (int i = 0; i < lightsCount; ++i)
@@ -226,20 +239,18 @@ namespace GeonBit.Core.Graphics.Materials
                 // only if light changed
                 if (_lastLights[i] != lights[i] || _lastLightVersions[i] != lights[i].ParamsVersion)
                 {
+                    // mark that an update is required
+                    needUpdate = true;
+
                     // get current light
                     var light = lights[i];
 
-                    // set its params
-                    if (_lightsCol != null)
-                        _lightsCol.Elements[i].SetValue(light.Color.ToVector3());
-                    if (_lightsPos != null)
-                        _lightsPos.Elements[i].SetValue(light.Position);
-                    if (_lightsIntens != null)
-                        _lightsIntens.Elements[i].SetValue(light.Intensity);
-                    if (_lightsRange != null)
-                        _lightsRange.Elements[i].SetValue(light.Range);
-                    if (_lightsSpec != null)
-                        _lightsSpec.Elements[i].SetValue(light.Specular);
+                    // set lights data
+                    _lightsColArr[i] = light.Color.ToVector3();
+                    _lightsPosArr[i] = light.Position;
+                    _lightsIntensArr[i] = light.Intensity;
+                    _lightsRangeArr[i] = light.Range;
+                    _lightsSpecArr[i] = light.Specular;
 
                     // store light in cache so we won't copy it next time if it haven't changed
                     _lastLights[i] = lights[i];
@@ -247,11 +258,26 @@ namespace GeonBit.Core.Graphics.Materials
                 }
             }
 
-            // zero the following light so we won't process it
-            if (lightsCount < MaxLightsCount && _lastLights[lightsCount] != null)
+            // update active lights count
+            if (_activeLightsCount != lightsCount)
             {
-                _effectParams["LightIntensity"].Elements[lightsCount].SetValue(0f);
-                _lastLights[lightsCount] = null;
+                _activeLightsCount = lightsCount;
+                _effect.Parameters["ActiveLightsCount"].SetValue(_activeLightsCount);
+            }
+
+            // if we need to update lights, write their arrays
+            if (needUpdate)
+            {
+                if (_lightsCol != null)
+                    _lightsCol.SetValue(_lightsColArr);
+                if (_lightsPos != null)
+                    _lightsPos.SetValue(_lightsPosArr);
+                if (_lightsIntens != null)
+                    _lightsIntens.SetValue(_lightsIntensArr);
+                if (_lightsRange != null)
+                    _lightsRange.SetValue(_lightsRangeArr);
+                if (_lightsSpec != null)
+                    _lightsSpec.SetValue(_lightsSpecArr);
             }
         }
 

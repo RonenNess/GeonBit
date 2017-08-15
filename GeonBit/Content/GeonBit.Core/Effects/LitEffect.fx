@@ -1,10 +1,10 @@
 ﻿#if OPENGL
-	#define SV_POSITION POSITION
-	#define VS_SHADERMODEL vs_3_0
-	#define PS_SHADERMODEL ps_3_0
+#define SV_POSITION POSITION
+#define VS_SHADERMODEL vs_3_0
+#define PS_SHADERMODEL ps_3_0
 #else
-	#define VS_SHADERMODEL vs_4_0_level_9_1
-	#define PS_SHADERMODEL ps_4_0_level_9_1
+#define VS_SHADERMODEL vs_4_0_level_9_1
+#define PS_SHADERMODEL ps_4_0_level_9_1
 #endif
 
 // world matrix
@@ -12,6 +12,9 @@ matrix World;
 
 // world / view / projection matrix
 matrix WorldViewProjection;
+
+// how many active lights we have
+int ActiveLightsCount = 0;
 
 // ambient light value
 float4 AmbientColor = float4(1, 1, 1, 1);
@@ -98,16 +101,13 @@ float4 FlatLightingMainPS(VertexShaderOutput input) : COLOR
 
 	// calc lights strength
 	float4 LightsColor = AmbientColor;
-	for (int i = 0; i < MAX_LIGHTS_COUNT; ++i) {
-
-		// if we got to unused light, break
-		if (LightIntensity[i] == 0 || LightRange[i] == 0) { break; }
+	for (int i = 0; i < ActiveLightsCount; ++i) {
 
 		// calc light strength based on range
 		float disFactor = 1.0f - (distance(position, LightPosition[i]) / LightRange[i]);
 
 		// out of range? skip this light.
-		if (disFactor <= 0) { break; }
+		if (disFactor <= 0) { continue; }
 
 		// add light to pixel
 		LightsColor.rgb += (LightColor[i]) * (LightIntensity[i] * (disFactor * disFactor));
