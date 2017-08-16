@@ -80,7 +80,7 @@ VertexShaderOutput FlatLightingMainVS(in VertexShaderInput input)
 	VertexShaderOutput output;
 	output.Position = mul(input.Position, WorldViewProjection);
 	output.LocalPosition = input.Position.xyz;
-	output.Normal = input.Normal.xyz;
+	output.Normal = normalize(mul(input.Normal, World));
 	output.TextureCoordinate = input.TextureCoordinate;
 	return output;
 }
@@ -100,7 +100,7 @@ float4 FlatLightingMainPS(VertexShaderOutput input) : COLOR
 	}
 
 	// get pixel world position
-	float3 position = mul(World, input.LocalPosition).xyz;
+	float3 position = mul(input.LocalPosition, World).xyz;
 
 	// calc lights strength
 	float3 LightsColor = AmbientColor + EmissiveColor;
