@@ -25,6 +25,9 @@ float3 DiffuseColor = float3(1, 1, 1);
 // emissive
 float3 EmissiveColor = float3(0, 0, 0);
 
+// max intensity, eg allowing lights to overflow original color
+float MaxLightIntensity = 1.0f;
+
 // rendering alpha
 float Alpha = 1.0f;
 
@@ -124,7 +127,7 @@ float4 FlatLightingMainPS(VertexShaderOutput input) : COLOR
 	}
 
 	// make sure lights doesn't overflow
-	LightsColor.rgb = min(LightsColor.rgb, 1);
+	LightsColor.rgb = min(LightsColor.rgb, MaxLightIntensity);
 
 	// apply lighting and diffuse on return color
 	retColor.rgb = saturate(retColor.rgb * LightsColor * DiffuseColor);

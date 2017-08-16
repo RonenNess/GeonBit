@@ -55,6 +55,16 @@ namespace GeonBit.Core.Graphics.Materials
         // current active lights counter
         int _activeLightsCount = 0;
 
+        /// <summary>
+        /// Max light intensity from regular light sources (before specular).
+        /// </summary>
+        virtual public float MaxLightIntensity
+        {
+            get { return _maxLightIntens; }
+            set { _maxLightIntens = value; SetAsDirty(MaterialDirtyFlags.MaterialColors); }
+        }
+        float _maxLightIntens = 1.0f;
+
         // caching lights data in arrays ready to be sent to shader.
         Vector3[] _lightsColArr = new Vector3[MaxLightsCount];
         Vector3[] _lightsPosArr = new Vector3[MaxLightsCount];
@@ -202,10 +212,19 @@ namespace GeonBit.Core.Graphics.Materials
             if (IsDirty(MaterialDirtyFlags.MaterialColors))
             {
                 _effectParams["DiffuseColor"].SetValue(DiffuseColor.ToVector3());
+                _effectParams["MaxLightIntensity"].SetValue(MaxLightIntensity);
+            }
+            if (IsDirty(MaterialDirtyFlags.EmissiveLight))
+            {
+                _effectParams["EmissiveColor"].SetValue(EmissiveLight.ToVector3());
+            }
+            if (IsDirty(MaterialDirtyFlags.AmbientLight))
+            {
+                _effectParams["AmbientColor"].SetValue(AmbientLight.ToVector3());
             }
             if (IsDirty(MaterialDirtyFlags.LightSources))
             {
-                _effectParams["AmbientColor"].SetValue(AmbientLight.ToVector3());
+                _effectParams["MaxLightIntensity"].SetValue(1.0f);
             }
         }
 
