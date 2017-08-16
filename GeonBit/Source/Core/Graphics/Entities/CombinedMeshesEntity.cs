@@ -159,10 +159,6 @@ namespace GeonBit.Core.Graphics
             // sanity check - if build was called assert
             if (_wasBuilt) { throw new Exceptions.InvalidActionException("Cannot add meshes to Combined Mesh Entity after it was built!"); }
 
-            // extract transformation parts (scale, rotation, translate)
-            Vector3 scale; Quaternion rotation; Vector3 translate;
-            transform.Decompose(out scale, out rotation, out translate);
-
             // did we get material override to set?
             bool externalMaterial = material != null;
 
@@ -205,10 +201,10 @@ namespace GeonBit.Core.Graphics
                 {
                     // get curr position with transformations
                     Vector3 currPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), transform);
-
+                    
                     // get normals and rotate it based on transformations
                     Vector3 normal = new Vector3(vertexData[i + 3], vertexData[i + 4], vertexData[i + 5]);
-                    normal = Vector3.Transform(normal, rotation);
+                    normal = Vector3.TransformNormal(normal, transform);
 
                     // get texture coords
                     Vector2 textcoords = new Vector2(vertexData[i + 6], vertexData[i + 7]);
@@ -254,10 +250,6 @@ namespace GeonBit.Core.Graphics
                 return;
             }
 
-            // extract transformation parts (scale, rotation, translate)
-            Vector3 scale; Quaternion rotation; Vector3 translate;
-            transform.Decompose(out scale, out rotation, out translate);
-
             // transform all vertices from array
             int i = 0;
             VertexPositionNormalTexture[] processed = new VertexPositionNormalTexture[vertices.Length];
@@ -268,7 +260,7 @@ namespace GeonBit.Core.Graphics
 
                 // apply transformations
                 curr.Position = Vector3.Transform(curr.Position, transform);
-                curr.Normal = Vector3.Transform(curr.Normal, rotation);
+                curr.Normal = Vector3.TransformNormal(curr.Normal, transform);
                 processed[i++] = curr;
             }
 
