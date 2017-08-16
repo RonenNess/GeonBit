@@ -1,32 +1,38 @@
 ﻿#if OPENGL
-#define SV_POSITION POSITION
-#define VS_SHADERMODEL vs_3_0
-#define PS_SHADERMODEL ps_3_0
+	#define SV_POSITION POSITION
+	#define VS_SHADERMODEL vs_3_0
+	#define PS_SHADERMODEL ps_3_0
 #else
-#define VS_SHADERMODEL vs_4_0_level_9_1
-#define PS_SHADERMODEL ps_4_0_level_9_1
+	#define VS_SHADERMODEL vs_4_0_level_9_1
+	#define PS_SHADERMODEL ps_4_0_level_9_1
 #endif
-
-// world matrix
-matrix World;
 
 // world / view / projection matrix
 matrix WorldViewProjection;
 
-// how many active lights we have
-int ActiveLightsCount = 0;
+// world matrix
+matrix World;
+
+// define white color value
+float3 WhiteColor = float3(1, 1, 1);
 
 // ambient light value
-float4 AmbientColor = float4(1, 1, 1, 1);
+float3 AmbientColor = float3(1, 1, 1);
 
 // diffuse color
-float4 DiffuseColor = float4(1, 1, 1, 1);
+float3 DiffuseColor = float3(1, 1, 1);
+
+// emissive
+float3 EmissiveColor = float3(0, 0, 0);
 
 // rendering alpha
 float Alpha = 1.0f;
 
 // main texture
 texture MainTexture;
+
+// are we using texture?
+bool TextureEnabled = false;
 
 // max lights count
 #define MAX_LIGHTS_COUNT 7
@@ -41,11 +47,13 @@ float LightIntensity[MAX_LIGHTS_COUNT];
 float LightRange[MAX_LIGHTS_COUNT];
 float LightSpecular[MAX_LIGHTS_COUNT];
 
+// how many active lights we have
+int ActiveLightsCount = 0;
+
 // main texture sampler
 sampler2D MainTextureSampler = sampler_state {
 	Texture = (MainTexture);
 };
-
 
 // vertex shader input
 struct VertexShaderInput
@@ -62,46 +70,44 @@ struct VertexShaderOutput
 	float3 Normal : TEXCOORD0;
 	float2 TextureCoordinate : TEXCOORD1;
 
-	// the position in world space (in oppose to "Position" which is world-view-projection space) + SV_POSITION is unreachable from pixel shader.
-	float3 WorldPos : TEXCOORD2;
+	// the original local position of the vertex. note: we can't use Position because its multiplied by projection-view + you can't access it in pixel shader.
+	float3 LocalPosition : TEXCOORD2;
 };
-
-// do basic vertex processing that is relevant for all lighting techniques.
-VertexShaderOutput BasicVertexProcessing(VertexShaderInput input)
-{
-	VertexShaderOutput output;
-	output.Position = mul(input.Position, WorldViewProjection);
-	output.Normal = input.Normal.xyz;
-	output.TextureCoordinate = input.TextureCoordinate;
-	output.WorldPos = input.Position; // mul(input.Position, World).xyz;
-	return output;
-}
 
 // main vertex shader for flat lighting
 VertexShaderOutput FlatLightingMainVS(in VertexShaderInput input)
 {
-	// get basic output
-	VertexShaderOutput output = BasicVertexProcessing(input);
-
-	// return vertex output
-	return BasicVertexProcessing(input);
+	VertexShaderOutput output;
+	output.Position = mul(input.Position, WorldViewProjection);
+	output.LocalPosition = input.Position.xyz;
+	output.Normal = input.Normal.xyz;
+	output.TextureCoordinate = input.TextureCoordinate;
+	return output;
 }
 
 // main pixel shader for flat lighting
 float4 FlatLightingMainPS(VertexShaderOutput input) : COLOR
 {
-	// get texture color
-	float4 textureColor = tex2D(MainTextureSampler, input.TextureCoordinate);
+	// pixel color to return
+	float4 retColor;
 
-	// store original texture alpha
-	float originalAlpha = textureColor.a;
+	// set color either from texture if enabled or white
+	if (TextureEnabled == true) {
+		retColor = tex2D(MainTextureSampler, input.TextureCoordinate);
+	}
+	else {
+		retColor = 1.0f;
+	}
 
-	// get pixel position
-	float3 position = input.WorldPos;
+	// get pixel world position
+	float3 position = mul(World, input.LocalPosition).xyz;
 
 	// calc lights strength
-	float4 LightsColor = AmbientColor;
+	float3 LightsColor = AmbientColor + EmissiveColor;
 	for (int i = 0; i < ActiveLightsCount; ++i) {
+
+		// if fully lit stop here
+		if (LightsColor.r >= 1 && LightsColor.g >= 1 && LightsColor.b >= 1) { break; }
 
 		// calc light strength based on range
 		float disFactor = 1.0f - (distance(position, LightPosition[i]) / LightRange[i]);
@@ -109,18 +115,25 @@ float4 FlatLightingMainPS(VertexShaderOutput input) : COLOR
 		// out of range? skip this light.
 		if (disFactor <= 0) { continue; }
 
+		// calc with normal factor
+		float3 lightPosNormal = normalize(LightPosition[i] - position);
+		float cosTheta = clamp(dot(input.Normal, lightPosNormal), 0, 1);
+
 		// add light to pixel
-		LightsColor.rgb += (LightColor[i]) * (LightIntensity[i] * (disFactor * disFactor));
+		LightsColor.rgb += (LightColor[i]) * (cosTheta * LightIntensity[i] * (disFactor * disFactor));
 	}
 
-	// multiply by diffuse color, ambient, etc.
-	float4 ret = saturate(textureColor * LightsColor * DiffuseColor);
+	// make sure lights doesn't overflow
+	LightsColor.rgb = min(LightsColor.rgb, 1);
 
-	// reset original alpha so it won't be affected by lighting
-	ret.a = originalAlpha * Alpha;
+	// apply lighting and diffuse on return color
+	retColor.rgb = saturate(retColor.rgb * LightsColor * DiffuseColor);
+
+	// apply alpha
+	retColor.a *= Alpha;
 
 	// return final
-	return ret;
+	return retColor;
 }
 
 // default technique with flat lighting 

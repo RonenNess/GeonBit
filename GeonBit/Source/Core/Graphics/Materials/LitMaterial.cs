@@ -179,8 +179,7 @@ namespace GeonBit.Core.Graphics.Materials
             // set world matrix
             if (IsDirty(MaterialDirtyFlags.World))
             {
-                var world = _effectParams["World"];
-                if (world != null) world.SetValue(World);
+                _effectParams["World"].SetValue(World);
             }
 
             // if it was last material used, stop here - no need for the following settings
@@ -189,7 +188,12 @@ namespace GeonBit.Core.Graphics.Materials
             // set all effect params
             if (IsDirty(MaterialDirtyFlags.TextureParams))
             {
-                _effectParams["MainTexture"].SetValue(Texture);
+                var textureParam = _effectParams["MainTexture"];
+                if (textureParam != null)
+                {
+                    _effectParams["TextureEnabled"].SetValue(Texture != null);
+                    textureParam.SetValue(Texture);
+                }
             }
             if (IsDirty(MaterialDirtyFlags.Alpha))
             {
