@@ -54,6 +54,11 @@ namespace GeonBit.Core.Graphics.Lights
         /// </summary>
         public Color AmbientLight { get; set; } = Color.Gray;
 
+        /// <summary>
+        /// Max lights we allow to return for a single render.
+        /// </summary>
+        public int MaxLightsPerRender = 7;
+
         // the size of a batch / region containing lights.
         Vector3 _regionSize = new Vector3(250, 250, 250);
 
@@ -214,6 +219,10 @@ namespace GeonBit.Core.Graphics.Lights
 
                                 // add light to return array
                                 retLights.Add(light);
+
+                                // if exceeded max lights stop here
+                                if (retLights.Count > MaxLightsPerRender)
+                                    break;
                             }
 
                             // no longer first region we test
