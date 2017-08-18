@@ -74,9 +74,9 @@ namespace GeonBit.Core.Graphics
 
         /// <summary>
         /// Manage lights and serve them to materials.
-        /// You can override this property to provide your own custom lights manager class.
+        /// This object holds the currently active lights manager, given by the scene.
         /// </summary>
-        public static Lights.ILightsManager LightsManager = new Lights.LightsManager();
+        public static Lights.ILightsManager ActiveLightsManager { get; internal set; }
 
         /// <summary>
         /// Init GraphicsManager.

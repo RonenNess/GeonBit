@@ -55,6 +55,13 @@ namespace GeonBit.ECS
         public GameObject Root { get; set; }
 
         /// <summary>
+        /// Lights manager of this scene.
+        /// If you want to use a custom lights manager class you can override this object, just
+        /// be sure to do this before loading the scene.
+        /// </summary>
+        public Core.Graphics.Lights.ILightsManager Lights = new Core.Graphics.Lights.LightsManager();
+
+        /// <summary>
         /// User interface for this scene.
         /// </summary>
         public UI.UserInterface UserInterface;
@@ -124,6 +131,9 @@ namespace GeonBit.ECS
                 ActiveCamera.UpdateCameraView();
                 ActiveCamera.Update();
             }
+
+            // make the light manager of this scene the active lights manager
+            Core.Graphics.GraphicsManager.ActiveLightsManager = Lights;
 
             // make the scene UI the currently active UI
             UI.UserInterface.Active = UserInterface;

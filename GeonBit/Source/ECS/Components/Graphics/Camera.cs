@@ -11,7 +11,7 @@
 #endregion
 #region File Description
 //-----------------------------------------------------------------------------
-// A component that represent a perspective camera.
+// A 3d camera component.
 //
 // Author: Ronen Ness.
 // Since: 2017.

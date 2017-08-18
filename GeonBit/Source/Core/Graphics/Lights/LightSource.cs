@@ -56,9 +56,17 @@ namespace GeonBit.Core.Graphics.Lights
         }
 
         /// <summary>
+        /// Return if this light is a directional light.
+        /// </summary>
+        virtual public bool IsDirectionalLight
+        {
+            get { return Direction != null; }
+        }
+
+        /// <summary>
         /// Light direction, if its a directional light.
         /// </summary>
-        Vector3? Direction
+        public Vector3? Direction
         {
             get { return _direction; }
             set { if (_direction == value) return; _direction = value; ParamsVersion++; RecalcBoundingSphere(); }

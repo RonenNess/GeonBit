@@ -418,7 +418,7 @@ namespace GeonBit.Core.Graphics.Materials
             if (LightingEnabled && UseDefaultLightsManager)
             {
                 // get lights in rendering range
-                var lightsManager = Graphics.GraphicsManager.LightsManager;
+                var lightsManager = GraphicsManager.ActiveLightsManager;
                 var lights = lightsManager.GetLights(this, ref boundingSphere);
                 if (AmbientLight != lightsManager.AmbientLight) { AmbientLight = lightsManager.AmbientLight; }
                 ApplyLights(lights, ref worldMatrix, ref boundingSphere);

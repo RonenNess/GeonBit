@@ -154,6 +154,7 @@
     <Compile Include="Source\ECS\Components\BaseComponent.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Backgrounds\SceneBackground.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Backgrounds\SkyBox.cs" />
+    <Compile Include="Source\ECS\Components\Graphics\Light.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Camera.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Docs.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Renderers\BaseRenderer.cs" />
