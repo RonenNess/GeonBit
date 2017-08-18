@@ -127,11 +127,11 @@ There are lots of built-in rendering queues in *GeonBit* designed for different 
 A material is an object that describes how to render a given surface. 
 Materials are made of an Effect (eg shaders) and some extra data (diffuse color, specular, sampling mode, etc..).
 
-*GeonBit* provide 5 basic Materials you can use:
+*GeonBit* provide 6 basic Materials you can use:
 
 #### BasicMaterial
 
-Render smooth surfaces with constant basic lights. This material uses MonoGame ```BasicEffect```.
+Render smooth surfaces with constant static lights. This material uses MonoGame ```BasicEffect```.
 
 Note: this material is not very optimized and is designed for testing and development phase. You should write your own material and effect to replace it.
 
@@ -155,6 +155,9 @@ A special material used to render skybox (and potentially skydome, if you implem
 
 A material used to render sprites and billboards. This material uses MonoGame ```AlphaTestEffect```.
 
+#### LitMaterial
+
+A basic material that support dynamic lighting via the Lights Manager (explained later).
 
 ### Materials Mapping
 
@@ -328,6 +331,7 @@ The physics simulation in *GeonBit* uses the open-source Bullet3D library. Physi
 
 - Rigid bodies.
 - Kinematic bodies.
+- Static bodies.
 - Collision detection and ray casting.
 
 This chapter will explain how to use GeonBit physics.
@@ -339,7 +343,7 @@ As shortly mentioned before, Rigid Body is a physical body that respond to force
 
 Once a Rigid Body is attached to a *GameObject* it will control its position and rotation based on the physics simulation.
 
-Rigid bodies are commonly used for dynamic objects (player, enemies, bullets, moveable objects, etc..).
+Rigid bodies are commonly used for dynamic objects (player, enemies, projectiles, moveable objects, etc..).
 
 To create a rigid body:
 
@@ -349,63 +353,105 @@ RigidBody body = new RigidBody(new BoxInfo(new Vector3(10,10,10), mass: 10f, ine
 go.AddComponent(body);
 ```
 
-#### Kinematic Body
+### Kinematic Body
 
-Kinematic Body is a physical body that does not respond to forces, and only acts to detect collision and "block" othr solid bodies.
+Kinematic Body is a physical body that does not respond to external forces. A kinematic body will simply take the transformations of its parent *GameObject*.
 
-Kinematic bodies are commonly used for static objects (walls, floor, trees, etc..).
+It is useful for elevators, moving platforms, etc.
 
 To create a kinematic body:
 
 ```cs
-KinematicBody wallPhysics = new KinematicBody(new BoxInfo(bodySize));
-wallObject.AddComponent(wallPhysics); 
+KinematicBody elevatorPhysics = new KinematicBody(new BoxInfo(bodySize));
+elevator.AddComponent(elevatorPhysics); 
 ```
 
+### Static Body
 
-#### Collision Groups
+Static Body is similar to a Kinematic Body, but will not produce collision events by default (can be changed) and is optimized for immobile objects.
 
-Collision groups allow you to control which objects can collide with which objects.
+It is useful for things like walls, trees, rocks, etc.
+
+To create a static body:
+
+```cs
+StaticBody wallPhysics = new StaticBody(new BoxInfo(bodySize));
+wall.AddComponent(wallPhysics); 
+```
+
+### Collision Shapes
+
+In the examples above we created physical bodies using a simple box shape.
+
+There are several built-in "Shape Infos" classes that help you quickly build basic shapes, or you can use any of the collision shapes defined under the ```GeonBit.Core.Physics.CollisionShapes``` namespace.
+
+Among all the basic predefined shapes (box, sphere, cone, capsule, etc..) there are also few special shapes we should mention here:
+
+- **CollisionCompoundShape**: A shape that combine together several other shapes. This is useful either for complex bodies or to optimize lots of static objects by banding them together.
+- **CollisionConvexHull**: If the built-in shapes are not enough, you can create a convex hull shape from an array of points.
+- **CollisionEndlessPlane**: A quick way to create an endless plane that can prevent things from falling or make an invisible wall block.
+- **CollisionHeightMap**: A heightmap made of matrix of points. Useful to represent terrains.
+
+### Debugging Physics
+
+You can enable a special debug renderer that will draw all physical shapes and forces:
+
+```cs
+Managers.Diagnostic.DebugRenderPhysics = true;
+```
+
+Please note however that the debug rendering are not very optimized and may be heavy on performance.
+
+### Collision Groups
+
+Collision groups allow you to control which objects can collide with which other objects.
 For example, in your game you might decide that enemy bullets will not hit other enemies and just go through them. In other words, you might want to decide that enemy bullets only collide with player and static objects (walls etc).
 
-To do so, you use collision groups and masks.
+Controlling collision groups is not just for gameplay features, its also crucial for performance. For example, if you have a huge level with lots of static objects (trees, rocks, etc.), you can actually boost couple hundred FPS just by making those static objects collision groups mismatch.
 
-- Collision Group is a short you assign to bodies that identify their "type".
-- Collision Mask is a short you assign to bodies that control with which other bodies it may collide.
+To control collisions, you need to set two flags: collision Groups and Masks.
+
+- Collision Group represent the physical object "type".
+- Collision Mask tells the body with which other types it may collide.
 
 When two bodies collide, the physics simulator will do an ```AND``` operator between the collision group of one body and the mask of the other, and if the result is not 0, they will collide.
 This means that a body can be in multiple collision groups and all it takes is one match to make a collision.
 
-Given the example with the enemy bullets above, lets show an example of how to set a collision group for the bullets:
+So if we go back to the example above of optimizing trees not to collide with each other, how would we do it?
+
+We could define two object types: ```static``` and ```dynamic```. Dynamic objects (monsters, player, projectile, etc..) will collide with everything. Static objects (floor, trees, rocks, etc) will only collide with dynamic objects, but not with each other.
+
+Lets see an example of how to set the collision group of a physical body:
 
 ```cs
 bulletBody.CollisionGroup = CollisionGroups.EnemyProjectiles;
 ```
 
-The enum* ```CollisionGroups``` provide a set of predefined collision groups commonly used in games. 
-You don't have to use them though, you can define your own set of collision groups and use whatever you like. They are there only for your convenience.
+The enum-like object ```CollisionGroups``` provide a set of predefined collision groups commonly used in games. 
+You don't have to use the built-in groups, but they should be quite convenient.
 
-Now lets make sure the bullets can't collide with enemies:
+Now lets set the collision mask of the bullet from before:
 
 ```cs
+// CollisionMasks contains a predefined set of useful masks you can use.
 short bulletMask = CollisionGroups.OR(CollisionMasks.NonCharacterTargets, CollisionGroups.Player);
 bulletBody.CollisionMask = bulletMask;
 ```
 
-So what did we do in the lines above? First, we defined a collision mask for the bullet, composed of ```CollisionMasks.NonCharacterTargets``` and ```CollisionGroups.Player``` collision groups.
+So what did we just do? First, we defined a new collision mask for the bullet, composed of ```CollisionMasks.NonCharacterTargets``` and ```CollisionGroups.Player``` groups.
 
 - *CollisionMasks.NonCharacterTargets* is a pre-defined set of collision groups that contain all the possible targets, except for characters.
-- *CollisionGroups.Player* is the collision group we'll use for the player's body.
+- *CollisionGroups.Player* is the collision group we'll later assign for the player's body.
 
-Note that *CollisionMasks* contains a set of useful masks you can use that cover most of basic use cases. And like with the default collision groups, you can also write your own masks and ignore what *GeonBit* offers by default.
+After setting the bullet with this collision mask, it will only collide with non-character targets (terrain, static objects, etc.) and with the player group.
 
-Now we just need to set the players body collision group:
+Now we want to set the player's collision group:
 
 ```cs
 playerBody.CollisionGroup = CollisionGroups.Player;
 ```
 
-And when setting the enemies collision mask, you might want to make sure you don't add *CollisionGroups.EnemyProjectiles* to the bunch.
+Now bullets will be able to hit the player, but not the enemies or each other.
 
 
 ### Collision Callbacks

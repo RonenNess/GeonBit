@@ -32,7 +32,7 @@ In addition to its built-in ECS framework, *GeonBit* provide the following featu
 
 
 - UI
-- - GeonBit.UI v3
+- - GeonBit.UI v3.x
 - Managers
 - - Application
 - - ConfigStorage
@@ -47,9 +47,11 @@ In addition to its built-in ECS framework, *GeonBit* provide the following featu
 - Graphics
 - - Background
 - - Skybox
-- - Model
-- - Skinned Model
-- - Composite Model
+- - Models
+- - Skinned Models
+- - Composite Models
+- - Combined Meshes
+- - Managed lights & lit materials
 - - Billboard
 - - Sprite
 - - Shapes
@@ -62,19 +64,25 @@ In addition to its built-in ECS framework, *GeonBit* provide the following featu
 - - CPU Particles
 - - Animators
 - Physics
-- - Physical body with all basic shapes
-- - Collision groups and filters
+- - All basic collision shapes
+- - Height maps
+- - Convex / hull shapes
+- - Compound collision shapes
+- - Rigid Body
+- - Kinematic Body
+- - Static Body
+- - Collision groups & filters
+- - Collision events
 - - Ethereal objects
-- - Static objects
 - - Raytesting
 - Sound
 - - Sound effects
 - - 3D sounds
 - - Background music
 
-In short, GeonBit comes with everything you need to implement a basic 3D game, fast and easy.
+In short, GeonBit comes with everything you need to make a basic 3D game, fast and easy!
 
-For more complicated stuff (for example, if you build a multiplayer game and need networking components), GeonBit is opened source easy to extend, so you can easily write your own components and integrate inside the existing ECS framework.
+For more complicated stuff (for example, if you build a multiplayer game and need networking components), *GeonBit* is open source and easy to extend. So you can easily write your own components and integrate them into the existing ECS framework.
 
 
 # Demos
@@ -1338,11 +1346,11 @@ There are lots of built-in rendering queues in *GeonBit* designed for different 
 A material is an object that describes how to render a given surface. 
 Materials are made of an Effect (eg shaders) and some extra data (diffuse color, specular, sampling mode, etc..).
 
-*GeonBit* provide 5 basic Materials you can use:
+*GeonBit* provide 6 basic Materials you can use:
 
 #### BasicMaterial
 
-Render smooth surfaces with constant basic lights. This material uses MonoGame ```BasicEffect```.
+Render smooth surfaces with constant static lights. This material uses MonoGame ```BasicEffect```.
 
 Note: this material is not very optimized and is designed for testing and development phase. You should write your own material and effect to replace it.
 
@@ -1366,6 +1374,9 @@ A special material used to render skybox (and potentially skydome, if you implem
 
 A material used to render sprites and billboards. This material uses MonoGame ```AlphaTestEffect```.
 
+#### LitMaterial
+
+A basic material that support dynamic lighting via the Lights Manager (explained later).
 
 ### Materials Mapping
 

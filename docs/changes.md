@@ -1,5 +1,20 @@
 # ChangeLog
 
+## 0.1.0.3
+
+- Added lit material and lights manager.
+- Better normal transformations in combined meshes.
+- Fixed cloning of physical objects and collision shapes.
+- Added 'EnableSimulation' boolean to physical bodies.
+- Added static physical body (so now we have Rigid Body, Kinematic Body, and Static body).
+- Improved static and kinematic body performance, and physics in general.
+- Added compound physical collision shape.
+- Moved default physics collision group / masks to Core, and added default group and masks to different physical body types.
+- Added dirty flags to material properties.
+- Removed LightingEnable property from materials (material should either be lit or unlit, it shouldn't be configurable - design choice).
+- Fixed combined meshes bounding box / sphere bugs.
+
+
 ## 0.1.0.2
 
 - Fixed physics debug renderings.

@@ -26,7 +26,7 @@ In addition to its built-in ECS framework, *GeonBit* provide the following featu
 
 
 - UI
-- - GeonBit.UI v3
+- - GeonBit.UI v3.x
 - Managers
 - - Application
 - - ConfigStorage
@@ -41,9 +41,11 @@ In addition to its built-in ECS framework, *GeonBit* provide the following featu
 - Graphics
 - - Background
 - - Skybox
-- - Model
-- - Skinned Model
-- - Composite Model
+- - Models
+- - Skinned Models
+- - Composite Models
+- - Combined Meshes
+- - Managed lights & lit materials
 - - Billboard
 - - Sprite
 - - Shapes
@@ -56,17 +58,23 @@ In addition to its built-in ECS framework, *GeonBit* provide the following featu
 - - CPU Particles
 - - Animators
 - Physics
-- - Physical body with all basic shapes
-- - Collision groups and filters
+- - All basic collision shapes
+- - Height maps
+- - Convex / hull shapes
+- - Compound collision shapes
+- - Rigid Body
+- - Kinematic Body
+- - Static Body
+- - Collision groups & filters
+- - Collision events
 - - Ethereal objects
-- - Static objects
 - - Raytesting
 - Sound
 - - Sound effects
 - - 3D sounds
 - - Background music
 
-In short, GeonBit comes with everything you need to implement a basic 3D game, fast and easy.
+In short, GeonBit comes with everything you need to make a basic 3D game, fast and easy!
 
-For more complicated stuff (for example, if you build a multiplayer game and need networking components), GeonBit is opened source easy to extend, so you can easily write your own components and integrate inside the existing ECS framework.
+For more complicated stuff (for example, if you build a multiplayer game and need networking components), *GeonBit* is open source and easy to extend. So you can easily write your own components and integrate them into the existing ECS framework.
 

@@ -542,18 +542,34 @@ playerGameObject.AddComponent(playerPhysics);
 
 #### Kinematic Body
 
-A Kinematic Body is a much simpler physical body you can attach to objects, but unlike the Rigid Body it will not simulate forces and will only act as a static collision object.
+A Kinematic Body is a physical body that does not respond to external forces.
 
 The Kinematic Body adapts to the *GameObject* transformations, meaning it will take its position, rotation and scale.
 
 Usage example:
 
 ```cs
-KinematicBody wallPhysics = new KinematicBody(new BoxInfo(bodySize));
+KinematicBody platformPhysics = new KinematicBody(new BoxInfo(bodySize));
+movingPlatform.AddComponent(platformPhysics); 
+```
+
+Kinematic Body is what you want to use for things like moving platforms, elevators, etc.. Sometimes the player itself is a kinematic body, but that's game-dependant.
+
+
+#### Static Body
+
+A Static Body is a physical body that does not respond to external forces and is optimized to be immobile.
+
+The Static Body adapts to the *GameObject* transformations, meaning it will take its position, rotation and scale.
+
+Usage example:
+
+```cs
+StaticBody wallPhysics = new StaticBody(new BoxInfo(bodySize));
 wallObject.AddComponent(wallPhysics); 
 ```
 
-Kinematic Body is what you want to use for "static" objects - floor, walls, immobile objects, etc.
+Kinematic Body is what you want to use for static things like the level itself, walls, trees, rocks, etc..
 
 
 ### Sound
