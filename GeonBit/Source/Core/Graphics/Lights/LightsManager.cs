@@ -150,9 +150,9 @@ namespace GeonBit.Core.Graphics.Lights
         {
             Vector3 ret = boundingSphere.Center + Vector3.One * boundingSphere.Radius;
             ret /= LightsRegionSize;
-            ret.X = (float)System.Math.Ceiling(ret.X);
-            ret.Y = (float)System.Math.Ceiling(ret.Y);
-            ret.Z = (float)System.Math.Ceiling(ret.Z);
+            ret.X = (float)System.Math.Floor(ret.X);
+            ret.Y = (float)System.Math.Floor(ret.Y);
+            ret.Z = (float)System.Math.Floor(ret.Z);
             return ret;
         }
 
@@ -206,6 +206,10 @@ namespace GeonBit.Core.Graphics.Lights
 
                                 // if its not first region we fetch, test against duplications
                                 if (!isFirstRegionWeCheck && System.Array.IndexOf(retLights.InternalArray, light) != -1)
+                                    continue;
+
+                                // if light is out of camera, skip it
+                                if (!GraphicsManager.ActiveCamera.ViewFrustum.Intersects(light.BoundingSphere))
                                     continue;
 
                                 // add light to return array

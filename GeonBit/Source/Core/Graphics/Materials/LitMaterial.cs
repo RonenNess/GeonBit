@@ -72,6 +72,10 @@ namespace GeonBit.Core.Graphics.Materials
         float[] _lightsRangeArr = new float[MaxLightsCount];
         float[] _lightsSpecArr = new float[MaxLightsCount];
 
+        // caching world and transpose params
+        EffectParameter _worldParam;
+        EffectParameter _transposeParam;
+
         // How many lights we can support at the same time. based on effect definition.
         static readonly int MaxLightsCount = 7;
 
@@ -176,6 +180,8 @@ namespace GeonBit.Core.Graphics.Materials
             _lightsIntens = _effectParams["LightIntensity"];
             _lightsRange = _effectParams["LightRange"];
             _lightsSpec = _effectParams["LightSpecular"];
+            _transposeParam = _effectParams["WorldInverseTranspose"];
+            _worldParam = _effectParams["World"];
         }
 
         /// <summary>
@@ -189,12 +195,12 @@ namespace GeonBit.Core.Graphics.Materials
             // set world matrix
             if (IsDirty(MaterialDirtyFlags.World))
             {
-                _effectParams["World"].SetValue(World);
-                _effectParams["WorldInverseTranspose"].SetValue(Matrix.Invert(Matrix.Transpose(World)));
+                _worldParam.SetValue(World);
+                if (_transposeParam != null)
+                {
+                    _transposeParam.SetValue(Matrix.Transpose(Matrix.Invert(World)));
+                }
             }
-
-            // if it was last material used, stop here - no need for the following settings
-            if (wasLastMaterial) { return; }
 
             // set all effect params
             if (IsDirty(MaterialDirtyFlags.TextureParams))
@@ -214,18 +220,6 @@ namespace GeonBit.Core.Graphics.Materials
             {
                 _effectParams["DiffuseColor"].SetValue(DiffuseColor.ToVector3());
                 _effectParams["MaxLightIntensity"].SetValue(MaxLightIntensity);
-            }
-            if (IsDirty(MaterialDirtyFlags.EmissiveLight))
-            {
-                _effectParams["EmissiveColor"].SetValue(EmissiveLight.ToVector3());
-            }
-            if (IsDirty(MaterialDirtyFlags.AmbientLight))
-            {
-                _effectParams["AmbientColor"].SetValue(AmbientLight.ToVector3());
-            }
-            if (IsDirty(MaterialDirtyFlags.LightSources))
-            {
-                _effectParams["MaxLightIntensity"].SetValue(1.0f);
             }
         }
 
@@ -253,7 +247,21 @@ namespace GeonBit.Core.Graphics.Materials
         /// <param name="boundingSphere">Bounding sphere (after world transformation applied) of the rendering object.</param>
         override protected void ApplyLights(Lights.LightSource[] lights, ref Matrix worldMatrix, ref BoundingSphere boundingSphere)
         {
-            // do we need to update lights data?
+            // set global light params
+            if (IsDirty(MaterialDirtyFlags.EmissiveLight))
+            {
+                _effectParams["EmissiveColor"].SetValue(EmissiveLight.ToVector3());
+            }
+            if (IsDirty(MaterialDirtyFlags.AmbientLight))
+            {
+                _effectParams["AmbientColor"].SetValue(AmbientLight.ToVector3());
+            }
+            if (IsDirty(MaterialDirtyFlags.LightSources))
+            {
+                _effectParams["MaxLightIntensity"].SetValue(1.0f);
+            }
+
+            // do we need to update light sources data?
             bool needUpdate = false;
 
             // iterate on lights and apply only the changed ones
