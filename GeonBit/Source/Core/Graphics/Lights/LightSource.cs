@@ -52,7 +52,7 @@ namespace GeonBit.Core.Graphics.Lights
         /// </summary>
         virtual public bool IsInfinite
         {
-            get { return Direction != null; }
+            get { return Direction != null || _range == 0f; }
         }
 
         /// <summary>

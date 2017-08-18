@@ -165,7 +165,7 @@ namespace GeonBit.Core.Graphics.Lights
         public LightSource[] GetLights(Materials.MaterialAPI material, ref BoundingSphere boundingSphere)
         {
             // if no lights at all, skip
-            if (_regions.Count == 0) { return EmptyLightsArray; }
+            if (_regions.Count == 0 && _infiniteLights.Count == 0) { return EmptyLightsArray; }
 
             // get min and max points of this bounding sphere
             Vector3 min = GetMinRegionIndex(ref boundingSphere);

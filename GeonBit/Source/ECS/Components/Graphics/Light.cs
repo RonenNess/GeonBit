@@ -138,7 +138,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// </summary>
         protected override void OnTransformationUpdate()
         {
-            _light.Position = _GameObject.SceneNode.WorldPosition;
+            if (!_light.IsInfinite) { _light.Position = _GameObject.SceneNode.WorldPosition; }
         }
 
         /// <summary>

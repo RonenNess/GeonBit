@@ -270,9 +270,9 @@ namespace GeonBit.Core.Graphics.Materials
 
                     // set lights data
                     _lightsColArr[i] = light.Color.ToVector3();
-                    _lightsPosArr[i] = light.Position;
+                    _lightsPosArr[i] = light.IsDirectionalLight ? Vector3.Normalize(light.Direction.Value) : light.Position * -1;
                     _lightsIntensArr[i] = light.Intensity;
-                    _lightsRangeArr[i] = light.Range;
+                    _lightsRangeArr[i] = light.IsInfinite ? 0f : light.Range;
                     _lightsSpecArr[i] = light.Specular;
 
                     // store light in cache so we won't copy it next time if it haven't changed
