@@ -120,7 +120,7 @@ namespace GeonBit.ECS.Components.Graphics
         {
             ModelRenderer other = copyTo as ModelRenderer;
             other.MaterialOverride = MaterialOverride.Clone();
-            other._entity.CopyMaterials(other._entity.OverrideMaterialsDictionary);
+            other._entity.CopyMaterials(_entity.OverrideMaterialsDictionary);
             return base.CopyBasics(other);
         }
 

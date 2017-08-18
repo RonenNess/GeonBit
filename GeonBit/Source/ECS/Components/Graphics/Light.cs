@@ -147,7 +147,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// </summary>
         protected override void OnRemoveFromScene()
         {
-            _GameObject.ParentScene.Lights.RemoveLight(_light);
+            _light.Remove();
         }
 
         /// <summary>

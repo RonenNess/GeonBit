@@ -35,7 +35,7 @@ namespace GeonBit.Core.Graphics.Lights
         /// <summary>
         /// Parent lights manager.
         /// </summary>
-        public ILightsManager LightsManager = null;
+        internal ILightsManager LightsManager = null;
 
         /// <summary>
         /// So we can cache lights and identify when they were changed.
@@ -149,6 +149,17 @@ namespace GeonBit.Core.Graphics.Lights
 
             // return array
             return asFloatBuffer;
+        }
+
+        /// <summary>
+        /// Remove self from parent lights manager.
+        /// </summary>
+        public void Remove()
+        {
+            if (LightsManager != null)
+            {
+                LightsManager.RemoveLight(this);
+            }
         }
 
         /// <summary>

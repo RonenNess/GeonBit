@@ -190,6 +190,7 @@ namespace GeonBit.Core.Graphics.Materials
             if (IsDirty(MaterialDirtyFlags.World))
             {
                 _effectParams["World"].SetValue(World);
+                _effectParams["WorldInverseTranspose"].SetValue(Matrix.Invert(Matrix.Transpose(World)));
             }
 
             // if it was last material used, stop here - no need for the following settings
@@ -270,7 +271,7 @@ namespace GeonBit.Core.Graphics.Materials
 
                     // set lights data
                     _lightsColArr[i] = light.Color.ToVector3();
-                    _lightsPosArr[i] = light.IsDirectionalLight ? Vector3.Normalize(light.Direction.Value) : light.Position * -1;
+                    _lightsPosArr[i] = light.IsDirectionalLight ? Vector3.Normalize(light.Direction.Value) * -1f : light.Position;
                     _lightsIntensArr[i] = light.Intensity;
                     _lightsRangeArr[i] = light.IsInfinite ? 0f : light.Range;
                     _lightsSpecArr[i] = light.Specular;
