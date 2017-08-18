@@ -13,6 +13,7 @@
 - Added dirty flags to material properties.
 - Removed LightingEnable property from materials (material should either be lit or unlit, it shouldn't be configurable - design choice).
 - Fixed combined meshes bounding box / sphere bugs.
+- Removed duplicated AddToScene event.
 
 
 ## 0.1.0.2
