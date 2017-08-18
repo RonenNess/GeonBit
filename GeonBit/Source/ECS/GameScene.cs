@@ -140,7 +140,6 @@ namespace GeonBit.ECS
 
             // call spawn and load events
             Root.CallSpawnEvent();
-            Root.OnAddToScene();
         }
 
         /// <summary>
