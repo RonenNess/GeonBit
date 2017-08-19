@@ -72,9 +72,7 @@ struct VertexShaderOutput
 	float4 Position : SV_POSITION;
 	float3 Normal : TEXCOORD0;
 	float2 TextureCoordinate : TEXCOORD1;
-
-	// the original local position of the vertex. note: we can't use Position because its multiplied by projection-view + you can't access it in pixel shader.
-	float3 LocalPosition : TEXCOORD2;
+	float4 WorldPos : TEXCOORD2;
 };
 
 // main vertex shader for flat lighting
@@ -82,10 +80,17 @@ VertexShaderOutput FlatLightingMainVS(in VertexShaderInput input)
 {
 	VertexShaderOutput output;
 	output.Position = mul(input.Position, WorldViewProjection);
-	output.LocalPosition = input.Position.xyz;
-	output.Normal = normalize(mul(input.Normal, World));
+	output.WorldPos = mul(input.Position, World);
+	output.Normal = normalize(mul(input.Normal, (float3x3)World));
 	output.TextureCoordinate = input.TextureCoordinate;
 	return output;
+}
+
+// calculate dot product for given light position, point, and normal
+float DotProduct(float3 lightPos, float3 pos3D, float3 normal)
+{
+	float3 lightDir = normalize(pos3D - lightPos);
+	return dot(-lightDir, normal);
 }
 
 // main pixel shader for flat lighting
@@ -102,9 +107,6 @@ float4 FlatLightingMainPS(VertexShaderOutput input) : COLOR
 		retColor = 1.0f;
 	}
 
-	// get pixel world position
-	float3 position = mul(input.LocalPosition, World).xyz;
-
 	// calc lights strength
 	float3 LightsColor = AmbientColor + EmissiveColor;
 	for (int i = 0; i < ActiveLightsCount; ++i) {
@@ -113,14 +115,13 @@ float4 FlatLightingMainPS(VertexShaderOutput input) : COLOR
 		if (LightsColor.r >= 1 && LightsColor.g >= 1 && LightsColor.b >= 1) { break; }
 
 		// calc light strength based on range
-		float disFactor = 1.0f - (distance(position, LightPosition[i]) / LightRange[i]);
+		float disFactor = 1.0f - (distance(input.WorldPos, LightPosition[i]) / LightRange[i]);
 
 		// out of range? skip this light.
 		if (disFactor <= 0) { continue; }
 
 		// calc with normal factor
-		float3 lightPosNormal = normalize(LightPosition[i] - position);
-		float cosTheta = clamp(dot(input.Normal, lightPosNormal), 0, 1);
+		float cosTheta = clamp(DotProduct(LightPosition[i], input.WorldPos, input.Normal), 0, 1);
 
 		// add light to pixel
 		LightsColor.rgb += (LightColor[i]) * (cosTheta * LightIntensity[i] * (disFactor * disFactor));

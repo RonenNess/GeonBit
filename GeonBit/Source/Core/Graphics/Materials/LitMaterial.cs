@@ -198,7 +198,7 @@ namespace GeonBit.Core.Graphics.Materials
                 _worldParam.SetValue(World);
                 if (_transposeParam != null)
                 {
-                    _transposeParam.SetValue(Matrix.Transpose(Matrix.Invert(World)));
+                    _transposeParam.SetValue(Matrix.Invert(Matrix.Transpose(World)));
                 }
             }
 
