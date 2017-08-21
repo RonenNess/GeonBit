@@ -258,8 +258,7 @@ namespace GeonBit.Core.Graphics
             Materials.MaterialAPI material = MaterialOverride.Apply(_material);
 
             // setup material
-            var bs = GetLastBoundingSphere();
-            material.Apply(ref newWorld, ref bs);
+            material.Apply(ref newWorld, ref _lastBoundingSphere);
 
             // draw sprite
             // draw the cube vertices
