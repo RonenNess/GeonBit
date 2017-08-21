@@ -290,7 +290,7 @@ namespace GeonBit.Core.Physics
         /// </summary>
         /// <param name="other">The other body we collide with.</param>
         /// <param name="data">Extra collision data.</param>
-        public void CallCollisionStart(BasicPhysicalBody other, CollisionData data)
+        public void CallCollisionStart(BasicPhysicalBody other, ref CollisionData data)
         {
             EcsComponent.CallCollisionStart(other.EcsComponent, data);
         }

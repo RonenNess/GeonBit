@@ -359,6 +359,9 @@ namespace GeonBit.Core.Graphics
             }
         }
 
+        // default rasterizer state to reset to after every frame.
+        static RasterizerState _defaultRasterizerState = new RasterizerState();
+
         /// <summary>
         /// Draw rendering queues.
         /// </summary>
@@ -399,7 +402,7 @@ namespace GeonBit.Core.Graphics
             }
 
             // reset device states
-            GraphicsManager.GraphicsDevice.RasterizerState = new RasterizerState();
+            GraphicsManager.GraphicsDevice.RasterizerState = _defaultRasterizerState;
             GraphicsManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
         }
 

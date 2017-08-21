@@ -119,6 +119,10 @@ namespace GeonBit.ECS.Components.Particles.Animators
             get;
         }
 
+        // key used to store internal data for animators
+        private static string AnimatorRenderablesInternalKey = "animator-renderables";
+        private static string AnimatorModelsInternalKey = "animator-model-renderers";
+
         /// <summary>
         /// Get all renderable entities in an efficient way.
         /// </summary>
@@ -127,11 +131,11 @@ namespace GeonBit.ECS.Components.Particles.Animators
             get
             {
                 // create list of renderables to operate on (only happens first time)
-                object list = _GameObject.GetInternalData("animator-renderables");
+                object list = _GameObject.GetInternalData(ref AnimatorRenderablesInternalKey);
                 if (list == null)
                 {
                     list = _GameObject.GetComponents<Graphics.BaseRendererComponent>(BaseProperties.FilterTargetsByName).ToArray();
-                    _GameObject.SetInternalData("animator-renderables", list);
+                    _GameObject.SetInternalData(ref AnimatorRenderablesInternalKey, list);
                 }
 
                 // return list of renderables
@@ -147,11 +151,11 @@ namespace GeonBit.ECS.Components.Particles.Animators
             get
             {
                 // create list of renderables to operate on (only happens first time)
-                object list = _GameObject.GetInternalData("animator-model-renderers");
+                object list = _GameObject.GetInternalData(ref AnimatorModelsInternalKey);
                 if (list == null)
                 {
                     list = _GameObject.GetComponents<Graphics.ModelRenderer>(BaseProperties.FilterTargetsByName).ToArray();
-                    _GameObject.SetInternalData("animator-model-renderers", list);
+                    _GameObject.SetInternalData(ref AnimatorModelsInternalKey, list);
                 }
 
                 // return list of renderables

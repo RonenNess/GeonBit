@@ -124,6 +124,7 @@ namespace GeonBit.ECS.Components.Misc
             CopyBasics(ret);
 
             // clone all tiles
+            string key = InternalDataKey;
             foreach (KeyValuePair<int, Dictionary<int, TilesBatch>> row in _batches)
             {
                 foreach (KeyValuePair<int, TilesBatch> batch in row.Value)
@@ -132,7 +133,7 @@ namespace GeonBit.ECS.Components.Misc
                     {
                         if (tile != null)
                         {
-                            SetTile((Point)tile.GetInternalData(InternalDataKey), tile);
+                            SetTile((Point)tile.GetInternalData(ref key), tile);
                         }
                     }
                 }
@@ -148,6 +149,7 @@ namespace GeonBit.ECS.Components.Misc
         /// <param name="callback">Function to execute (called with tile GameObject and index).</param>
         public void ProcessTiles(ProcessTileCallback callback)
         {
+            string intDataKey = InternalDataKey;
             foreach (KeyValuePair<int, Dictionary<int, TilesBatch>> row in _batches)
             {
                 foreach (KeyValuePair<int, TilesBatch> batch in row.Value)
@@ -156,7 +158,7 @@ namespace GeonBit.ECS.Components.Misc
                     {
                         if (tile != null)
                         {
-                            callback(tile, (Point)tile.GetInternalData(InternalDataKey));
+                            callback(tile, (Point)tile.GetInternalData(ref intDataKey));
                         }
                     }
                 }
@@ -240,7 +242,8 @@ namespace GeonBit.ECS.Components.Misc
             obj.SceneNode.Position = new Vector3(TileSize.X * index.X, 0, TileSize.Y * index.Y);
 
             // put index as attached data
-            obj.SetInternalData(InternalDataKey, index);
+            string intDataKey = InternalDataKey;
+            obj.SetInternalData(ref intDataKey, index);
 
             // set to not update when not visible
             obj.UpdateWhenNotVisible = false;

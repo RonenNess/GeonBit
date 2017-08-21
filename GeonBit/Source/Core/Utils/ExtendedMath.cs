@@ -147,6 +147,9 @@ namespace GeonBit.Core.Utils
             }
         }
 
+        // used as default random object if not provided
+        static Random _rand = new Random();
+
         /// <summary>
         /// pick a random index based of list of probabilities (array of floats representing chances).
         /// </summary>
@@ -156,7 +159,7 @@ namespace GeonBit.Core.Utils
         static public uint PickBasedOnProbability(float[] probabilities, Random rand = null)
         {
             // if not provided, create default random object
-            if (rand == null) { rand = new Random(); }
+            if (rand == null) { rand = _rand; }
 
             // get random double
             double diceRoll = rand.NextDouble();

@@ -72,7 +72,7 @@ namespace GeonBit.Managers
         /// <summary>
         /// input wrapper from the UI layer.
         /// </summary>
-        UI.InputHelper _input = new UI.InputHelper();
+        private UI.InputHelper _input = new UI.InputHelper();
 
         // Keyboard mapping
         private Dictionary<KeyboardKeys, GameKeys> _keyboardMap = new Dictionary<KeyboardKeys, GameKeys>();

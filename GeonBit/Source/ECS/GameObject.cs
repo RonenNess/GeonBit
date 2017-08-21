@@ -375,7 +375,7 @@ namespace GeonBit.ECS
         /// </summary>
         /// <param name="key">Internal data key.</param>
         /// <param name="value">Internal data value.</param>
-        internal void SetInternalData(string key, object value)
+        internal void SetInternalData(ref string key, object value)
         {
             // create internal data dictionary if needed
             if (_internalData == null)
@@ -391,7 +391,7 @@ namespace GeonBit.ECS
         /// Get internal data from game object.
         /// </summary>
         /// <param name="key">Internal data key.</param>
-        internal object GetInternalData(string key)
+        internal object GetInternalData(ref string key)
         {
             // if internal data does not exist, return null
             if (_internalData == null)

@@ -32,7 +32,7 @@ namespace GeonBit.Core.Physics
     /// <summary>
     /// Data provided to physics collision callbacks.
     /// </summary>
-    public class CollisionData
+    public struct CollisionData
     {
         /// <summary>
         /// Collision point.
@@ -185,7 +185,7 @@ namespace GeonBit.Core.Physics
         /// <summary>
         /// Class to store persistent collision data, so that bullet detach events will work.
         /// </summary>
-        class CollisionPersistData
+        struct CollisionPersistData
         {
             public RigidBody Body0;
             public RigidBody Body1;
@@ -223,8 +223,8 @@ namespace GeonBit.Core.Physics
 
                 // send collision events
                 CollisionData data = new CollisionData(ToMonoGame.Vector(cp.PositionWorldOnA));
-                body0.CallCollisionStart(body1, data);
-                body1.CallCollisionStart(body0, data);
+                body0.CallCollisionStart(body1, ref data);
+                body1.CallCollisionStart(body0, ref data);
             };
 
             // set while-collising callback
