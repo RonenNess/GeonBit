@@ -186,7 +186,13 @@ Since the materials that come with *GeonBit* are very basic and limited, normall
 
 ### Create Custom Materials
 
-To create your own material you need to inherit from the MaterialAPI class:
+To create your own material you need to inherit from the MaterialAPI class and implement 3 important functions:
+
+1. Effect getter, which should return the effect your material uses.
+2. MaterialSpecificApply(), which should setup your effect before rendering.
+3. Clone(), to clone your effect.
+
+For example:
 
 ```cs
 /// <summary>
@@ -226,22 +232,7 @@ public class MyCustomMaterial : MaterialAPI
 		// set world matrix
 		_effect.World = World;
 
-		// if it was last material used, stop here - no need for the following settings
-		if (wasLastMaterial) { return; }
-
-		// set all effect params
-		_effect.View = View;
-		_effect.Projection = Projection;
-		_effect.Texture = Texture;
-		_effect.TextureEnabled = TextureEnabled;
-		_effect.Alpha = Alpha;
-		_effect.AmbientLightColor = AmbientLight.ToVector3();
-		_effect.DiffuseColor = DiffuseColor.ToVector3();
-		_effect.LightingEnabled = LightingEnabled;
-		_effect.PreferPerPixelLighting = SmoothLighting;
-		_effect.SpecularColor = SpecularColor.ToVector3();
-		_effect.SpecularPower = SpecularPower;
-		GraphicsManager.GraphicsDevice.SamplerStates[0] = SamplerState;
+		// set other effect params here..
 	}
 
 	/// <summary>
@@ -257,14 +248,9 @@ public class MyCustomMaterial : MaterialAPI
 }
 ```
 
-As you can see the implementation is pretty simple:
+If effect uses lights you can also implement the ```ApplyLights()``` function, and if you want to use the built-in managed lights you should also set ```UseDefaultLightsManager``` getter to return true.
 
-- You need a constructor that get an Effect type and store it (it can be one of the basic effects or your own effect implementation).
-- Effect getter is something you must implement that returns the effect instance.
-- MaterialSpecificApply() is the function that's called when you need to use this effect. This is the time to copy the material properties into the effect (check out all the basic properties in MaterialAPI or define your own properties).
-- Clone() is a function you must implement to create a copy of this material.
-
-That's it. The tricky part here is to implement the Effect itself, which is outside of *GeonBit*'s scope.
+For more info, check out the implemented materials in ```Core/Graphics/Materials```.
 
 
 ## Combined Meshes

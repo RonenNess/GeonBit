@@ -15,6 +15,7 @@
 - Fixed combined meshes bounding box / sphere bugs.
 - Removed duplicated AddToScene event.
 - Fixed bug in cloning model renderer materials.
+- Optimized override materials memory consumption.
 
 
 ## 0.1.0.2

@@ -504,6 +504,34 @@ For more info on sprites & billboard, check out the examples in [GeonBit demos](
 
 ![Sprite Example](../assets/sprite.png "sprite.png")
 
+#### Light
+
+Creates a light source, that affect all the built-in lit materials.
+
+Usage example:
+
+```cs
+
+var lightComponent = camera.AddComponent(new Light()) as Light;
+lightComponent.Intensity = 5;
+lightComponent.Range = 100f;
+lightComponent.Color = Color.White;
+```
+
+Or if you want to create a directional light:
+
+```cs
+// make the light a directional light pointing down
+lightComponent.Direction = Vector3.Down;
+```
+
+Note that to set the scene ambient light you need to access the scene lights manager directly, and not via a component:
+
+```cs
+// make the ambient light green.
+scene.Lights.AmbientLight = Color.Green;
+```
+
 #### SkyBox
 
 Render a 3D skybox with skybox texture.
