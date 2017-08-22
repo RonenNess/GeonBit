@@ -114,17 +114,32 @@ float4 FlatLightingMainPS(VertexShaderOutput input) : COLOR
 		// if fully lit stop here
 		if (LightsColor.r >= 1 && LightsColor.g >= 1 && LightsColor.b >= 1) { break; }
 
-		// calc light strength based on range
-		float disFactor = 1.0f - (distance(input.WorldPos, LightPosition[i]) / LightRange[i]);
+		// angle factor
+		float cosTheta;
 
-		// out of range? skip this light.
-		if (disFactor <= 0) { continue; }
+		// distance factor
+		float disFactor = 1;
 
-		// calc with normal factor
-		float cosTheta = clamp(DotProduct(LightPosition[i], input.WorldPos, input.Normal), 0, 1);
+		// calculate distance and angle factors for point light
+		if (LightRange[i] > 0)
+		{
+			disFactor = 1.0f - (distance(input.WorldPos, LightPosition[i]) / LightRange[i]);
+
+			// out of range? skip this light.
+			if (disFactor <= 0) { continue; }
+			disFactor = disFactor * disFactor;
+
+			// calc with normal factor
+			cosTheta = clamp(DotProduct(LightPosition[i], input.WorldPos, input.Normal), 0, 1);
+		}
+		// calculate angle factor for directional light
+		else
+		{
+			cosTheta = dot(LightPosition[i], input.Normal);
+		}
 
 		// add light to pixel
-		LightsColor.rgb += (LightColor[i]) * (cosTheta * LightIntensity[i] * (disFactor * disFactor));
+		LightsColor.rgb += (LightColor[i]) * (cosTheta * LightIntensity[i] * (disFactor));
 	}
 
 	// make sure lights doesn't overflow
