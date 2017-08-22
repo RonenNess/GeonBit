@@ -57,10 +57,13 @@ namespace GeonBit.Core.Graphics.Materials
         }
         int _referenceAlpha = 128;
 
+        // empty effect instance to clone when creating new material
+        static AlphaTestEffect _emptyEffect = new AlphaTestEffect(GraphicsManager.GraphicsDevice);
+
         /// <summary>
         /// Create the default material from empty effect.
         /// </summary>
-        public AlphaTestMaterial() : this(new AlphaTestEffect(GraphicsManager.GraphicsDevice), true)
+        public AlphaTestMaterial() : this(_emptyEffect, true)
         {
         }
 

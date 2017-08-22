@@ -37,10 +37,13 @@ namespace GeonBit.Core.Graphics.Materials
         /// </summary>
         public override Effect Effect { get { return _effect; } }
 
+        // empty effect instance to clone when creating new material
+        static BasicEffect _emptyEffect = new BasicEffect(GraphicsManager.GraphicsDevice);
+
         /// <summary>
         /// Create the default material from empty effect.
         /// </summary>
-        public BasicMaterial() : this(new BasicEffect(GraphicsManager.GraphicsDevice), true)
+        public BasicMaterial() : this(_emptyEffect, true)
         {
         }
 

@@ -19,6 +19,7 @@
 #endregion
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace GeonBit.Core.Graphics
 {
@@ -115,6 +116,9 @@ namespace GeonBit.Core.Graphics
             return ret;
         }
 
+        // dictionary of cached material clones for original materials replacement
+        Dictionary<Materials.MaterialAPI, Materials.MaterialAPI> _materialsCahce = new Dictionary<Materials.MaterialAPI, Materials.MaterialAPI>();
+
         /// <summary>
         /// Apply all custom render properties on a given material, and return either the given material or a clone of it, if needed.
         /// This will not do anything if there are no custom properties currently used.
@@ -126,11 +130,17 @@ namespace GeonBit.Core.Graphics
             // if there's nothing to do just return the original material
             if (!UsingOverrideProperties)
             {
+                _materialsCahce.Clear();
                 return material;
             }
 
-            // we need to apply custom properties. clone the material.
-            material = material.Clone();
+            // we need to apply custom properties. get the cached material with properties or create a new one
+            Materials.MaterialAPI original = material;
+            if (!_materialsCahce.TryGetValue(material, out material))
+            {
+                material = original.Clone();
+                _materialsCahce[original] = material;
+            }
 
             // if got override diffuse color, set it
             if (DiffuseColor != null)
