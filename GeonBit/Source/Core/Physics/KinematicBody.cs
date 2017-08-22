@@ -51,7 +51,7 @@ namespace GeonBit.Core.Physics
         override public bool EnableSimulation
         {
             get { return false; }
-            set { throw new Exceptions.InvalidActionException("Cannot change the simulation state of a kinematic body!"); }
+            set { if (value == true) { throw new Exceptions.InvalidActionException("Cannot change the simulation state of a kinematic body!"); } }
         }
 
         /// <summary>
