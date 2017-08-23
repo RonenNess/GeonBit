@@ -818,6 +818,7 @@ namespace GeonBit.ECS
             // update children
             foreach (var child in _children)
             {
+                child._parentScene = _parentScene;
                 child.OnAddToScene();
             }
         }
