@@ -49,7 +49,7 @@ namespace GeonBit.Core.Graphics
             /// <summary>
             /// Vertices indexes.
             /// </summary>
-            public ResizableArray<short> Indexes { get; internal set; } = new ResizableArray<short>();
+            public ResizableArray<ushort> Indexes { get; internal set; } = new ResizableArray<ushort>();
 
             /// <summary>
             /// Vertex buffer.
@@ -72,6 +72,28 @@ namespace GeonBit.Core.Graphics
             public int IndexOffset { get; internal set; } = 0;
 
             /// <summary>
+            /// Push array of indexes into the combined mesh.
+            /// </summary>
+            /// <param name="drawOrder">Array of indexes to push.</param>
+            public void PushIndexes(ushort[] drawOrder)
+            {
+                foreach (short currIndex in drawOrder)
+                {
+                    // calculate absolute index
+                    ushort absIndex = (ushort)(currIndex + (ushort)IndexOffset);
+
+                    // make sure didn't overflow
+                    if (absIndex < IndexOffset)
+                    {
+                        throw new Exceptions.OutOfRangeException("Too many vertices were pushed into combined mesh!");
+                    }
+
+                    // add to indexes array
+                    Indexes.Add(absIndex);
+                }
+            }
+
+            /// <summary>
             /// Build vertex and indexes buffer and clear lists.
             /// </summary>
             public void Build()
@@ -87,7 +109,7 @@ namespace GeonBit.Core.Graphics
 
                 // build indexes buffer
                 Indexes.Trim();
-                _IndexBuffer = new IndexBuffer(device, typeof(short), Indexes.Count, BufferUsage.WriteOnly);
+                _IndexBuffer = new IndexBuffer(device, typeof(ushort), Indexes.Count, BufferUsage.WriteOnly);
                 _IndexBuffer.SetData(Indexes.InternalArray);
                 Indexes.Clear();
             }
@@ -204,7 +226,7 @@ namespace GeonBit.Core.Graphics
                     
                     // get normals and rotate it based on transformations
                     Vector3 normal = new Vector3(vertexData[i + 3], vertexData[i + 4], vertexData[i + 5]);
-                    normal = Vector3.TransformNormal(normal, transform);
+                    normal = Vector3.Normalize(Vector3.TransformNormal(normal, transform));
 
                     // get texture coords
                     Vector2 textcoords = new Vector2(vertexData[i + 6], vertexData[i + 7]);
@@ -218,15 +240,14 @@ namespace GeonBit.Core.Graphics
                 }
 
                 // set indexes
-                short[] drawOrder = new short[meshPart.IndexBuffer.IndexCount];
-                meshPart.IndexBuffer.GetData<short>(drawOrder);
-                foreach (short currIndex in drawOrder)
-                {
-                    combinedPart.Indexes.Add((short)(currIndex + combinedPart.IndexOffset));
-                }
+                ushort[] drawOrder = new ushort[meshPart.IndexBuffer.IndexCount];
+                meshPart.IndexBuffer.GetData<ushort>(drawOrder);
+                combinedPart.PushIndexes(drawOrder);
+
+                // increase indexes offset
                 combinedPart.IndexOffset += verticesInPart;
 
-                // set primitives count
+                // increase primitives count
                 combinedPart.PrimitiveCount += meshPart.PrimitiveCount;
             }
         }
@@ -238,7 +259,7 @@ namespace GeonBit.Core.Graphics
         /// <param name="indexes">Draw order / indexes array.</param>
         /// <param name="transform">World transformations.</param>
         /// <param name="material">Material to use with the vertices.</param>
-        public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, Matrix transform, Materials.MaterialAPI material)
+        public void AddVertices(VertexPositionNormalTexture[] vertices, ushort[] indexes, Matrix transform, Materials.MaterialAPI material)
         {
             // sanity check - if build was called assert
             if (_wasBuilt) { throw new Exceptions.InvalidActionException("Cannot add vertices to Combined Mesh Entity after it was built!"); }
@@ -260,7 +281,7 @@ namespace GeonBit.Core.Graphics
 
                 // apply transformations
                 curr.Position = Vector3.Transform(curr.Position, transform);
-                curr.Normal = Vector3.TransformNormal(curr.Normal, transform);
+                curr.Normal = Vector3.Normalize(Vector3.TransformNormal(curr.Normal, transform));
                 processed[i++] = curr;
             }
 
@@ -274,7 +295,7 @@ namespace GeonBit.Core.Graphics
         /// <param name="vertices">Vertices array to add.</param>
         /// <param name="indexes">Draw order / indexes array.</param>
         /// <param name="material">Material to use with the vertices.</param>
-        public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, Materials.MaterialAPI material)
+        public void AddVertices(VertexPositionNormalTexture[] vertices, ushort[] indexes, Materials.MaterialAPI material)
         {
             // sanity check - if build was called assert
             if (_wasBuilt) { throw new Exceptions.InvalidActionException("Cannot add vertices to Combined Mesh Entity after it was built!"); }
@@ -289,11 +310,8 @@ namespace GeonBit.Core.Graphics
                 _allPoints.Add(vertex.Position);
             }
 
-            // add indexes (but first update them to be relative to whats already in combined part)
-            for (int i = 0; i < indexes.Length; ++i)
-            {
-                combinedPart.Indexes.Add((short)(indexes[i] + combinedPart.IndexOffset));
-            }
+            // set indexes
+            combinedPart.PushIndexes(indexes);
 
             // increase index offset in combined part
             combinedPart.IndexOffset += vertices.Length;

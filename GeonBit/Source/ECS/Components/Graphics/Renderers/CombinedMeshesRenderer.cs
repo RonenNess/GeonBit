@@ -81,7 +81,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// <param name="vertices">Vertices array to add.</param>
         /// <param name="indexes">Draw order / indexes array.</param>
         /// <param name="material">Material to use with the vertices.</param>
-        public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, MaterialAPI material)
+        public void AddVertices(VertexPositionNormalTexture[] vertices, ushort[] indexes, MaterialAPI material)
         {
             _entity.AddVertices(vertices, indexes, material);
         }
@@ -94,7 +94,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// <param name="indexes">Draw order / indexes array.</param>
         /// <param name="transform">World transformations.</param>
         /// <param name="material">Material to use with the vertices.</param>
-        public void AddVertices(VertexPositionNormalTexture[] vertices, short[] indexes, Matrix transform, MaterialAPI material)
+        public void AddVertices(VertexPositionNormalTexture[] vertices, ushort[] indexes, Matrix transform, MaterialAPI material)
         {
             _entity.AddVertices(vertices, indexes, transform, material);
         }
