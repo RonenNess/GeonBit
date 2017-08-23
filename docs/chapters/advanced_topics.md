@@ -313,6 +313,8 @@ Some things to be cautious about with Combined Meshes Optimizer:
 
 ## Physics
 
+![GeonBit](../assets/physics.png "Physics")
+
 The physics simulation in *GeonBit* uses the open-source Bullet3D library. Physics in *GeonBit* includes:
 
 - Rigid bodies.

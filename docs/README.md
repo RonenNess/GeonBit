@@ -1560,6 +1560,8 @@ Some things to be cautious about with Combined Meshes Optimizer:
 
 ## Physics
 
+![GeonBit](assets/physics.png "Physics")
+
 The physics simulation in *GeonBit* uses the open-source Bullet3D library. Physics in *GeonBit* includes:
 
 - Rigid bodies.
@@ -1938,7 +1940,6 @@ To do so please use the ```GeonBitPluginInitializer``` Initialize() function.
 Things I want to add to GeonBit in near future.
 
 - GPU particles system.
-- More built-in materials, including with real lights.
 - LoD renderer - a component that is a collection of renderer components and switch between them automatically based on distance from camera.
 - Physical material.
 
