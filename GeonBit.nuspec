@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
 	<id>GeonBit</id>
-	<version>0.1.0.3</version>
+	<version>0.1.0.4</version>
 	<authors>Ronen Ness</authors>
 	<owners>RonenNess</owners>
 	<title>GeonBit.Core</title>
@@ -12,7 +12,7 @@
 	<iconUrl>https://raw.githubusercontent.com/RonenNess/GeonBit/master/GeonBit/Logo/nuget.png</iconUrl>
 	<copyright>Ronen Ness</copyright>
 	<requireLicenseAcceptance>true</requireLicenseAcceptance>
-	<releaseNotes>Physics, lights, and optimizations / bug fixes.</releaseNotes>
+	<releaseNotes>Small bug fixes.</releaseNotes>
 	<description>ECS game engine in MonoGame and C#.</description>
 	<tags>monogame gamedev game-engine games ecs entity-component</tags>
 	<dependencies>

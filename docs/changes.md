@@ -1,5 +1,12 @@
 # ChangeLog
 
+## 0.1.0.4
+
+- Fixed bug with added-to-scene event.
+- Increased combined mesh max capacity + added assert if exceed (instead of just not drawing parts).
+- Fixed bug with changing position of static physical objects. 
+
+
 ## 0.1.0.3
 
 - Added lit material and lights manager.
