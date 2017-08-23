@@ -394,6 +394,15 @@ namespace GeonBit.Core.Physics
         }
 
         /// <summary>
+        /// Update single object's aabb.
+        /// </summary>
+        /// <param name="body">Body to update.</param>
+        public void UpdateSingleAabb(BasicPhysicalBody body)
+        {
+            _world.UpdateSingleAabb(body._BulletEntity);
+        }
+
+        /// <summary>
         /// Remove a physical body from the world.
         /// </summary>
         /// <param name="body"></param>

@@ -71,6 +71,7 @@ namespace GeonBit.Core.Physics
             set
             {
                 _BulletEntity.WorldTransform = ToBullet.Matrix(value);
+                UpdateAABB();
             }
         }
 

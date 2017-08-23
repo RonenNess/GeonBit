@@ -84,7 +84,8 @@ namespace GeonBit.Core.Physics
                 // set scale
                 Vector3 scale; Vector3 position; Quaternion rotation;
                 value.Decompose(out scale, out rotation, out position);
-                Scale = scale;
+                _BulletEntity.CollisionShape.LocalScaling = ToBullet.Vector(scale);
+                UpdateAABB();
             }
         }
         
@@ -130,7 +131,7 @@ namespace GeonBit.Core.Physics
             set
             {
                 _BulletEntity.CollisionShape.LocalScaling = ToBullet.Vector(value);
-                if (_world != null) { _world._world.UpdateSingleAabb(_BulletEntity); }
+                UpdateAABB();
             }
         }
 
@@ -168,7 +169,16 @@ namespace GeonBit.Core.Physics
 
                 // set position
                 _BulletEntity.WorldTransform = world;
+                UpdateAABB();
             }
+        }
+
+        /// <summary>
+        /// Update axis-aligned-bounding-box, after transformations of this object were changed.
+        /// </summary>
+        virtual protected void UpdateAABB()
+        {
+            if (_world != null) { _world.UpdateSingleAabb(this); }
         }
 
         /// <summary>
