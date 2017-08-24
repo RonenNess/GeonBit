@@ -11,7 +11,7 @@
 #endregion
 #region File Description
 //-----------------------------------------------------------------------------
-// A test material that uses MonoGame default effect with default lightings.
+// A basic one-pass lit material.
 //
 // Author: Ronen Ness.
 // Since: 2017.
