@@ -312,7 +312,8 @@ namespace GeonBit.Core.Graphics.Materials
             if (_directionalLightsCount != directionalLightsCount)
             {
                 _directionalLightsCount = directionalLightsCount;
-                _effect.Parameters["DirectionalLightsCount"].SetValue(_directionalLightsCount);
+                var dirCount = _effect.Parameters["DirectionalLightsCount"];
+                if (dirCount != null) { dirCount.SetValue(_directionalLightsCount); }
             }
 
             // if we need to update lights, write their arrays

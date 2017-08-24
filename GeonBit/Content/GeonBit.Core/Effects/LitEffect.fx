@@ -95,58 +95,58 @@ float4 FlatLightingMainPS(VertexShaderOutput input) : COLOR
 	// pixel color to return
 	float4 retColor;
 
-	// set color either from texture if enabled or white
-	retColor = TextureEnabled ? tex2D(MainTextureSampler, input.TextureCoordinate) : 1.0f;
+// set color either from texture if enabled or white
+retColor = TextureEnabled ? tex2D(MainTextureSampler, input.TextureCoordinate) : 1.0f;
 
-	// start calcing lights strength
-	float3 LightsColor = AmbientColor + EmissiveColor;
+// start calcing lights strength
+float3 LightsColor = AmbientColor + EmissiveColor;
 
-	// process directional lights
-	int i = 0;
-	for (i = 0; i < DirectionalLightsCount; ++i)
+// process directional lights
+int i = 0;
+for (i = 0; i < DirectionalLightsCount; ++i)
+{
+	// calculate angle factor
+	float cosTheta = dot(LightPosition[i], input.Normal);
+
+	// add light to pixel
+	LightsColor.rgb += (LightColor[i]) * (cosTheta * LightIntensity[i]);
+}
+
+// now process all point lights
+for (i = DirectionalLightsCount; i < ActiveLightsCount; ++i)
+{
+	// if fully lit stop here
+	if (LightsColor.r > 1 && LightsColor.g > 1 && LightsColor.b > 1) { break; }
+
+	// calculate distance and angle factors for point light
+	float disFactor = 1.0f - (distance(input.WorldPos, LightPosition[i]) / LightRange[i]);
+
+	// out of range? skip this light.
+	if (disFactor > 0)
 	{
-		// calculate angle factor
-		float cosTheta = dot(LightPosition[i], input.Normal);
+		// power distance factor
+		disFactor = pow(disFactor, 2);
+
+		// calc with normal factor
+		float3 lightDir = normalize(input.WorldPos - LightPosition[i]);
+		float cosTheta = saturate(dot(-lightDir, input.Normal));
 
 		// add light to pixel
-		LightsColor.rgb += (LightColor[i]) * (cosTheta * LightIntensity[i]);
+		LightsColor.rgb += (LightColor[i]) * (cosTheta * LightIntensity[i] * disFactor);
 	}
+}
 
-	// now process all point lights
-	for (i = DirectionalLightsCount; i < ActiveLightsCount; ++i)
-	{
-		// if fully lit stop here
-		if (LightsColor.r > 1 && LightsColor.g > 1 && LightsColor.b > 1) { break; }
+// make sure lights doesn't overflow
+LightsColor.rgb = min(LightsColor.rgb, MaxLightIntensity);
 
-		// calculate distance and angle factors for point light
-		float disFactor = 1.0f - (distance(input.WorldPos, LightPosition[i]) / LightRange[i]);
+// apply lighting and diffuse on return color
+retColor.rgb = saturate(retColor.rgb * LightsColor * DiffuseColor);
 
-		// out of range? skip this light.
-		if (disFactor > 0)
-		{
-			// power distance factor
-			disFactor = pow(disFactor, 2);
+// apply alpha
+retColor.a *= Alpha;
 
-			// calc with normal factor
-			float3 lightDir = normalize(input.WorldPos - LightPosition[i]);
-			float cosTheta = saturate(dot(-lightDir, input.Normal));
-
-			// add light to pixel
-			LightsColor.rgb += (LightColor[i]) * (cosTheta * LightIntensity[i] * disFactor);
-		}
-	}
-
-	// make sure lights doesn't overflow
-	LightsColor.rgb = min(LightsColor.rgb, MaxLightIntensity);
-
-	// apply lighting and diffuse on return color
-	retColor.rgb = saturate(retColor.rgb * LightsColor * DiffuseColor);
-
-	// apply alpha
-	retColor.a *= Alpha;
-
-	// return final
-	return retColor;
+// return final
+return retColor;
 }
 
 // default technique with flat lighting 
