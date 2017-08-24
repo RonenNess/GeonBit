@@ -170,6 +170,14 @@ namespace GeonBit.Core.Graphics.Materials
         }
 
         /// <summary>
+        /// Get how many lights this material support on the same render pass.
+        /// </summary>
+        virtual protected int MaxLights
+        {
+            get { return 7; }
+        }
+
+        /// <summary>
         /// Diffuse color.
         /// </summary>
         virtual public Color DiffuseColor
@@ -419,7 +427,7 @@ namespace GeonBit.Core.Graphics.Materials
             {
                 // get lights in rendering range
                 var lightsManager = GraphicsManager.ActiveLightsManager;
-                var lights = lightsManager.GetLights(this, ref boundingSphere);
+                var lights = lightsManager.GetLights(this, ref boundingSphere, MaxLights);
                 AmbientLight = lightsManager.AmbientLight;
                 ApplyLights(lights, ref worldMatrix, ref boundingSphere);
             }

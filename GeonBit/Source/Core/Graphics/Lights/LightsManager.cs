@@ -54,11 +54,6 @@ namespace GeonBit.Core.Graphics.Lights
         /// </summary>
         public Color AmbientLight { get; set; } = Color.Gray;
 
-        /// <summary>
-        /// Max lights we allow to return for a single render.
-        /// </summary>
-        public int MaxLightsPerRender = 7;
-
         // the size of a batch / region containing lights.
         Vector3 _regionSize = new Vector3(250, 250, 250);
 
@@ -166,8 +161,9 @@ namespace GeonBit.Core.Graphics.Lights
         /// </summary>
         /// <param name="material">Material to get lights for.</param>
         /// <param name="boundingSphere">Rendering bounding sphere.</param>
-        /// <returns>Array of lights to apply on this material and drawing.</returns>
-        public LightSource[] GetLights(Materials.MaterialAPI material, ref BoundingSphere boundingSphere)
+        /// <param name="maxLights">Maximum lights count to return.</param>
+        /// <returns>Array of lights to apply on this material and drawing. Note: directional lights must always come first!</returns>
+        public LightSource[] GetLights(Materials.MaterialAPI material, ref BoundingSphere boundingSphere, int maxLights)
         {
             // if no lights at all, skip
             if (_regions.Count == 0 && _infiniteLights.Count == 0) { return EmptyLightsArray; }
@@ -225,7 +221,7 @@ namespace GeonBit.Core.Graphics.Lights
                                 retLights.Add(light);
 
                                 // if exceeded max lights stop here
-                                if (retLights.Count > MaxLightsPerRender)
+                                if (retLights.Count >= maxLights)
                                     break;
                             }
 

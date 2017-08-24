@@ -51,8 +51,9 @@ namespace GeonBit.Core.Graphics.Lights
         /// </summary>
         /// <param name="material">Material to get lights for.</param>
         /// <param name="boundingSphere">Rendering bounding sphere.</param>
-        /// <returns>Array of lights to apply on this material and drawing.</returns>
-        LightSource[] GetLights(Materials.MaterialAPI material, ref BoundingSphere boundingSphere);
+        /// <param name="maxLights">Maximum lights count to return.</param>
+        /// <returns>Array of lights to apply on this material and drawing. Note: directional lights must always come first!</returns>
+        LightSource[] GetLights(Materials.MaterialAPI material, ref BoundingSphere boundingSphere, int maxLights);
 
         /// <summary>
         /// Update the transformations of a light inside this manager.

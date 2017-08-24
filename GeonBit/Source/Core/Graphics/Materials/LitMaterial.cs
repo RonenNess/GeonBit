@@ -55,6 +55,9 @@ namespace GeonBit.Core.Graphics.Materials
         // current active lights counter
         int _activeLightsCount = 0;
 
+        // how many of the active lights are directional
+        int _directionalLightsCount = 0;
+
         /// <summary>
         /// Max light intensity from regular light sources (before specular).
         /// </summary>
@@ -295,6 +298,21 @@ namespace GeonBit.Core.Graphics.Materials
             {
                 _activeLightsCount = lightsCount;
                 _effect.Parameters["ActiveLightsCount"].SetValue(_activeLightsCount);
+            }
+
+            // count directional lights
+            int directionalLightsCount = 0;
+            foreach (var light in lights)
+            {
+                if (!light.IsDirectionalLight) break;
+                directionalLightsCount++;
+            }
+
+            // update directional lights count
+            if (_directionalLightsCount != directionalLightsCount)
+            {
+                _directionalLightsCount = directionalLightsCount;
+                _effect.Parameters["DirectionalLightsCount"].SetValue(_directionalLightsCount);
             }
 
             // if we need to update lights, write their arrays
