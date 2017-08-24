@@ -1,5 +1,11 @@
 # ChangeLog
 
+## 0.1.0.5
+
+- Improvements to lights manager and basic lit effect.
+
+Note: closing version before big dev iteration.
+
 ## 0.1.0.4
 
 - Fixed bug with added-to-scene event.
