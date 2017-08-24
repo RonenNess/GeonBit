@@ -73,6 +73,11 @@ namespace GeonBit.Core.Graphics
         static SpriteBatch _spriteBatch;
 
         /// <summary>
+        /// Deferred lighting manager.
+        /// </summary>
+        static private Lights.DeferredLighting _DeferredLighting;
+
+        /// <summary>
         /// Manage lights and serve them to materials.
         /// This object holds the currently active lights manager, given by the scene.
         /// </summary>
@@ -93,6 +98,34 @@ namespace GeonBit.Core.Graphics
 
             // create sprite batch
             _spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
+        }
+
+        /// <summary>
+        /// Return if deferred lighting is currently enabled.
+        /// </summary>
+        public static bool IsDeferredLightingEnabled
+        {
+            get { return _DeferredLighting != null; }
+        }
+
+        /// <summary>
+        /// Enable deferred lighting.
+        /// </summary>
+        /// <returns></returns>
+        public static void EnableDeferredLighting()
+        {
+            _DeferredLighting = new Lights.DeferredLighting();
+        }
+
+        /// <summary>
+        /// Handle screen resize.
+        /// </summary>
+        public static void HandleResize()
+        {
+            if (IsDeferredLightingEnabled)
+            {
+                _DeferredLighting.OnResize();
+            }
         }
 
         /// <summary>
@@ -128,6 +161,12 @@ namespace GeonBit.Core.Graphics
                 Materials.MaterialAPI.SetViewProjection(ActiveCamera.View, ActiveCamera.Projection);
             }
 
+            // start frame for deferred lighting manager
+            if (IsDeferredLightingEnabled)
+            {
+                _DeferredLighting.FrameStart();
+            }
+
             // notify nodes manager that a frame started
             NodesManager.StartFrame();
         }
@@ -142,6 +181,12 @@ namespace GeonBit.Core.Graphics
 
             // notify nodes manager that a frame ended
             NodesManager.EndFrame();
+
+            // start frame for deferred lighting manager
+            if (IsDeferredLightingEnabled)
+            {
+                _DeferredLighting.FrameEnd();
+            }
 
             // clear the last material applied
             Materials.MaterialAPI._lastMaterialApplied = null;

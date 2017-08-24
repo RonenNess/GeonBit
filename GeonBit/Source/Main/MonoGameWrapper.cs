@@ -146,6 +146,7 @@ namespace GeonBit
             _graphics.PreferredBackBufferWidth = size.X;
             _graphics.PreferredBackBufferHeight = size.Y;
             _graphics.ApplyChanges();
+            OnResize();
         }
 
         /// <summary>
@@ -176,6 +177,17 @@ namespace GeonBit
                 _graphics.ApplyChanges();
                 _graphics.ToggleFullScreen();
             }
+
+            // notify resize
+            OnResize();
+        }
+
+        /// <summary>
+        /// Handle resize events.
+        /// </summary>
+        private void OnResize()
+        {
+            Core.Graphics.GraphicsManager.HandleResize();
         }
 
         /// <summary>
