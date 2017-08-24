@@ -213,6 +213,10 @@ namespace GeonBit.Core.Graphics.Lights
                                 if (!isFirstRegionWeCheck && System.Array.IndexOf(retLights.InternalArray, light) != -1)
                                     continue;
 
+                                // make sure light really touch object
+                                if (!boundingSphere.Intersects(light.BoundingSphere))
+                                    continue;
+
                                 // if light is out of camera, skip it
                                 if (!GraphicsManager.ActiveCamera.ViewFrustum.Intersects(light.BoundingSphere))
                                     continue;
