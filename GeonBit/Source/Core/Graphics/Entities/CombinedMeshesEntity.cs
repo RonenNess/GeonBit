@@ -27,13 +27,39 @@ using GeonBit.Core.Utils;
 namespace GeonBit.Core.Graphics
 {
     /// <summary>
+    /// Vertex type we are using for the combined mesh.
+    /// </summary>
+    public enum VertexTypes
+    {
+        /// <summary>
+        /// Vertex with position only.
+        /// </summary>
+        VertexPosition,
+
+        /// <summary>
+        /// Vertex with position and color.
+        /// </summary>
+        VertexPositionColor,
+
+        /// <summary>
+        /// Vertex with position and texture.
+        /// </summary>
+        VertexPositionTexture,
+
+        /// <summary>
+        /// Vertex with position, normal and texture.
+        /// </summary>
+        VertexPositionNormalTexture
+    }
+
+    /// <summary>
     /// A special renderer that takes several other renderers (meshes, models etc) and merge them into a single batch.
     /// This optimization allows you to build levels out of static models, and reduce draw calls by merging them into one
     /// static mesh at runtime. 
     /// 
     /// Note: While its a good way to reduce draw calls, don't create combined meshes too big or else you'll lose some culling optimizations.
     /// </summary>
-    public class CombinedMeshesEntity : BaseRenderableEntity
+    public class CombinedMeshesEntity <VertexType> : BaseRenderableEntity where VertexType : struct, IVertexType
     {
         /// <summary>
         /// Represent the vertices and indexes of a combined mesh part.
@@ -44,7 +70,7 @@ namespace GeonBit.Core.Graphics
             /// <summary>
             /// Vertices buffer.
             /// </summary>
-            public ResizableArray<VertexPositionNormalTexture> Vertices { get; internal set; } = new ResizableArray<VertexPositionNormalTexture>();
+            public ResizableArray<VertexType> Vertices { get; internal set; } = new ResizableArray<VertexType>();
 
             /// <summary>
             /// Vertices indexes.
@@ -103,8 +129,8 @@ namespace GeonBit.Core.Graphics
 
                 // build vertex buffer
                 Vertices.Trim();
-                _VertexBuffer = new VertexBuffer(device, typeof(VertexPositionNormalTexture), Vertices.Count, BufferUsage.WriteOnly);
-                _VertexBuffer.SetData<VertexPositionNormalTexture>(Vertices.InternalArray);
+                _VertexBuffer = new VertexBuffer(device, typeof(VertexType), Vertices.Count, BufferUsage.WriteOnly);
+                _VertexBuffer.SetData<VertexType>(Vertices.InternalArray);
                 Vertices.Clear();
 
                 // build indexes buffer
@@ -137,13 +163,28 @@ namespace GeonBit.Core.Graphics
         /// </summary>
         bool _wasBuilt = false;
 
+        // vertex type we use in this combined mesh.
+        VertexTypes _vtype;
+            
+        /// <summary>
+        /// Create the combined mesh entity.
+        /// </summary>
+        public CombinedMeshesEntity()
+        {
+            if (typeof(VertexType) == typeof(VertexPosition)) _vtype = VertexTypes.VertexPosition;
+            else if (typeof(VertexType) == typeof(VertexPositionColor)) _vtype = VertexTypes.VertexPositionColor;
+            else if (typeof(VertexType) == typeof(VertexPositionTexture)) _vtype = VertexTypes.VertexPositionTexture;
+            else if (typeof(VertexType) == typeof(VertexPositionNormalTexture)) _vtype = VertexTypes.VertexPositionNormalTexture;
+            else { throw new Exceptions.InvalidValueException("Unsupported vertex type in combined mesh!"); }
+        }
+
         /// <summary>
         /// Clone this combined entity.
         /// </summary>
         /// <returns>Cloned copy.</returns>
-        public CombinedMeshesEntity Clone()
+        public CombinedMeshesEntity<VertexType> Clone()
         {
-            CombinedMeshesEntity ret = new CombinedMeshesEntity();
+            CombinedMeshesEntity<VertexType> ret = new CombinedMeshesEntity<VertexType>();
             ret._localBoundingBox = _localBoundingBox;
             ret._localBoundingSphere = _localBoundingSphere;
             ret._allPoints = new List<Vector3>(_allPoints);
@@ -168,6 +209,26 @@ namespace GeonBit.Core.Graphics
             {
                 AddModelMesh(mesh, transform, material);
             }
+        }
+
+        /// <summary>
+        /// Convert to vertex type from template.
+        /// </summary>
+        /// <param name="ver">Any vertex type to convert.</param>
+        /// <returns>Vertex as template VertexType.</returns>
+        private VertexType ToVertexType(IVertexType ver)
+        {
+            return (VertexType)(ver);
+        }
+
+        /// <summary>
+        /// Convert to specific vertex type.
+        /// </summary>
+        /// <param name="ver">Any vertex type to convert.</param>
+        /// <returns>Vertex as chosen vertex type.</returns>
+        private ToVType ToSpecificVertexType<ToVType>(IVertexType ver)
+        {
+            return (ToVType)(ver);
         }
 
         /// <summary>
@@ -232,7 +293,11 @@ namespace GeonBit.Core.Graphics
                     Vector2 textcoords = new Vector2(vertexData[i + 6], vertexData[i + 7]);
 
                     // add to vertices buffer
-                    combinedPart.Vertices.Add(new VertexPositionNormalTexture(currPosition, normal, textcoords));
+                    if (typeof(VertexType) == typeof(VertexPositionNormalTexture))
+                    {
+                        var vertexToAdd = new VertexPositionNormalTexture(currPosition, normal, textcoords);
+                        combinedPart.Vertices.Add(ToVertexType(vertexToAdd));
+                    }
 
                     // add to temp list of all points
                     _allPoints.Add(currPosition);
@@ -259,7 +324,7 @@ namespace GeonBit.Core.Graphics
         /// <param name="indexes">Draw order / indexes array.</param>
         /// <param name="transform">World transformations.</param>
         /// <param name="material">Material to use with the vertices.</param>
-        public void AddVertices(VertexPositionNormalTexture[] vertices, ushort[] indexes, Matrix transform, Materials.MaterialAPI material)
+        public void AddVertices(VertexType[] vertices, ushort[] indexes, Matrix transform, Materials.MaterialAPI material)
         {
             // sanity check - if build was called assert
             if (_wasBuilt) { throw new Exceptions.InvalidActionException("Cannot add vertices to Combined Mesh Entity after it was built!"); }
@@ -273,20 +338,70 @@ namespace GeonBit.Core.Graphics
 
             // transform all vertices from array
             int i = 0;
-            VertexPositionNormalTexture[] processed = new VertexPositionNormalTexture[vertices.Length];
+            VertexType[] processed = new VertexType[vertices.Length];
             foreach (var vertex in vertices)
             {
                 // get current vertex
-                VertexPositionNormalTexture curr = vertex;
+                VertexType curr = vertex;
 
                 // apply transformations
-                curr.Position = Vector3.Transform(curr.Position, transform);
-                curr.Normal = Vector3.Normalize(Vector3.TransformNormal(curr.Normal, transform));
-                processed[i++] = curr;
+                switch (_vtype)
+                {
+                    case VertexTypes.VertexPosition:
+                        {
+                            var currVer = ToSpecificVertexType<VertexPosition>(curr);
+                            currVer.Position = Vector3.Transform(currVer.Position, transform);
+                            processed[i++] = ToVertexType(currVer);
+                            break;
+                        }
+                    case VertexTypes.VertexPositionColor:
+                        {
+                            var currVer = ToSpecificVertexType<VertexPositionColor>(curr);
+                            currVer.Position = Vector3.Transform(currVer.Position, transform);
+                            processed[i++] = ToVertexType(currVer);
+                            break;
+                        }
+                    case VertexTypes.VertexPositionNormalTexture:
+                        {
+                            var currVer = ToSpecificVertexType<VertexPositionNormalTexture>(curr);
+                            currVer.Position = Vector3.Transform(currVer.Position, transform);
+                            currVer.Normal = Vector3.Normalize(Vector3.TransformNormal(currVer.Normal, transform));
+                            processed[i++] = ToVertexType(currVer);
+                            break;
+                        }
+                    case VertexTypes.VertexPositionTexture:
+                        {
+                            var currVer = ToSpecificVertexType<VertexPositionTexture>(curr);
+                            currVer.Position = Vector3.Transform(currVer.Position, transform);
+                            processed[i++] = ToVertexType(currVer);
+                            break;
+                        }
+                }
             }
 
             // add processed vertices
             AddVertices(processed, indexes, material);
+        }
+
+        /// <summary>
+        /// Get position from vertex.
+        /// </summary>
+        /// <param name="vertex">Vertex to extract position from.</param>
+        /// <returns>Vertex position.</returns>
+        private Vector3 GetPosition(VertexType vertex)
+        {
+            switch (_vtype)
+            {
+                case VertexTypes.VertexPosition:
+                    return ToSpecificVertexType<VertexPosition>(vertex).Position;
+                case VertexTypes.VertexPositionColor:
+                    return ToSpecificVertexType<VertexPositionColor>(vertex).Position;
+                case VertexTypes.VertexPositionNormalTexture:
+                    return ToSpecificVertexType<VertexPositionNormalTexture>(vertex).Position;
+                case VertexTypes.VertexPositionTexture:
+                    return ToSpecificVertexType<VertexPositionTexture>(vertex).Position;
+            }
+            return Vector3.Zero;
         }
 
         /// <summary>
@@ -295,7 +410,7 @@ namespace GeonBit.Core.Graphics
         /// <param name="vertices">Vertices array to add.</param>
         /// <param name="indexes">Draw order / indexes array.</param>
         /// <param name="material">Material to use with the vertices.</param>
-        public void AddVertices(VertexPositionNormalTexture[] vertices, ushort[] indexes, Materials.MaterialAPI material)
+        public void AddVertices(VertexType[] vertices, ushort[] indexes, Materials.MaterialAPI material)
         {
             // sanity check - if build was called assert
             if (_wasBuilt) { throw new Exceptions.InvalidActionException("Cannot add vertices to Combined Mesh Entity after it was built!"); }
@@ -307,7 +422,7 @@ namespace GeonBit.Core.Graphics
             combinedPart.Vertices.AddRange(vertices);
             foreach (var vertex in vertices)
             {
-                _allPoints.Add(vertex.Position);
+                _allPoints.Add(GetPosition(vertex));
             }
 
             // set indexes

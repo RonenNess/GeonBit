@@ -29,12 +29,12 @@ namespace GeonBit.ECS.Components.Graphics
     /// It reduceses draw calls and optimize renderings.
     /// Use this for stuff like building rooms, levels, etc. Anything made of multiple static meshes.
     /// </summary>
-    public class CombinedMeshesRenderer : BaseRendererComponent
+    public class CombinedMeshesRenderer<VertexType> : BaseRendererComponent where VertexType : struct, IVertexType
     {
         /// <summary>
         /// The entity from the core layer used to draw the model.
         /// </summary>
-        protected CombinedMeshesEntity _entity;
+        protected CombinedMeshesEntity<VertexType> _entity;
 
         /// <summary>
         /// Get the main entity instance of this renderer.
@@ -81,7 +81,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// <param name="vertices">Vertices array to add.</param>
         /// <param name="indexes">Draw order / indexes array.</param>
         /// <param name="material">Material to use with the vertices.</param>
-        public void AddVertices(VertexPositionNormalTexture[] vertices, ushort[] indexes, MaterialAPI material)
+        public void AddVertices(VertexType[] vertices, ushort[] indexes, MaterialAPI material)
         {
             _entity.AddVertices(vertices, indexes, material);
         }
@@ -94,7 +94,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// <param name="indexes">Draw order / indexes array.</param>
         /// <param name="transform">World transformations.</param>
         /// <param name="material">Material to use with the vertices.</param>
-        public void AddVertices(VertexPositionNormalTexture[] vertices, ushort[] indexes, Matrix transform, MaterialAPI material)
+        public void AddVertices(VertexType[] vertices, ushort[] indexes, Matrix transform, MaterialAPI material)
         {
             _entity.AddVertices(vertices, indexes, transform, material);
         }
@@ -113,7 +113,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// </summary>
         public CombinedMeshesRenderer()
         {
-            _entity = new CombinedMeshesEntity();
+            _entity = new CombinedMeshesEntity<VertexType>();
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// <returns>Cloned copy of this component.</returns>
         override public BaseComponent Clone()
         {
-            CombinedMeshesRenderer ret = new CombinedMeshesRenderer();
+            CombinedMeshesRenderer<VertexType> ret = new CombinedMeshesRenderer<VertexType>();
             ret._entity = _entity.Clone();
             return ret;
         }
