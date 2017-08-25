@@ -18,21 +18,42 @@
 //-----------------------------------------------------------------------------
 #endregion
 using Microsoft.Xna.Framework.Graphics;
+using System.Runtime.InteropServices;
 
 
 namespace Microsoft.Xna.Framework.Graphics
 {
     /// <summary>
-    /// Texture type for normal mapping
-    /// Expected effect input:
-    /// float4 Position : POSITION0;
-    /// float3 Normal : NORMAL0;
-    /// float3 Tangent : TANGENT0;
-    /// float3 Binormal : BINORMAL0;
-    /// float2 TextureCoordinate : TEXCOORD0;
+    /// Vertex type for normal mapping
     /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct VertexPositionNormalTangentTexture : IVertexType
     {
+        /// <summary>
+        /// Vertex position.
+        /// </summary>
+        public Vector3 Position;
+
+        /// <summary>
+        /// Vertex normal.
+        /// </summary>
+        public Vector3 Normal;
+
+        /// <summary>
+        /// Texture coords.
+        /// </summary>
+        public Vector2 TextureCoordinate;
+
+        /// <summary>
+        /// Tangent.
+        /// </summary>
+        public Vector3 Tangent;
+
+        /// <summary>
+        /// Binormal.
+        /// </summary>
+        public Vector3 Binormal;
+
         /// <summary>
         /// Vertex declaration object.
         /// </summary>
@@ -57,38 +78,13 @@ namespace Microsoft.Xna.Framework.Graphics
             VertexElement[] elements = new VertexElement[] {
                 new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
                 new VertexElement(12, VertexElementFormat.Vector3, VertexElementUsage.Normal, 0),
-                new VertexElement(24, VertexElementFormat.Vector3, VertexElementUsage.Tangent, 0),
-                new VertexElement(36, VertexElementFormat.Vector3, VertexElementUsage.Binormal, 0),
-                new VertexElement(48, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0)
-            };
+                new VertexElement(24, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0),
+                new VertexElement(32, VertexElementFormat.Vector3, VertexElementUsage.Tangent, 0),
+                new VertexElement(44, VertexElementFormat.Vector3, VertexElementUsage.Binormal, 0)};
             VertexDeclaration declaration = new VertexDeclaration(elements);
             VertexDeclaration = declaration;
         }
 
-        /// <summary>
-        /// Normal.
-        /// </summary>
-        public Vector3 Normal;
-
-        /// <summary>
-        /// Position.
-        /// </summary>
-        public Vector3 Position;
-
-        /// <summary>
-        /// Texture coords.
-        /// </summary>
-        public Vector2 TextureCoordinate;
-
-        /// <summary>
-        /// Tangent.
-        /// </summary>
-        public Vector3 Tangent;
-
-        /// <summary>
-        /// Binormal.
-        /// </summary>
-        public Vector3 Binormal;
 
         /// <summary>
         /// Create the vertex.
@@ -100,11 +96,28 @@ namespace Microsoft.Xna.Framework.Graphics
         /// <param name="binormal">Vertex binormal.</param>
         public VertexPositionNormalTangentTexture(Vector3 position, Vector3 normal, Vector2 textureCoordinate, Vector3 tangent, Vector3 binormal)
         {
-            Normal = normal;
-            Position = position;
-            TextureCoordinate = textureCoordinate;
-            Tangent = tangent;
-            Binormal = binormal;
+            this.Position = position;
+            this.Normal = normal;
+            this.TextureCoordinate = textureCoordinate;
+            this.Tangent = tangent;
+            this.Binormal = binormal;
+        }
+
+        /// <summary>
+        /// Calculate tangent and binormal values automatically.
+        /// </summary>
+        public void CalcTangentBinormal()
+        {
+            // calc c1 and c2
+            Vector3 c1 = Vector3.Cross(Normal, new Vector3(0.0f, 0.0f, 1.0f));
+            Vector3 c2 = Vector3.Cross(Normal, new Vector3(0.0f, 1.0f, 0.0f));
+
+            // check which is more fitting to be tangent
+            Tangent = (c1.Length() > c2.Length()) ? c1 : c2;
+            Tangent.Normalize();
+
+            // calc binormal
+            Binormal = Vector3.Normalize(Vector3.Cross(Normal, Tangent));
         }
 
         /// <summary>

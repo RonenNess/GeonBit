@@ -235,7 +235,8 @@ namespace GeonBit.Core.Graphics.Materials
                 var normalTextureParam = _effectParams["NormalTexture"];
                 if (normalTextureParam != null)
                 {
-                    _effectParams["NormalTextureEnabled"].SetValue(TextureEnabled && NormalTexture != null);
+                    var normalMapEnabledParam = _effectParams["NormalTextureEnabled"];
+                    if (normalMapEnabledParam != null) normalMapEnabledParam.SetValue(TextureEnabled && NormalTexture != null);
                     normalTextureParam.SetValue(NormalTexture);
                 }
             }

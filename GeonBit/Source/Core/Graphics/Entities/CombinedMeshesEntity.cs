@@ -356,6 +356,8 @@ namespace GeonBit.Core.Graphics
                                 combinedPart.Vertices.Add(ToVertexType(vertexToAdd));
                                 break;
                             }
+                        default:
+                            throw new Exceptions.InternalError("Forgot to implement type support?");
                     }
 
                     // add to temp list of all points and increase vertices count
@@ -433,6 +435,8 @@ namespace GeonBit.Core.Graphics
                             var currVer = ToSpecificVertexType<VertexPositionNormalTangentTexture>(curr);
                             currVer.Position = Vector3.Transform(currVer.Position, transform);
                             currVer.Normal = Vector3.Normalize(Vector3.TransformNormal(currVer.Normal, transform));
+                            currVer.Tangent = Vector3.Normalize(Vector3.TransformNormal(currVer.Tangent, transform));
+                            currVer.Binormal = Vector3.Normalize(Vector3.TransformNormal(currVer.Binormal, transform));
                             processed[i++] = ToVertexType(currVer);
                             break;
                         }
@@ -467,8 +471,11 @@ namespace GeonBit.Core.Graphics
                     return ToSpecificVertexType<VertexPositionNormalTexture>(vertex).Position;
                 case VertexTypes.VertexPositionTexture:
                     return ToSpecificVertexType<VertexPositionTexture>(vertex).Position;
+                case VertexTypes.VertexPositionNormalTangentTexture:
+                    return ToSpecificVertexType<VertexPositionNormalTangentTexture>(vertex).Position;
+                default:
+                    throw new Exceptions.InternalError("Forgot to implement type?");
             }
-            return Vector3.Zero;
         }
 
         /// <summary>

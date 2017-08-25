@@ -13,6 +13,9 @@ matrix WorldViewProjection;
 // world matrix
 matrix World;
 
+// inverse transpose world matrix
+matrix WorldInverseTranspose;
+
 // define white color value
 float3 WhiteColor = float3(1, 1, 1);
 
@@ -34,8 +37,14 @@ float Alpha = 1.0f;
 // main texture
 texture MainTexture;
 
+// normal map texture
+texture NormalTexture;
+
 // are we using texture?
 bool TextureEnabled = false;
+
+// are we using normal texture?
+static bool NormalTextureEnabled = true;
 
 // max lights count
 #define MAX_LIGHTS_COUNT 7
@@ -61,42 +70,58 @@ sampler2D MainTextureSampler = sampler_state {
 	Texture = (MainTexture);
 };
 
+// normal texture sampler
+sampler2D NormalTextureSampler = sampler_state {
+	Texture = (NormalTexture);
+};
+
 // vertex shader input
 struct VertexShaderInput
 {
-	float4 Position : POSITION0;
+	float4 Position : SV_POSITION0;
 	float3 Normal : NORMAL0;
 	float2 TextureCoordinate : TEXCOORD0;
+	float3 Tangent : TANGENT0;
+	float3 Binormal : BINORMAL0;
 };
 
 // vertex shader output
 struct VertexShaderOutput
 {
 	float4 Position : SV_POSITION;
-	float3 Normal : TEXCOORD0;
-	float2 TextureCoordinate : TEXCOORD1;
-	float4 WorldPos : TEXCOORD2;
+	float2 TextureCoordinate : TEXCOORD0;
+	float4 WorldPos : TEXCOORD1;
+	float3x3 WorldToTangentSpace : TEXCOORD2;
 };
 
 // main vertex shader for flat lighting
-VertexShaderOutput FlatLightingMainVS(in VertexShaderInput input)
+VertexShaderOutput NormalLightingMainVS(in VertexShaderInput input)
 {
 	VertexShaderOutput output;
 	output.Position = mul(input.Position, WorldViewProjection);
 	output.WorldPos = mul(input.Position, World);
-	output.Normal = normalize(mul(input.Normal, (float3x3)World));
 	output.TextureCoordinate = input.TextureCoordinate;
+	output.WorldToTangentSpace[0] = mul(normalize(input.Tangent), World);
+	output.WorldToTangentSpace[1] = mul(normalize(input.Binormal), World);
+	output.WorldToTangentSpace[2] = mul(normalize(input.Normal), World);
 	return output;
 }
 
 // main pixel shader for flat lighting
-float4 FlatLightingMainPS(VertexShaderOutput input) : COLOR
+float4 NormalLightingMainPS(VertexShaderOutput input) : COLOR
 {
 	// pixel color to return
 	float4 retColor;
 
 	// set color either from texture if enabled or white
 	retColor = TextureEnabled ? tex2D(MainTextureSampler, input.TextureCoordinate) : 1.0f;
+
+	// get normal from texture
+	float3 fragNormal = 2.0 * (tex2D(NormalTextureSampler, input.TextureCoordinate)) - 1.0;
+	fragNormal.x *= -1;		// <-- fix X axis to be standard.
+
+	// calculate normal
+	fragNormal = normalize(mul(fragNormal, input.WorldToTangentSpace));
 
 	// start calcing lights strength
 	float3 LightsColor = AmbientColor + EmissiveColor;
@@ -106,7 +131,7 @@ float4 FlatLightingMainPS(VertexShaderOutput input) : COLOR
 	for (i = 0; i < DirectionalLightsCount; ++i)
 	{
 		// calculate angle factor
-		float cosTheta = saturate(dot(LightPosition[i], input.Normal));
+		float cosTheta = saturate(dot(LightPosition[i], fragNormal));
 
 		// add light to pixel
 		LightsColor.rgb += (LightColor[i]) * (cosTheta * LightIntensity[i]);
@@ -129,7 +154,7 @@ float4 FlatLightingMainPS(VertexShaderOutput input) : COLOR
 
 			// calc with normal factor
 			float3 lightDir = normalize(input.WorldPos - LightPosition[i]);
-			float cosTheta = saturate(dot(-lightDir, input.Normal));
+			float cosTheta = saturate(dot(-lightDir, fragNormal));
 
 			// add light to pixel
 			LightsColor.rgb += (LightColor[i]) * (cosTheta * LightIntensity[i] * disFactor);
@@ -154,7 +179,7 @@ technique FlatLighting
 {
 	pass P0
 	{
-		VertexShader = compile VS_SHADERMODEL FlatLightingMainVS();
-		PixelShader = compile PS_SHADERMODEL FlatLightingMainPS();
+		VertexShader = compile VS_SHADERMODEL NormalLightingMainVS();
+		PixelShader = compile PS_SHADERMODEL NormalLightingMainPS();
 	}
 };
