@@ -24,6 +24,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using GeonBit.Core.Utils;
 
+
 namespace GeonBit.Core.Graphics
 {
     /// <summary>
@@ -49,7 +50,12 @@ namespace GeonBit.Core.Graphics
         /// <summary>
         /// Vertex with position, normal and texture.
         /// </summary>
-        VertexPositionNormalTexture
+        VertexPositionNormalTexture,
+
+        /// <summary>
+        /// Vertex for normal mapping, with position, normal, tangent, binormal and texture coords.
+        /// </summary>
+        VertexPositionNormalTangentTexture
     }
 
     /// <summary>
@@ -175,6 +181,7 @@ namespace GeonBit.Core.Graphics
             else if (typeof(VertexType) == typeof(VertexPositionColor)) _vtype = VertexTypes.VertexPositionColor;
             else if (typeof(VertexType) == typeof(VertexPositionTexture)) _vtype = VertexTypes.VertexPositionTexture;
             else if (typeof(VertexType) == typeof(VertexPositionNormalTexture)) _vtype = VertexTypes.VertexPositionNormalTexture;
+            else if (typeof(VertexType) == typeof(VertexPositionNormalTangentTexture)) _vtype = VertexTypes.VertexPositionNormalTangentTexture;
             else { throw new Exceptions.InvalidValueException("Unsupported vertex type in combined mesh!"); }
         }
 
@@ -284,22 +291,74 @@ namespace GeonBit.Core.Graphics
                 {
                     // get curr position with transformations
                     Vector3 currPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), transform);
-                    
-                    // get normals and rotate it based on transformations
-                    Vector3 normal = new Vector3(vertexData[i + 3], vertexData[i + 4], vertexData[i + 5]);
-                    normal = Vector3.Normalize(Vector3.TransformNormal(normal, transform));
 
-                    // get texture coords
-                    Vector2 textcoords = new Vector2(vertexData[i + 6], vertexData[i + 7]);
-
-                    // add to vertices buffer
-                    if (typeof(VertexType) == typeof(VertexPositionNormalTexture))
+                    // get other vertex properties based on type and add to vertices buffer
+                    switch (_vtype)
                     {
-                        var vertexToAdd = new VertexPositionNormalTexture(currPosition, normal, textcoords);
-                        combinedPart.Vertices.Add(ToVertexType(vertexToAdd));
+                        case VertexTypes.VertexPosition:
+                            {
+                                // add to buffer
+                                var vertexToAdd = new VertexPosition(currPosition);
+                                combinedPart.Vertices.Add(ToVertexType(vertexToAdd));
+                                break;
+                            }
+                        case VertexTypes.VertexPositionColor:
+                            {
+                                // get color
+                                Color currColor = new Color(vertexData[i + 3], vertexData[i + 4], vertexData[i + 5], vertexData[i + 6]);
+
+                                // add to buffer
+                                var vertexToAdd = new VertexPositionColor(currPosition, currColor);
+                                combinedPart.Vertices.Add(ToVertexType(vertexToAdd));
+                                break;
+                            }
+                        case VertexTypes.VertexPositionNormalTexture:
+                            {
+                                // get normal
+                                Vector3 normal = new Vector3(vertexData[i + 3], vertexData[i + 4], vertexData[i + 5]);
+                                normal = Vector3.Normalize(Vector3.TransformNormal(normal, transform));
+
+                                // get texture coords
+                                Vector2 textcoords = new Vector2(vertexData[i + 6], vertexData[i + 7]);
+
+                                // add to buffer
+                                var vertexToAdd = new VertexPositionNormalTexture(currPosition, normal, textcoords);
+                                combinedPart.Vertices.Add(ToVertexType(vertexToAdd));
+                                break;
+                            }
+                        case VertexTypes.VertexPositionNormalTangentTexture:
+                            {
+                                // get normal
+                                Vector3 normal = new Vector3(vertexData[i + 3], vertexData[i + 4], vertexData[i + 5]);
+                                normal = Vector3.Normalize(Vector3.TransformNormal(normal, transform));
+
+                                // get tangent
+                                Vector3 tangent = new Vector3(vertexData[i + 6], vertexData[i + 7], vertexData[i + 8]);
+
+                                // get binormal
+                                Vector3 binormal = new Vector3(vertexData[i + 9], vertexData[i + 10], vertexData[i + 11]);
+
+                                // get texture coords
+                                Vector2 textcoords = new Vector2(vertexData[i + 12], vertexData[i + 13]);
+
+                                // add to buffer
+                                var vertexToAdd = new VertexPositionNormalTangentTexture(currPosition, normal, textcoords, tangent, binormal);
+                                combinedPart.Vertices.Add(ToVertexType(vertexToAdd));
+                                break;
+                            }
+                        case VertexTypes.VertexPositionTexture:
+                            {
+                                // get texture coords
+                                Vector2 textcoords = new Vector2(vertexData[i + 3], vertexData[i + 4]);
+
+                                // add to buffer
+                                var vertexToAdd = new VertexPositionTexture(currPosition, textcoords);
+                                combinedPart.Vertices.Add(ToVertexType(vertexToAdd));
+                                break;
+                            }
                     }
 
-                    // add to temp list of all points
+                    // add to temp list of all points and increase vertices count
                     _allPoints.Add(currPosition);
                     verticesInPart++;
                 }
@@ -364,6 +423,14 @@ namespace GeonBit.Core.Graphics
                     case VertexTypes.VertexPositionNormalTexture:
                         {
                             var currVer = ToSpecificVertexType<VertexPositionNormalTexture>(curr);
+                            currVer.Position = Vector3.Transform(currVer.Position, transform);
+                            currVer.Normal = Vector3.Normalize(Vector3.TransformNormal(currVer.Normal, transform));
+                            processed[i++] = ToVertexType(currVer);
+                            break;
+                        }
+                    case VertexTypes.VertexPositionNormalTangentTexture:
+                        {
+                            var currVer = ToSpecificVertexType<VertexPositionNormalTangentTexture>(curr);
                             currVer.Position = Vector3.Transform(currVer.Position, transform);
                             currVer.Normal = Vector3.Normalize(Vector3.TransformNormal(currVer.Normal, transform));
                             processed[i++] = ToVertexType(currVer);

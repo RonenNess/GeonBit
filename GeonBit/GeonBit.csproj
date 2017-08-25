@@ -117,6 +117,7 @@
     <Compile Include="Source\Core\Graphics\Materials\BasicMaterial.cs" />
     <Compile Include="Source\Core\Graphics\Materials\SkinnedMaterial.cs" />
     <Compile Include="Source\Core\Graphics\Misc\CameraEntity.cs" />
+    <Compile Include="Source\Core\Graphics\Misc\ExtendedVertices.cs" />
     <Compile Include="Source\Core\Graphics\Misc\ModelUtils.cs" />
     <Compile Include="Source\Core\Graphics\Nodes\NodesManager.cs" />
     <Compile Include="Source\Core\Graphics\Nodes\OctreeCullingNode.cs" />
