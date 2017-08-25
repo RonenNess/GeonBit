@@ -107,6 +107,7 @@
     <Compile Include="Source\Core\Graphics\Lights\ILightsManager.cs" />
     <Compile Include="Source\Core\Graphics\Lights\LightsManager.cs" />
     <Compile Include="Source\Core\Graphics\Lights\LightSource.cs" />
+    <Compile Include="Source\Core\Graphics\Materials\NormalMapLitMaterial.cs" />
     <Compile Include="Source\Core\Graphics\Materials\LitMaterial.cs" />
     <Compile Include="Source\Core\Graphics\Materials\MaterialAPI.cs" />
     <Compile Include="Source\Core\Graphics\Materials\DefaultMaterialsFactory.cs" />

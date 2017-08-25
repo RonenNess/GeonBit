@@ -68,6 +68,21 @@ namespace GeonBit.Core.Graphics.Materials
         }
         float _maxLightIntens = 1.0f;
 
+        /// <summary>
+        /// Normal map texture.
+        /// </summary>
+        virtual public Texture2D NormalTexture
+        {
+            get { return _normalTexture; }
+            set { _normalTexture = value; SetAsDirty(MaterialDirtyFlags.TextureParams); }
+        }
+        Texture2D _normalTexture;
+
+        /// <summary>
+        /// Get how many samplers this material uses.
+        /// </summary>
+        protected override int SamplersCount { get { return _normalTexture == null ? 1 : 2; } }
+
         // caching lights data in arrays ready to be sent to shader.
         Vector3[] _lightsColArr = new Vector3[MaxLightsCount];
         Vector3[] _lightsPosArr = new Vector3[MaxLightsCount];
@@ -100,7 +115,7 @@ namespace GeonBit.Core.Graphics.Materials
         /// Create new lit effect instance.
         /// </summary>
         /// <returns>New lit effect instance.</returns>
-        public static Effect CreateEffect()
+        public virtual Effect CreateEffect()
         {
             return ResourcesManager.Instance.GetEffect(EffectsPath + "LitEffect").Clone();
         }
@@ -208,11 +223,20 @@ namespace GeonBit.Core.Graphics.Materials
             // set all effect params
             if (IsDirty(MaterialDirtyFlags.TextureParams))
             {
+                // set main texture
                 var textureParam = _effectParams["MainTexture"];
                 if (textureParam != null)
                 {
-                    _effectParams["TextureEnabled"].SetValue(Texture != null);
+                    _effectParams["TextureEnabled"].SetValue(TextureEnabled && Texture != null);
                     textureParam.SetValue(Texture);
+                }
+
+                // set normal texture
+                var normalTextureParam = _effectParams["NormalTexture"];
+                if (normalTextureParam != null)
+                {
+                    _effectParams["NormalTextureEnabled"].SetValue(TextureEnabled && NormalTexture != null);
+                    normalTextureParam.SetValue(NormalTexture);
                 }
             }
             if (IsDirty(MaterialDirtyFlags.Alpha))

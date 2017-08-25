@@ -162,6 +162,11 @@ namespace GeonBit.Core.Graphics.Materials
         abstract public Effect Effect { get; }
 
         /// <summary>
+        /// Get how many samplers this material uses.
+        /// </summary>
+        protected virtual int SamplersCount { get { return 1; } }
+
+        /// <summary>
         /// Return if this material support dynamic lighting.
         /// </summary>
         virtual public bool LightingEnabled
@@ -391,7 +396,8 @@ namespace GeonBit.Core.Graphics.Materials
         protected virtual void ApplySamplerState()
         {
             var states = GraphicsManager.GraphicsDevice.SamplerStates;
-            if (states[0] != SamplerState) states[0] = SamplerState;
+            for (int i = 0; i < SamplersCount; ++i)
+                if (states[i] != SamplerState) states[i] = SamplerState;
         }
 
         /// <summary>
