@@ -31,7 +31,9 @@ namespace GeonBit.Managers
     public class GameFiles : IManager
     {
         // the singleton instance.
-        static GameFiles _instance;
+        private static GameFiles _instance = null;
+        // the thread-safe lock
+        private static readonly object padlock = new object();
 
         /// <summary>
         /// Root directory to store game files.
@@ -45,11 +47,14 @@ namespace GeonBit.Managers
         {
             get
             {
-                if (_instance == null)
+                lock (padlock)
                 {
-                    _instance = new GameFiles();
+                    if (_instance == null)
+                    {
+                        _instance = new GameFiles();
+                    }
+                    return _instance;
                 }
-                return _instance;
             }
         }
 
