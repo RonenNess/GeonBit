@@ -32,6 +32,7 @@ namespace GeonBit.Managers
     {
         // the singleton instance.
         private static GameFiles _instance = null;
+
         // the thread-safe lock
         private static readonly object padlock = new object();
 
