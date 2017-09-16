@@ -646,7 +646,8 @@ namespace GeonBit.Core.Graphics
         {
             get
             {
-                return WorldTransformations.Rotation;
+                Matrix world = WorldTransformations;
+                return Utils.ExtendedMath.GetRotation(ref world);
             }
         }
 
@@ -658,7 +659,8 @@ namespace GeonBit.Core.Graphics
         {
             get
             {
-                return WorldTransformations.Scale;
+                Matrix world = WorldTransformations;
+                return Utils.ExtendedMath.GetScale(ref world);
             }
         }
 

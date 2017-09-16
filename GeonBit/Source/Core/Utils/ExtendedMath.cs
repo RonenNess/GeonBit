@@ -83,6 +83,30 @@ namespace GeonBit.Core.Utils
         }
 
         /// <summary>
+        /// Extract the correct scale from matrix.
+        /// </summary>
+        /// <param name="mat">Matrix to get scale from.</param>
+        /// <returns>Matrix scale.</returns>
+        static public Vector3 GetScale(ref Matrix mat)
+        {
+            Vector3 scale; Vector3 pos; Quaternion rot;
+            mat.Decompose(out scale, out rot, out pos);
+            return scale;
+        }
+
+        /// <summary>
+        /// Extract the correct rotation from matrix.
+        /// </summary>
+        /// <param name="mat">Matrix to get rotation from.</param>
+        /// <returns>Matrix rotation.</returns>
+        static public Quaternion GetRotation(ref Matrix mat)
+        {
+            Vector3 scale; Vector3 pos; Quaternion rot;
+            mat.Decompose(out scale, out rot, out pos);
+            return rot;
+        }
+
+        /// <summary>
         /// Extract yaw, pitch and roll from existing matrix.
         /// </summary>
         /// <param name="matrix">Matrix to extract from.</param>

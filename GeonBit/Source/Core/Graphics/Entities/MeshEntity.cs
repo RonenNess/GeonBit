@@ -127,7 +127,8 @@ namespace GeonBit.Core.Graphics
 
             // reset last radius
             _lastRadius = 0f;
-            float scaleLen = worldTransformations.Scale.Length();
+            Vector3 scale = Utils.ExtendedMath.GetScale(ref worldTransformations);
+            float scaleLen = scale.Length();
 
             // check if in this mesh we have shared materials, eg same effects used for several mesh parts
             bool gotSharedEffects = Mesh.Effects.Count != Mesh.MeshParts.Count;
@@ -191,7 +192,7 @@ namespace GeonBit.Core.Graphics
         protected override BoundingSphere CalcBoundingSphere(Node parent, ref Matrix localTransformations, ref Matrix worldTransformations)
         {
             BoundingSphere modelBoundingSphere = Mesh.BoundingSphere;
-            modelBoundingSphere.Radius *= worldTransformations.Scale.Length();
+            modelBoundingSphere.Radius *= Utils.ExtendedMath.GetScale(ref worldTransformations).Length();
             modelBoundingSphere.Center = worldTransformations.Translation;
             return modelBoundingSphere;
 

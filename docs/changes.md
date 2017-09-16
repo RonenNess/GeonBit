@@ -4,7 +4,7 @@
 
 - Added normal mapped material.
 - Added support in multiple vertex types for combined mesh.
-- 
+- Removed usage of deprecated Matrix.Rotation and Matrix.Scale getters.
 
 Note: closing version before big dev iteration.
 

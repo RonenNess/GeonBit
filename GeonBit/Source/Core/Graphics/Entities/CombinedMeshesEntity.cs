@@ -621,7 +621,8 @@ namespace GeonBit.Core.Graphics
             BoundingSphere modelBoundingSphere = _localBoundingSphere;
 
             // apply transformations on bounding sphere
-            modelBoundingSphere.Radius *= System.Math.Max(worldTransformations.Scale.X, System.Math.Max(worldTransformations.Scale.Y, worldTransformations.Scale.Z));
+            Vector3 scale = ExtendedMath.GetScale(ref worldTransformations);
+            modelBoundingSphere.Radius *= System.Math.Max(scale.X, System.Math.Max(scale.Y, scale.Z));
             modelBoundingSphere.Center = Vector3.Transform(modelBoundingSphere.Center, worldTransformations);
             return modelBoundingSphere;
 

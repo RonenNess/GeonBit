@@ -176,7 +176,8 @@ namespace GeonBit.Core.Graphics
         protected override BoundingSphere CalcBoundingSphere(Node parent, ref Matrix localTransformations, ref Matrix worldTransformations)
         {
             BoundingSphere modelBoundingSphere = ModelUtils.GetBoundingSphere(Model);
-            modelBoundingSphere.Radius *= worldTransformations.Scale.Length();
+            Vector3 scale = Utils.ExtendedMath.GetScale(ref worldTransformations);
+            modelBoundingSphere.Radius *= scale.Length();
             modelBoundingSphere.Center = worldTransformations.Translation;
             return modelBoundingSphere;
         }

@@ -175,7 +175,7 @@ namespace GeonBit.Core.Graphics
 
             // reset last radius
             _lastRadius = 0f;
-            float scaleLen = worldTransformations.Scale.Length();
+            float scaleLen = Utils.ExtendedMath.GetScale(ref worldTransformations).Length();
 
             // iterate model meshes
             foreach (var mesh in Model.Meshes)
@@ -262,7 +262,7 @@ namespace GeonBit.Core.Graphics
         protected override BoundingSphere CalcBoundingSphere(Node parent, ref Matrix localTransformations, ref Matrix worldTransformations)
         {
             BoundingSphere modelBoundingSphere = ModelUtils.GetBoundingSphere(Model);
-            modelBoundingSphere.Radius *= worldTransformations.Scale.Length();
+            modelBoundingSphere.Radius *= Utils.ExtendedMath.GetScale(ref worldTransformations).Length();
             modelBoundingSphere.Center = worldTransformations.Translation;
             return modelBoundingSphere;
 
