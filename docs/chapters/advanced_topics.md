@@ -265,7 +265,8 @@ To create a ```CombinedMeshesRenderer``` component:
 
 ```cs
 // create a combined mesh renderer and attach to a gameobject called 'level'
-CombinedMeshesRenderer combined = new CombinedMeshesRenderer();
+// note: in this example we'll use vertices that hold position, normal and texture.
+var combined = new CombinedMeshesRenderer<VertexPositionNormalTexture>();
 combined.RenderingQueue = GeonBit.Core.Graphics.RenderingQueue.Terrain;
 level.AddComponent(combined);
 ```
