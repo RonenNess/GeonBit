@@ -1,10 +1,17 @@
 # ChangeLog
 
+## 0.1.0.6
+
+- Added normal mapped material.
+- Added support in multiple vertex types for combined mesh.
+- 
+
+Note: closing version before big dev iteration.
+
 ## 0.1.0.5
 
 - Improvements to lights manager and basic lit effect.
 
-Note: closing version before big dev iteration.
 
 ## 0.1.0.4
 
