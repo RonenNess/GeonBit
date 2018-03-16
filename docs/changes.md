@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.1.0.7
+
+- Updated GeonBit.UI to version 3.1.0.1.
+
 ## 0.1.0.6
 
 - Added normal mapped material.

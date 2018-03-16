@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
 	<id>GeonBit</id>
-	<version>0.1.0.6</version>
+	<version>0.1.0.7</version>
 	<authors>Ronen Ness</authors>
 	<owners>RonenNess</owners>
 	<title>GeonBit.Core</title>
@@ -12,12 +12,12 @@
 	<iconUrl>https://raw.githubusercontent.com/RonenNess/GeonBit/master/GeonBit/Logo/nuget.png</iconUrl>
 	<copyright>Ronen Ness</copyright>
 	<requireLicenseAcceptance>true</requireLicenseAcceptance>
-	<releaseNotes>Added normal mapped material, small improvements, and removed deprecated MonoGame APIs usage.</releaseNotes>
+	<releaseNotes>Updated GeonBit.UI version.</releaseNotes>
 	<description>ECS game engine in MonoGame and C#.</description>
 	<tags>monogame gamedev game-engine games ecs entity-component</tags>
 	<dependencies>
 		<dependency id="BulletSharp" version="0.10.0" />
-		<dependency id="GeonBit.UI" version="3.0.0.1" />	
+		<dependency id="GeonBit.UI" version="3.1.0.1" />	
 	</dependencies>
   </metadata>
   <files>

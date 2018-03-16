@@ -220,11 +220,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="DataTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\GeonBit.UI.3.0.1.1\lib\geonbitui\DataTypes.dll</HintPath>
+      <HintPath>..\packages\GeonBit.UI.3.1.0.1\lib\geonbitui\DataTypes.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GeonBit.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\GeonBit.UI.3.0.1.1\lib\geonbitui\GeonBit.UI.dll</HintPath>
+      <HintPath>..\packages\GeonBit.UI.3.1.0.1\lib\geonbitui\GeonBit.UI.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MonoGame.Framework">
