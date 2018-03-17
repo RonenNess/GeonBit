@@ -212,8 +212,8 @@ namespace GeonBit.Core.Physics
                 int index1) =>
             {
                 // get physical bodies
-                RigidBody body0 = ((RigidBody)obj0.CollisionObject.UserObject);
-                RigidBody body1 = ((RigidBody)obj1.CollisionObject.UserObject);
+                RigidBody body0 = obj0.CollisionObject.UserObject as RigidBody;
+                RigidBody body1 = obj1.CollisionObject.UserObject as RigidBody;
 
                 // if one of the bodies don't support collision skip
                 if (body0 == null || body1 == null) { return; }

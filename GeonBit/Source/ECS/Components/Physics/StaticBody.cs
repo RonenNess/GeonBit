@@ -70,6 +70,7 @@ namespace GeonBit.ECS.Components.Physics
         {
             _shape = shape;
             _body = new Core.Physics.StaticBody(shape);
+            _body.EcsComponent = this;
         }
 
         /// <summary>

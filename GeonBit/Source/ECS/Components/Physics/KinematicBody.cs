@@ -69,6 +69,7 @@ namespace GeonBit.ECS.Components.Physics
         {
             _shape = shape;
             _body = new Core.Physics.KinematicBody(shape);
+            _body.EcsComponent = this;
         }
 
         /// <summary>

@@ -86,6 +86,7 @@ namespace GeonBit.Core.Physics
             _shape = shape;
             BulletCollisionObject = new CollisionObject();
             BulletCollisionObject.CollisionShape = shape.BulletCollisionShape;
+            BulletCollisionObject.UserObject = this;
 
             // turn off simulation and collision events
             base.EnableSimulation = false;
