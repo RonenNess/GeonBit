@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 0.1.0.8
+
+- Fixed bug in getting GameObject's physical body via the `PhysicalBody` alias.
+- Fixed ray casting for physical bodies that are not rigid, eg static and kinematic bodies.
+
 ## 0.1.0.7
 
 - Updated GeonBit.UI to version 3.1.0.1.
