@@ -958,7 +958,7 @@ namespace GeonBit.ECS
             component.AsDebug = false;
 
             // set physical body alias
-            if (PhysicalBody == null && component.GetType() == typeof(Components.Physics.BasePhysicsComponent))
+            if (PhysicalBody == null && component is Components.Physics.BasePhysicsComponent)
             {
                 PhysicalBody = component as Components.Physics.BasePhysicsComponent;
             }
