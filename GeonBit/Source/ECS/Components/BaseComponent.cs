@@ -141,7 +141,10 @@ namespace GeonBit.ECS.Components
         /// Clone this component.
         /// </summary>
         /// <returns>Cloned copy of this component.</returns>
-        abstract public BaseComponent Clone();
+        public virtual BaseComponent Clone()
+        {
+            throw new System.NotImplementedException("Component 'Clone' is not implemented!");
+        }
 
         /// <summary>
         /// Copy basic properties to another component (helper function to help with Cloning).

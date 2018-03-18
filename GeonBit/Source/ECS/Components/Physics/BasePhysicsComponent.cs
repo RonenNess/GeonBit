@@ -48,6 +48,11 @@ namespace GeonBit.ECS.Components.Physics
         protected virtual bool TakeOverNodeTransformations { get { return false; } }
 
         /// <summary>
+        /// Optional user data you can attach to this physical component.
+        /// </summary>
+        public object UserData = null;
+
+        /// <summary>
         /// Set / get body scale.
         /// </summary>
         public Vector3 Scale
@@ -261,6 +266,7 @@ namespace GeonBit.ECS.Components.Physics
             ret.Restitution = Restitution;
             ret.WorldTransform = WorldTransform;
             ret.Scale = Scale;
+            ret.UserData = UserData;
             return base.CopyBasics(ret);
         }
     }
