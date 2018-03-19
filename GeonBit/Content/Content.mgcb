@@ -192,3 +192,9 @@
 /processorParam:DebugMode=Auto
 /build:GeonBit.Core/Effects/NormalMapLitEffect.fx
 
+#begin GeonBit.Core/Effects/LitEffectAlphaTest.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:GeonBit.Core/Effects/LitEffectAlphaTest.fx
+

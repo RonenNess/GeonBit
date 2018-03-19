@@ -11,7 +11,7 @@
 #endregion
 #region File Description
 //-----------------------------------------------------------------------------
-// A basic one-pass lit material.
+// A basic one-pass lit material with alpha test.
 //
 // Author: Ronen Ness.
 // Since: 2017.
@@ -26,11 +26,12 @@ namespace GeonBit.Core.Graphics.Materials
 {
     /// <summary>
     /// A material that support ambient + several point / directional lights.
+    /// In addition, it support alpha test (transparent pixels).
     /// </summary>
-    public class NormalMapLitMaterial : LitMaterial
+    public class LitMaterialAlphaTest : LitMaterial
     {
         // effect path
-        private static readonly string _effectPath = EffectsPath + "NormalMapLitEffect";
+        private static readonly string _effectPath = EffectsPath + "LitEffectAlphaTest";
 
         /// <summary>
         /// Create new lit effect instance.
@@ -44,7 +45,7 @@ namespace GeonBit.Core.Graphics.Materials
         /// <summary>
         /// Create the lit material from an empty effect.
         /// </summary>
-        public NormalMapLitMaterial() : base()
+        public LitMaterialAlphaTest() : base()
         {
         }
 
@@ -52,7 +53,7 @@ namespace GeonBit.Core.Graphics.Materials
         /// Create the material from another material instance.
         /// </summary>
         /// <param name="other">Other material to clone.</param>
-        public NormalMapLitMaterial(LitMaterial other) : base(other)
+        public LitMaterialAlphaTest(LitMaterial other) : base(other)
         {
         }
 
@@ -60,7 +61,7 @@ namespace GeonBit.Core.Graphics.Materials
         /// Create the lit material.
         /// </summary>
         /// <param name="fromEffect">Effect to create material from.</param>
-        public NormalMapLitMaterial(Effect fromEffect) : base(fromEffect)
+        public LitMaterialAlphaTest(Effect fromEffect) : base(fromEffect)
         {
         }
 
@@ -69,17 +70,17 @@ namespace GeonBit.Core.Graphics.Materials
         /// </summary>
         /// <param name="fromEffect">Effect to create material from.</param>
         /// <param name="copyEffectProperties">If true, will copy initial properties from effect.</param>
-        public NormalMapLitMaterial(BasicEffect fromEffect, bool copyEffectProperties = true) : base(fromEffect, copyEffectProperties)
+        public LitMaterialAlphaTest(BasicEffect fromEffect, bool copyEffectProperties = true) : base(fromEffect, copyEffectProperties)
         {
         }
-
+        
         /// <summary>
         /// Clone this material.
         /// </summary>
         /// <returns>Copy of this material.</returns>
         public override MaterialAPI Clone()
         {
-            return new NormalMapLitMaterial(this);
+            return new LitMaterialAlphaTest(this);
         }
     }
 }

@@ -29,6 +29,9 @@ namespace GeonBit.Core.Graphics.Materials
     /// </summary>
     public class LitMaterial : MaterialAPI
     {
+        // effect path
+        private static readonly string _effectPath = EffectsPath + "LitEffect";
+
         // the effect instance of this material.
         Effect _effect;
 
@@ -117,7 +120,7 @@ namespace GeonBit.Core.Graphics.Materials
         /// <returns>New lit effect instance.</returns>
         public virtual Effect CreateEffect()
         {
-            return ResourcesManager.Instance.GetEffect(EffectsPath + "LitEffect").Clone();
+            return ResourcesManager.Instance.GetEffect(_effectPath).Clone();
         }
 
         /// <summary>
