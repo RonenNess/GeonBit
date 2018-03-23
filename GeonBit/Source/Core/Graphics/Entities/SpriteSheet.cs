@@ -57,14 +57,16 @@ namespace GeonBit.Core.Graphics
         /// </summary>
         public SpriteSheet()
         {
+            BuildForConstStepSize(new Point(1, 1));
         }
 
         /// <summary>
         /// Create spritesheet from constant steps count.
         /// </summary>
-        public SpriteSheet(Point stepsCount)
+        public SpriteSheet(Point? stepsCount)
         {
-            BuildForConstStepSize(stepsCount);
+            if (stepsCount != null)
+                BuildForConstStepSize(stepsCount.Value);
         }
 
         /// <summary>
