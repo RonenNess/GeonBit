@@ -38,6 +38,13 @@ namespace GeonBit.ECS.Components.Physics
         /// The shape used for this physical body.
         /// </summary>
         private Core.Physics.CollisionShapes.ICollisionShape _shape = null;
+
+        /// <summary>
+        /// Optional game object to force update whenever this body updates transformations.
+        /// Useful if you want to attach a camera to a gameobject that is affected by this body and want to prevent
+        /// "tearing" due to physics / nodes update times.
+        /// </summary>
+        public GameObject SyncUpdateWith;
         
         // body mass
         float _mass;
@@ -225,9 +232,18 @@ namespace GeonBit.ECS.Components.Physics
         /// </summary>
         internal override void UpdateNodeTransforms()
         {
+            // update transforms
             Matrix newTrans = _body.WorldTransform;
             _GameObject.SceneNode.SetWorldTransforms(ref newTrans);
             _alreadyUpdatedBodyInFrame = true;
+
+            // if have object to sync update with, update the object as well
+            if (SyncUpdateWith != null)
+            {
+                _GameObject.SceneNode.ForceFullUpdate(false);
+                _GameObject.SceneNode.UpdateTransformations(true);
+                SyncUpdateWith.Update();
+            }
         }
 
         /// <summary>

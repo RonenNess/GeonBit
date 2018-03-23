@@ -826,6 +826,11 @@ playerPhysics.CollisionGroup = (short)CollisionGroups.Player;
 playerGameObject.AddComponent(playerPhysics); 
 ```
 
+##### SyncUpdateWith
+
+If you attach a camera to an object that is directly affected by the rigid body (but not the same object containing it), sometimes you'll notice some "jerking" artifacts that happens due to the times where the camera, physics, and nodes are updated.
+To solve this, you can use the 'SyncUpdateWith' property - simply set the object that contains the camera as the rigid body's SyncUpdateWith ref.
+
 #### Kinematic Body
 
 A Kinematic Body is a physical body that does not respond to external forces.

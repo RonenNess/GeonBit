@@ -85,6 +85,12 @@ namespace GeonBit.ECS.Components.Graphics
         public Vector3 LookAtTargetOffset = Vector3.Zero;
 
         /// <summary>
+        /// Does this camera auto-update on update loop?
+        /// Note: if you turn this false you must call Update() manually.
+        /// </summary>
+        public bool AutoUpdate = true;
+
+        /// <summary>
         /// Get a vector representing camera current forward direction.
         /// </summary>
         public Vector3 Forward
@@ -155,6 +161,7 @@ namespace GeonBit.ECS.Components.Graphics
             ret.ForceScreenSize = ForceScreenSize;
             ret.FarPlane = FarPlane;
             ret.NearPlane = NearPlane;
+            ret.AutoUpdate = AutoUpdate;
             CopyBasics(ret);
             return ret;
         }
@@ -237,7 +244,7 @@ namespace GeonBit.ECS.Components.Graphics
         protected override void OnUpdate()
         {
             // if we are the currently active camera, update view matrix
-            if (IsActiveCamera)
+            if (IsActiveCamera && AutoUpdate)
             {
                 // update camera view
                 UpdateCameraView();

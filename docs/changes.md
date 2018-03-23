@@ -5,6 +5,8 @@
 - Fixed bug in getting GameObject's physical body via the `PhysicalBody` alias.
 - Fixed ray casting for physical bodies that are not rigid, eg static and kinematic bodies.
 - Added 'FrameId' to time manager.
+- Added 'SyncUpdateWith' to RigidBody to fix rigid body updating + camera jerking artifact.
+- Added 'AutoUpdate' property to camera, for better control over when it updates.
 
 ## 0.1.0.7
 
