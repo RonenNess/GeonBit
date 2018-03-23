@@ -44,9 +44,6 @@ namespace GeonBit.Core.Graphics
         /// </summary>
         public OnAnimationClipEnds OnAnimationEnd = null;
 
-        // material to draw the sprite with
-        Materials.MaterialAPI _material;
-
         /// <summary>
         /// If true, will always face camera. If false will just use node's rotation.
         /// </summary>
@@ -65,10 +62,7 @@ namespace GeonBit.Core.Graphics
         /// <summary>
         /// Get / set sprite material.
         /// </summary>
-        public Materials.MaterialAPI Material
-        {
-            get; set;
-        }
+        public Materials.MaterialAPI Material;
 
         /// <summary>
         /// Copy spritesheet step from other sprite.
@@ -92,7 +86,7 @@ namespace GeonBit.Core.Graphics
         {
             // store spritesheet and material
             Spritesheet = spritesheet;
-            _material = material;
+            Material = material;
 
             // set default rendering queue
             RenderingQueue = RenderingQueue.Billboards;
@@ -255,7 +249,7 @@ namespace GeonBit.Core.Graphics
             }
 
             // update per-entity override properties
-            Materials.MaterialAPI material = MaterialOverride.Apply(_material);
+            Materials.MaterialAPI material = MaterialOverride.Apply(Material);
 
             // setup material
             material.Apply(ref newWorld, ref _lastBoundingSphere);
