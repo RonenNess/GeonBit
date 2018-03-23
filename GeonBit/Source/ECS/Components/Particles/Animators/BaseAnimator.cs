@@ -146,7 +146,7 @@ namespace GeonBit.ECS.Components.Particles.Animators
         /// <summary>
         /// Get all model renderable entities in an efficient way.
         /// </summary>
-        protected Graphics.ModelRenderer[] ModelRenderables
+        protected Graphics.BaseRendererWithOverrideMaterial[] ModelRenderables
         {
             get
             {
@@ -154,12 +154,12 @@ namespace GeonBit.ECS.Components.Particles.Animators
                 object list = _GameObject.GetInternalData(ref AnimatorModelsInternalKey);
                 if (list == null)
                 {
-                    list = _GameObject.GetComponents<Graphics.ModelRenderer>(BaseProperties.FilterTargetsByName).ToArray();
+                    list = _GameObject.GetComponents<Graphics.BaseRendererWithOverrideMaterial>(BaseProperties.FilterTargetsByName).ToArray();
                     _GameObject.SetInternalData(ref AnimatorModelsInternalKey, list);
                 }
 
                 // return list of renderables
-                return list as Graphics.ModelRenderer[];
+                return list as Graphics.BaseRendererWithOverrideMaterial[];
             }
         }
 

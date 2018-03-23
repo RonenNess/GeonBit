@@ -27,7 +27,7 @@ namespace GeonBit.ECS.Components.Graphics
     /// <summary>
     /// This component renders a 3D quad that always faces the active camera, with animated sprite on it.
     /// </summary>
-    public class SpriteRenderer : BaseRendererComponent
+    public class SpriteRenderer : BaseRendererWithOverrideMaterial
     {
         /// <summary>
         /// The entity from the core layer used to draw the model.
@@ -47,7 +47,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// <summary>
         /// Override material default settings for this specific model instance.
         /// </summary>
-        public MaterialOverrides MaterialOverride
+        public override MaterialOverrides MaterialOverride
         {
             get { return _entity.MaterialOverride; }
             set { _entity.MaterialOverride = value; }

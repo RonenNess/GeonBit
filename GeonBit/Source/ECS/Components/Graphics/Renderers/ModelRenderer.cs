@@ -25,7 +25,7 @@ namespace GeonBit.ECS.Components.Graphics
     /// <summary>
     /// This component renders a 3D model.
     /// </summary>
-    public class ModelRenderer : BaseRendererComponent
+    public class ModelRenderer : BaseRendererWithOverrideMaterial
     {
         /// <summary>
         /// The entity from the core layer used to draw the model.
@@ -35,7 +35,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// <summary>
         /// Override material default settings for this specific model instance.
         /// </summary>
-        public Core.Graphics.MaterialOverrides MaterialOverride
+        public override Core.Graphics.MaterialOverrides MaterialOverride
         {
             get { return _entity.MaterialOverride; }
             set { _entity.MaterialOverride = value; }
