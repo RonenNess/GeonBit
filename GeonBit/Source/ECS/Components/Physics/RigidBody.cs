@@ -187,6 +187,9 @@ namespace GeonBit.ECS.Components.Physics
                 _body.ApplyTorque(ConstTorqueForce.Value);
             }
 
+            // reset the "update this frame" flag
+            _alreadyUpdatedBodyInFrame = false;
+
             // normally, we want to update node before drawing entity.
             // but if our node is currently not visible or culled out, we still want to update it.
             // for that purpose we do the test below - if node was not drawn, update from within update() call.
@@ -194,7 +197,6 @@ namespace GeonBit.ECS.Components.Physics
             {
                 UpdateNodeTransforms();
             } 
-            _alreadyUpdatedBodyInFrame = false;
         }
 
         /// <summary>
