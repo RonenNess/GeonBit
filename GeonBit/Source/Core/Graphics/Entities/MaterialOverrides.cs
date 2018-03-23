@@ -36,6 +36,7 @@ namespace GeonBit.Core.Graphics
         // optional per-entity properties that override material's defaults
         Color? _diffuseColor = null;
         Color? _specularColor = null;
+        Color? _emissiveLight = null;
         float? _alpha = null;
         Texture2D _texture = null;
 
@@ -57,6 +58,16 @@ namespace GeonBit.Core.Graphics
         {
             get { return _specularColor; }
             set { _specularColor = value; UpdateOverridePropertiesState(); }
+        }
+
+        /// <summary>
+        /// Override emissive color for this specific entity.
+        /// Note: will affect all parts of the model.
+        /// </summary>
+        public Color? EmissiveLight
+        {
+            get { return _emissiveLight; }
+            set { _emissiveLight = value; UpdateOverridePropertiesState(); }
         }
 
         /// <summary>
@@ -90,7 +101,7 @@ namespace GeonBit.Core.Graphics
         /// </summary>
         private bool HaveOverrideProperties
         {
-            get { return Alpha != null || DiffuseColor != null || Texture != null || SpecularColor != null; }
+            get { return Alpha != null || DiffuseColor != null || Texture != null || SpecularColor != null || EmissiveLight != null; }
         }
 
         /// <summary>
@@ -110,6 +121,7 @@ namespace GeonBit.Core.Graphics
             MaterialOverrides ret = new MaterialOverrides();
             ret._diffuseColor = _diffuseColor;
             ret._specularColor = _specularColor;
+            ret._emissiveLight = _emissiveLight;
             ret._alpha = _alpha;
             ret._texture = _texture;
             ret.UpdateOverridePropertiesState();
@@ -145,19 +157,25 @@ namespace GeonBit.Core.Graphics
             // if got override diffuse color, set it
             if (DiffuseColor != null)
             {
-                material.DiffuseColor = ((Color)DiffuseColor);
+                material.DiffuseColor = DiffuseColor.Value;
             }
 
             // if got override specular color, set it
             if (SpecularColor != null)
             {
-                material.SpecularColor = ((Color)SpecularColor);
+                material.SpecularColor = SpecularColor.Value;
+            }
+
+            // if got override emissive color, set it
+            if (EmissiveLight != null)
+            {
+                material.EmissiveLight = EmissiveLight.Value;
             }
 
             // if got override alpha, set it
             if (Alpha != null)
             {
-                material.Alpha = (float)Alpha;
+                material.Alpha = Alpha.Value;
             }
 
             // if got override texture, set it

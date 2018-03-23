@@ -8,6 +8,7 @@
 - Added 'SyncUpdateWith' to RigidBody to fix rigid body updating + camera jerking artifact.
 - Added 'AutoUpdate' property to camera, for better control over when it updates.
 - Added basic renderer with material override, so that animators could be used on sprites as well.
+- Added emissive color to override material.
 
 ## 0.1.0.7
 
