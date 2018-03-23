@@ -109,6 +109,11 @@ namespace GeonBit.Managers
         public GameTime GameTime { get { return _lastGameTime; } }
 
         /// <summary>
+        /// Unique increamented frame id.
+        /// </summary>
+        public ulong FrameId { get; private set; } = 0;
+
+        /// <summary>
         /// Update current time.
         /// </summary>
         /// <param name="time">GameTime, as provided by MonoGame.</param>
@@ -123,6 +128,16 @@ namespace GeonBit.Managers
             TimeSinceLastUpdate = (float)_lastGameTime.ElapsedGameTime.TotalSeconds;
             TimeFactor = TimeSinceLastUpdate * TimeSpeed;
             FixedTimeFactor = FixedUpdateInterval * TimeSpeed;
+            FrameId++;
+        }
+
+        /// <summary>
+        /// Reset frame id.
+        /// </summary>
+        /// <param name="val"></param>
+        public void ResetFrameId(ulong val = 0)
+        {
+            FrameId = val;
         }
 
         /// <summary>

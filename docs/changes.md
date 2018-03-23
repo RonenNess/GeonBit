@@ -4,6 +4,7 @@
 
 - Fixed bug in getting GameObject's physical body via the `PhysicalBody` alias.
 - Fixed ray casting for physical bodies that are not rigid, eg static and kinematic bodies.
+- Added 'FrameId' to time manager.
 
 ## 0.1.0.7
 
