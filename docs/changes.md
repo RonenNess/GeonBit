@@ -10,6 +10,7 @@
 - Added basic renderer with material override, so that animators could be used on sprites as well.
 - Added emissive color to override material.
 - Fixed sprite sheet default constructor.
+- Added camera component FieldOfView.
 
 ## 0.1.0.7
 

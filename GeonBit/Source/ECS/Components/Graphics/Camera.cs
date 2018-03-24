@@ -49,6 +49,15 @@ namespace GeonBit.ECS.Components.Graphics
         }
 
         /// <summary>
+        /// Set / Get camera field of view.
+        /// </summary>
+        public float FieldOfView
+        {
+            get { return _graphicCamera.FieldOfView; }
+            set { _graphicCamera.FieldOfView = value; }
+        }
+
+        /// <summary>
         /// If defined, this will be used as screen size (affect aspect ratio in perspective camera,
         /// and view size in Orthographic camera. If not set, default screen size will be used.
         /// </summary>
@@ -161,6 +170,7 @@ namespace GeonBit.ECS.Components.Graphics
             ret.ForceScreenSize = ForceScreenSize;
             ret.FarPlane = FarPlane;
             ret.NearPlane = NearPlane;
+            ret.FieldOfView = FieldOfView;
             ret.AutoUpdate = AutoUpdate;
             CopyBasics(ret);
             return ret;

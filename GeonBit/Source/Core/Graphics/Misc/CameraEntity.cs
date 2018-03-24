@@ -44,6 +44,11 @@ namespace GeonBit.Core.Graphics
     /// </summary>
     public class CameraEntity
     {
+        /// <summary>
+        /// Default field of view.
+        /// </summary>
+        public static readonly float DefaultFieldOfView = MathHelper.PiOver4;
+
         // projection params
         float _fieldOfView = MathHelper.PiOver4;
         float _nearClipPlane = 1.0f;
