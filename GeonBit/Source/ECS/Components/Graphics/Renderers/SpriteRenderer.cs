@@ -35,6 +35,15 @@ namespace GeonBit.ECS.Components.Graphics
         protected SpriteEntity _entity;
 
         /// <summary>
+        /// Optional position offset.
+        /// </summary>
+        public Vector3 PositionOffset
+        {
+            get { return _entity.PositionOffset; }
+            set { _entity.PositionOffset = value; }
+        }
+
+        /// <summary>
         /// Get the main entity instance of this renderer.
         /// </summary>
         protected override BaseRenderableEntity Entity { get { return _entity; } }
@@ -178,6 +187,7 @@ namespace GeonBit.ECS.Components.Graphics
             ret.MaterialOverride = _entity.MaterialOverride.Clone();
             ret.LockedAxis = LockedAxis;
             ret.AnimationSpeed = AnimationSpeed;
+            ret.PositionOffset = PositionOffset;
             ret.FaceCamera = FaceCamera;
             return ret;
         }

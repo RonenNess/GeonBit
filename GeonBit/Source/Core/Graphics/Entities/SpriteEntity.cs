@@ -60,6 +60,11 @@ namespace GeonBit.Core.Graphics
         static Dictionary<string, Materials.MaterialAPI> _sharedMaterials = new Dictionary<string, Materials.MaterialAPI>();
 
         /// <summary>
+        /// Optional position offset to render sprite.
+        /// </summary>
+        public Vector3 PositionOffset = Vector3.Zero;
+
+        /// <summary>
         /// Get / set sprite material.
         /// </summary>
         public Materials.MaterialAPI Material;
@@ -221,6 +226,9 @@ namespace GeonBit.Core.Graphics
             Vector3 position; Quaternion rotation; Vector3 scale;
             worldTransformations.Decompose(out scale, out rotation, out position);
 
+            // add position offset
+            position += PositionOffset;
+
             // create a new world matrix for the billboard
             Matrix newWorld;
 
@@ -264,6 +272,46 @@ namespace GeonBit.Core.Graphics
                     _spritesheetStep.Vertices, 0, 4,
                     _spritesheetStep.Indexes, 0, 2);
             });
+        }
+
+        /// <summary>
+        /// Calculate and return the bounding box of this entity (in world space).
+        /// </summary>
+        /// <param name="parent">Parent node that's currently drawing this entity.</param>
+        /// <param name="localTransformations">Local transformations from the direct parent node.</param>
+        /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
+        /// <returns>Bounding box of the entity.</returns>
+        protected override BoundingBox CalcBoundingBox(Node parent, ref Matrix localTransformations, ref Matrix worldTransformations)
+        {
+            // decompose transformations
+            Vector3 position; Quaternion rotation; Vector3 scale;
+            worldTransformations.Decompose(out scale, out rotation, out position);
+
+            // add position offset
+            position += PositionOffset;
+
+            // get bounding sphere
+            return new BoundingBox(position - scale, position + scale);
+        }
+
+        /// <summary>
+        /// Calculate and return the bounding sphere of this entity (in world space).
+        /// </summary>
+        /// <param name="parent">Parent node that's currently drawing this entity.</param>
+        /// <param name="localTransformations">Local transformations from the direct parent node.</param>
+        /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>
+        /// <returns>Bounding sphere of the entity.</returns>
+        protected override BoundingSphere CalcBoundingSphere(Node parent, ref Matrix localTransformations, ref Matrix worldTransformations)
+        {
+            // decompose transformations
+            Vector3 position; Quaternion rotation; Vector3 scale;
+            worldTransformations.Decompose(out scale, out rotation, out position);
+
+            // add position offset
+            position += PositionOffset;
+
+            // get bounding sphere
+            return new BoundingSphere(position, System.Math.Max(scale.X, scale.Y));
         }
     }
 }
