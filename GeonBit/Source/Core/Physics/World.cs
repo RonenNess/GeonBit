@@ -187,9 +187,9 @@ namespace GeonBit.Core.Physics
         /// </summary>
         struct CollisionPersistData
         {
-            public RigidBody Body0;
-            public RigidBody Body1;
-            public CollisionPersistData(RigidBody body0, RigidBody body1)
+            public BasicPhysicalBody Body0;
+            public BasicPhysicalBody Body1;
+            public CollisionPersistData(BasicPhysicalBody body0, BasicPhysicalBody body1)
             {
                 Body0 = body0;
                 Body1 = body1;
@@ -212,8 +212,8 @@ namespace GeonBit.Core.Physics
                 int index1) =>
             {
                 // get physical bodies
-                RigidBody body0 = obj0.CollisionObject.UserObject as RigidBody;
-                RigidBody body1 = obj1.CollisionObject.UserObject as RigidBody;
+                BasicPhysicalBody body0 = obj0.CollisionObject.UserObject as BasicPhysicalBody;
+                BasicPhysicalBody body1 = obj1.CollisionObject.UserObject as BasicPhysicalBody;
 
                 // if one of the bodies don't support collision skip
                 if (body0 == null || body1 == null) { return; }

@@ -11,6 +11,8 @@
 - Added emissive color to override material.
 - Fixed sprite sheet default constructor.
 - Added camera component FieldOfView.
+- Fixed collision between static / kinematic objects and rigid bodies.
+- Fixed 'Destroy Object When Finish' + TTL on animators (deletion didn't work if TTL was longer than animation).
 
 ## 0.1.0.7
 

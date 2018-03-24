@@ -259,7 +259,14 @@ namespace GeonBit.ECS.Components.Particles.Animators
             // if done, disable self
             if (finished)
             {
+                // disable
                 Enabled = false;
+
+                // destroy parent game object if needed
+                if (BaseProperties.DestroyObjectOnFinish && !_GameObject.WasDestroyed)
+                {
+                    _GameObject.Destroy();
+                }
             }
         }
 
