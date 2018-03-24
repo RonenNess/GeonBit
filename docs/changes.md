@@ -15,6 +15,7 @@
 - Fixed 'Destroy Object When Finish' + TTL on animators (deletion didn't work if TTL was longer than animation).
 - Added position offset to sprites and billboards.
 - Added calculating bounding box and bounding sphere to sprites and billboards.
+- Fixed bug with collision event happening exactly while removing the body, causing collision with null.
 
 ## 0.1.0.7
 

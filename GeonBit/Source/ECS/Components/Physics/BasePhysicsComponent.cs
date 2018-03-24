@@ -148,7 +148,7 @@ namespace GeonBit.ECS.Components.Physics
         /// <param name="data">Extra collision data.</param>
         public void CallCollisionStart(BasePhysicsComponent other, Core.Physics.CollisionData data)
         {
-            if (_GameObject != null)
+            if (_GameObject != null && other._GameObject != null)
             {
                 _GameObject.CallCollisionStart(other._GameObject, data);
             }
@@ -167,7 +167,7 @@ namespace GeonBit.ECS.Components.Physics
         /// <param name="other">The other body we collided with, but no longer.</param>
         public void CallCollisionEnd(BasePhysicsComponent other)
         {
-            if (_GameObject != null)
+            if (_GameObject != null && other._GameObject != null)
             {
                 _GameObject.CallCollisionEnd(other._GameObject);
             }
@@ -179,7 +179,7 @@ namespace GeonBit.ECS.Components.Physics
         /// <param name="other">The other body we are colliding with.</param>
         public void CallCollisionProcess(BasePhysicsComponent other)
         {
-            if (_GameObject != null)
+            if (_GameObject != null && other._GameObject != null)
             {
                 _GameObject.CallCollisionProcess(other._GameObject);
             }
