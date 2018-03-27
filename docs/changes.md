@@ -16,6 +16,9 @@
 - Added position offset to sprites and billboards.
 - Added calculating bounding box and bounding sphere to sprites and billboards.
 - Fixed bug with collision event happening exactly while removing the body, causing collision with null.
+- Added option to get first material from model renderer.
+- Added option to get Model from model renderer.
+- Added option to add a model renderer to a combined mesh renderer.
 
 ## 0.1.0.7
 

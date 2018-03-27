@@ -165,6 +165,15 @@ namespace GeonBit.Core.Graphics
         }
 
         /// <summary>
+        /// Get the first material used in this renderer.
+        /// </summary>
+        /// <returns>List of materials.</returns>
+        public Materials.MaterialAPI GetFirstMaterial()
+        {
+            return GetMaterial(Model.Meshes[0].Name, 0);
+        }
+
+        /// <summary>
         /// Draw this model.
         /// </summary>
         /// <param name="worldTransformations">World transformations to apply on this entity (this is what you should use to draw this entity).</param>

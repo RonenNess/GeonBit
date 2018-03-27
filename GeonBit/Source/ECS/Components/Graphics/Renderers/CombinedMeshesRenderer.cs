@@ -51,6 +51,25 @@ namespace GeonBit.ECS.Components.Graphics
         }
 
         /// <summary>
+        /// Add a model from a model renderer component.
+        /// Will use its parent game object world transformations and material.
+        /// </summary>
+        /// <param name="renderer">Renderer component to add.</param>
+        /// <param name="removeAfterAdd">If true, will remove the renderer component from its parent once done.</param>
+        public void AddModelRenderer(ModelRenderer renderer, bool removeAfterAdd)
+        {
+            // add model to combined mesh
+            renderer._GameObject.SceneNode.ForceFullUpdate(true);
+            AddModel(renderer.Model, renderer._GameObject.SceneNode.WorldTransformations, renderer.GetFirstMaterial());
+
+            // if needed, remove form parent.
+            if (removeAfterAdd)
+            {
+                renderer.RemoveFromParent();
+            }
+        }
+
+        /// <summary>
         /// Add a model to the combined mesh.
         /// Note: will not take effect until 'Build()' is called.
         /// </summary>

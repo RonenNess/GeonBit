@@ -33,6 +33,11 @@ namespace GeonBit.ECS.Components.Graphics
         protected Core.Graphics.ModelEntity _entity;
 
         /// <summary>
+        /// Get renderer model.
+        /// </summary>
+        public Model Model { get { return _entity.Model; } }
+
+        /// <summary>
         /// Override material default settings for this specific model instance.
         /// </summary>
         public override Core.Graphics.MaterialOverrides MaterialOverride
@@ -69,6 +74,14 @@ namespace GeonBit.ECS.Components.Graphics
         public Core.Graphics.Materials.MaterialAPI GetMaterial(string meshId, int meshPartIndex = 0)
         {
             return _entity.GetMaterial(meshId, meshPartIndex);
+        }
+
+        /// <summary>
+        /// Get the first material used in this renderer.
+        /// </summary>
+        public Core.Graphics.Materials.MaterialAPI GetFirstMaterial()
+        {
+            return _entity.GetFirstMaterial();
         }
 
         /// <summary>
