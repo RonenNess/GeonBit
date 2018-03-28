@@ -20,7 +20,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;LINUX</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;LINUX GB_DEBUG_ALERTS</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -154,6 +154,7 @@
     <Compile Include="Source\Core\Sound\SoundPlayer.cs" />
     <Compile Include="Source\Core\Transformations\Transformations.cs" />
     <Compile Include="Source\Core\Utils\ExtendedMath.cs" />
+    <Compile Include="Source\Core\Utils\CountAndAlert.cs" />
     <Compile Include="Source\Core\Utils\ResizeableArray.cs" />
     <Compile Include="Source\ECS\Components\BaseComponent.cs" />
     <Compile Include="Source\ECS\Components\Graphics\Backgrounds\SceneBackground.cs" />

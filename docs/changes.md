@@ -20,6 +20,7 @@
 - Added option to get Model from model renderer.
 - Added option to add a model renderer to a combined mesh renderer.
 - Debug mode is now true by default when compiling for debug.
+- Added debug mechanism to count and react to repeating events - will be used to test memory usage.
 
 ## 0.1.0.7
 
