@@ -116,7 +116,11 @@ namespace GeonBit
         }
 
         // are we initialized in debug mode?
+#if DEBUG
+        private bool _debug = true;
+#else
         private bool _debug = false;
+#endif
 
         /// <summary>
         /// Run GeonBit engine.
@@ -136,7 +140,7 @@ namespace GeonBit
         /// <param name="graphics">Graphic device manager.</param>
         /// <param name="uiSkin">Which UI skin to use. If null, will not init GeonBit.UI.</param>
         /// <param name="debugMode">Should we run in debug mode (show debug components etc.)</param>
-        public void Initialize(Game game, GraphicsDeviceManager graphics, string uiSkin = "hd", bool debugMode = false)
+        public void Initialize(Game game, GraphicsDeviceManager graphics, string uiSkin = "hd", bool? debugMode = null)
         {
             // sanity check
             if (_wasInit)
@@ -161,7 +165,8 @@ namespace GeonBit
             Managers.Plugins.Instance.LoadAll();
 
             // set debug mode
-            _debug = debugMode;
+            if (debugMode != null)
+                _debug = debugMode.Value;
 
             // set that GeonBit main was init
             _wasInit = true;

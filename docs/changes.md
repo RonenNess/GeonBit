@@ -19,6 +19,7 @@
 - Added option to get first material from model renderer.
 - Added option to get Model from model renderer.
 - Added option to add a model renderer to a combined mesh renderer.
+- Debug mode is now true by default when compiling for debug.
 
 ## 0.1.0.7
 
