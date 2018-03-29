@@ -117,6 +117,15 @@ namespace GeonBit.Core.Graphics
         }
 
         /// <summary>
+        /// Create the renderable entity.
+        /// </summary>
+        public BaseRenderableEntity()
+        {
+            // count the object creation
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.AddedOrCreated);
+        }
+
+        /// <summary>
         /// Draw the entity.
         /// </summary>
         /// <param name="parent">Parent node that's currently drawing this entity.</param>
@@ -162,6 +171,7 @@ namespace GeonBit.Core.Graphics
             // if transformations changed since last time we calculated bounding box, recalc it
             if (_lastWorldTransformForBoundingBox != parent.TransformVersion)
             {
+                Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.HeavyUpdate);
                 _lastWorldTransformForBoundingBox = parent.TransformVersion;
                 _lastBoundingBox = CalcBoundingBox(parent, ref localTransformations, ref worldTransformations);
             }
@@ -204,6 +214,7 @@ namespace GeonBit.Core.Graphics
             // if transformations changed since last time we calculated bounding sphere, recalc it
             if (_lastWorldTransformForBoundingSphere != parent.TransformVersion)
             {
+                Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.HeavyUpdate);
                 _lastWorldTransformForBoundingSphere = parent.TransformVersion;
                 _lastBoundingSphere = CalcBoundingSphere(parent, ref localTransformations, ref worldTransformations);
             }

@@ -49,10 +49,16 @@ namespace GeonBit.Core.Graphics.Lights
             public bool Infinite;
         }
 
+        // ambient light value
+        Color _ambient = Color.Gray;
+
         /// <summary>
         /// Ambient light.
         /// </summary>
-        public Color AmbientLight { get; set; } = Color.Gray;
+        public Color AmbientLight {
+            get { return Enabled ? _ambient : Color.White; }
+            set { _ambient = value; }
+        }
 
         // the size of a batch / region containing lights.
         Vector3 _regionSize = new Vector3(250, 250, 250);
@@ -71,6 +77,11 @@ namespace GeonBit.Core.Graphics.Lights
 
         // to return empty lights array.
         static LightSource[] EmptyLightsArray = new LightSource[0];
+
+        /// <summary>
+        /// Enable / disable all lights.
+        /// </summary>
+        public bool Enabled { get; set; }
 
         /// <summary>
         /// Lights manager divide the world into segments, or regions, that contain lights.
@@ -165,6 +176,12 @@ namespace GeonBit.Core.Graphics.Lights
         /// <returns>Array of lights to apply on this material and drawing. Note: directional lights must always come first!</returns>
         public LightSource[] GetLights(Materials.MaterialAPI material, ref BoundingSphere boundingSphere, int maxLights)
         {
+            // if disabled return empty lights array
+            if (!Enabled)
+            {
+                return EmptyLightsArray;
+            }
+
             // if no lights at all, skip
             if (_regions.Count == 0 && _infiniteLights.Count == 0) { return EmptyLightsArray; }
 

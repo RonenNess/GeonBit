@@ -187,6 +187,15 @@ namespace GeonBit.Core.Graphics
         }
 
         /// <summary>
+        /// Create the node.
+        /// </summary>
+        public Node()
+        {
+            // count the object creation
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.AddedOrCreated);
+        }
+
+        /// <summary>
         /// Other nodes this node is linked to.
         /// This mechanism is used to connect nodes internally.
         /// </summary>
@@ -467,6 +476,9 @@ namespace GeonBit.Core.Graphics
         /// </summary>
         protected virtual void OnWorldMatrixChange()
         {
+            // count events
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.HeavyUpdate);
+
             // update transformations version
             _transformVersion++;
 
@@ -491,6 +503,7 @@ namespace GeonBit.Core.Graphics
         protected virtual void OnTransformationsSet()
         {
             if (UseExternalTransformations) { return; }
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.ValueChanged);
             _isDirty = true;
             NodesManager.AddNodeToUpdateQueue(this);
         }
@@ -501,6 +514,9 @@ namespace GeonBit.Core.Graphics
         /// <param name="newParent">New parent node to set, or null for no parent.</param>
         protected virtual void SetParent(Node newParent)
         {
+            // count the event
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.ValueChanged);
+
             // set parent
             Parent = newParent;
 
@@ -527,9 +543,15 @@ namespace GeonBit.Core.Graphics
         /// <param name="updateNow">If true, will update right now. If false, will do the actual update next drawing frame.</param>
         public void ForceFullUpdate(bool updateNow = true)
         {
+            // count the event
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.ForceUpdate);
+
+            // mark everything as dirty
             _isDirty = true;
             _boundingBoxDirty = true;
             _boundingSphereDirty = true;
+
+            // if update now, do transformation updates
             if (updateNow)
             {
                 DoTransformationsUpdateIfNeeded();
@@ -593,6 +615,9 @@ namespace GeonBit.Core.Graphics
 
             // get our world transformations
             Matrix worldMatrix = WorldTransformations;
+
+            // count the event
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.ForceUpdate);
 
             // combine and return
             return transMatrix * worldMatrix;
@@ -898,7 +923,10 @@ namespace GeonBit.Core.Graphics
         /// </summary>
         /// <returns>Bounding box of the node and its children.</returns>
         public virtual BoundingBox UpdateBoundingBox()
-        { 
+        {
+            // count event
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.HeavyUpdate);
+
             // if empty skip
             if (Empty)
             {
@@ -985,6 +1013,9 @@ namespace GeonBit.Core.Graphics
         /// <returns>Bounding sphere of the node and its children.</returns>
         public virtual BoundingSphere UpdateBoundingSphere()
         {
+            // count event
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.HeavyUpdate);
+
             // if empty skip
             if (Empty)
             {

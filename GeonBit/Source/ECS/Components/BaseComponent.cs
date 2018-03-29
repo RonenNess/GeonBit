@@ -95,6 +95,7 @@ namespace GeonBit.ECS.Components
         public BaseComponent()
         {
             Count++;
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.AddedOrCreated);
         }
 
         /// <summary>

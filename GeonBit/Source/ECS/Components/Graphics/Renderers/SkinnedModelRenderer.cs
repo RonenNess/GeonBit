@@ -80,7 +80,7 @@ namespace GeonBit.ECS.Components.Graphics
         /// <summary>
         /// The name of the clip to play in loop while no other clip is playing, or after finishing a one-timer clip.
         /// </summary>
-        public string IdleAnimationClip = "";
+        public string IdleAnimationClip = string.Empty;
 
         /// <summary>
         /// Return if currently playing the 'idle' animation.

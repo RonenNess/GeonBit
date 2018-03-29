@@ -129,29 +129,6 @@ namespace GeonBit.Core.Graphics.Lights
         private Matrix _transform;
 
         /// <summary>
-        /// Get the source light as a buffer of floats, in the following format:
-        /// float3 Color, float3 Position, float Intensity, float Range, float specular.
-        /// Note: if its a directional light, we'll get Direction instead of Position.
-        /// </summary>
-        virtual public float[] GetFloatBuffer()
-        {
-            // get color as vector
-            var color = Color.ToVector3();
-
-            // get position / direction
-            Vector3 pos = Direction ?? Position;
-
-            // create data buffer
-            var asFloatBuffer = new float[] {
-                color.X, color.Y, color.Z,
-                pos.X, pos.Y, pos.Z,
-                Intensity, Range, Specular};
-
-            // return array
-            return asFloatBuffer;
-        }
-
-        /// <summary>
         /// Remove self from parent lights manager.
         /// </summary>
         public void Remove()
@@ -160,6 +137,15 @@ namespace GeonBit.Core.Graphics.Lights
             {
                 LightsManager.RemoveLight(this);
             }
+        }
+
+        /// <summary>
+        /// Create the light source.
+        /// </summary>
+        public LightSource()
+        {
+            // count the object creation
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.AddedOrCreated);
         }
 
         /// <summary>

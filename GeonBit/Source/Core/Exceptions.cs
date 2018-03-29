@@ -31,6 +31,7 @@ namespace GeonBit.Exceptions
         /// </summary>
         public InvalidValueException()
         {
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.Exception);
         }
 
         /// <summary>
@@ -39,6 +40,7 @@ namespace GeonBit.Exceptions
         public InvalidValueException(string message)
             : base(message)
         {
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.Exception);
         }
 
         /// <summary>
@@ -47,6 +49,7 @@ namespace GeonBit.Exceptions
         public InvalidValueException(string message, Exception inner)
             : base(message, inner)
         {
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.Exception);
         }
     }
 
@@ -60,6 +63,7 @@ namespace GeonBit.Exceptions
         /// </summary>
         public OutOfRangeException()
         {
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.Exception);
         }
 
         /// <summary>
@@ -68,6 +72,7 @@ namespace GeonBit.Exceptions
         public OutOfRangeException(string message)
             : base(message)
         {
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.Exception);
         }
 
         /// <summary>
@@ -76,6 +81,7 @@ namespace GeonBit.Exceptions
         public OutOfRangeException(string message, Exception inner)
             : base(message, inner)
         {
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.Exception);
         }
     }
 
@@ -90,6 +96,7 @@ namespace GeonBit.Exceptions
         /// </summary>
         public UnsupportedTypeException()
         {
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.Exception);
         }
 
         /// <summary>
@@ -98,6 +105,7 @@ namespace GeonBit.Exceptions
         public UnsupportedTypeException(string message)
             : base(message)
         {
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.Exception);
         }
 
         /// <summary>
@@ -106,6 +114,7 @@ namespace GeonBit.Exceptions
         public UnsupportedTypeException(string message, Exception inner)
             : base(message, inner)
         {
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.Exception);
         }
     }
 
@@ -120,6 +129,7 @@ namespace GeonBit.Exceptions
         /// </summary>
         public InvalidActionException()
         {
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.Exception);
         }
 
         /// <summary>
@@ -128,6 +138,7 @@ namespace GeonBit.Exceptions
         public InvalidActionException(string message)
             : base(message)
         {
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.Exception);
         }
 
         /// <summary>
@@ -136,6 +147,7 @@ namespace GeonBit.Exceptions
         public InvalidActionException(string message, Exception inner)
             : base(message, inner)
         {
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.Exception);
         }
     }
 
@@ -149,6 +161,7 @@ namespace GeonBit.Exceptions
         /// </summary>
         public InternalError()
         {
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.Exception);
         }
 
         /// <summary>
@@ -157,6 +170,7 @@ namespace GeonBit.Exceptions
         public InternalError(string message)
             : base(message)
         {
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.Exception);
         }
 
         /// <summary>
@@ -165,6 +179,7 @@ namespace GeonBit.Exceptions
         public InternalError(string message, Exception inner)
             : base(message, inner)
         {
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.Exception);
         }
     }
 }

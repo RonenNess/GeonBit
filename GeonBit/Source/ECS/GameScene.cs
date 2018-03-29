@@ -95,6 +95,9 @@ namespace GeonBit.ECS
             // create user interface
             UserInterface = GeonBitMain.Instance.UiEnabled ? new UI.UserInterface() : null;
 
+            // count the event
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.AddedOrCreated);
+
             // create scene root
             Root = new RootGameObject(this, SceneNodeType.Simple);
             Root.SceneNode.DisableCulling = true;

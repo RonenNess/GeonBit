@@ -378,7 +378,7 @@ namespace GeonBit.Content.Pipeline.Processors
 
         private static List<KeyframeContent> InterpolateFramesBone(int bone, List<KeyframeContent> frames, TimeSpan keySpan)
         {
-            System.Diagnostics.Debug.WriteLine("");
+            System.Diagnostics.Debug.WriteLine(string.Empty);
             System.Diagnostics.Debug.WriteLine("Bone: " + bone);
             if (frames == null)
             {

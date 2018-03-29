@@ -21,6 +21,9 @@
 - Added option to add a model renderer to a combined mesh renderer.
 - Debug mode is now true by default when compiling for debug.
 - Added debug mechanism to count and react to repeating events - will be used to test memory usage.
+- Added debug tracing.
+- Less garbage generation.
+- Option to turn off all scene lights.
 
 ## 0.1.0.7
 

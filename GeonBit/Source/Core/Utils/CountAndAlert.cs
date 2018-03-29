@@ -33,13 +33,50 @@ namespace GeonBit.Core.Utils
     /// when specific events happen too often.
     /// Note: this tool was designed for debug purposes. 
     /// </summary>
-    static class CountAndAlert
+    static public class CountAndAlert
     {
         /// <summary>
         /// Enable / disable this mechanism.
         /// Note: in release mode it is always disabled.
         /// </summary>
         public static bool Enabled = true;
+
+        /// <summary>
+        /// A set of common, predefined alert types you can use as keys.
+        /// </summary>
+        public enum PredefAlertTypes
+        {
+            /// <summary>
+            /// New interesting object was added or created.
+            /// </summary>
+            AddedOrCreated,
+
+            /// <summary>
+            /// Some heavy update that shouldn't happen too often occured.
+            /// </summary>
+            HeavyUpdate,
+
+            /// <summary>
+            /// A very heavy and rare update happened.
+            /// </summary>
+            VeryHeavyUpdate,
+
+            /// <summary>
+            /// A special value that shouldn't change often was changed.
+            /// </summary>
+            ValueChanged,
+
+            /// <summary>
+            /// For forcing-update kind of actions, like something that should update naturally but was
+            /// invoked by the user to update immediately.
+            /// </summary>
+            ForceUpdate,
+
+            /// <summary>
+            /// Caught exceptions.
+            /// </summary>
+            Exception,
+        }
 
         /// <summary>
         /// The type of callback we register for alerts.
@@ -115,12 +152,12 @@ namespace GeonBit.Core.Utils
             /// If true, will also add a counter for stack trace, eg count the caller functions
             /// that invoked the event.
             /// </summary>
-            public bool IncludeStackCounter = false;
+            public bool IncludeStackCounter = true;
 
             /// <summary>
             /// If IncludeStackCounter is true, this will determine how far back we'll go in stack.
             /// </summary>
-            public int StackCounterDepth = 1;
+            public int StackCounterDepth = 3;
 
             /// <summary>
             /// How many times this event need to be called per frame to trigger an event.
@@ -138,6 +175,11 @@ namespace GeonBit.Core.Utils
             public ulong PerCustomTimeAlertThreshold = 0;
 
             /// <summary>
+            /// When to clear stack counters (if used).
+            /// </summary>
+            public EventType ClearStackCountsTime = EventType.PerFrameAlert;
+
+            /// <summary>
             /// Custom time period we can count events to trigger alert for, in seconds.
             /// </summary>
             public float CustomTimeAlert = 7f;
@@ -148,14 +190,34 @@ namespace GeonBit.Core.Utils
             public AlertCallback FrameAlertHandler;
 
             /// <summary>
+            /// Was this event called already?
+            /// </summary>
+            internal bool FrameAlertHandlerCalled = false;
+
+            /// <summary>
             /// Callback to trigger for per-second events.
             /// </summary>
             public AlertCallback SecondAlertHandler;
 
             /// <summary>
+            /// Was this event called already?
+            /// </summary>
+            internal bool SecondAlertHandlerCalled = false;
+
+            /// <summary>
             /// Callback to trigger for per custom time period events.
             /// </summary>
             public AlertCallback TimePeriodAlertHandler;
+
+            /// <summary>
+            /// Was this event called already?
+            /// </summary>
+            internal bool TimePeriodAlertHandlerCalled = false;
+
+            /// <summary>
+            /// Get if this alert have any handlers.
+            /// </summary>
+            public bool GotHandlers { get { return FrameAlertHandler != null || SecondAlertHandler != null || TimePeriodAlertHandler != null; } }
 
             // current counter values.
             internal EventCounters _counters = new EventCounters();
@@ -194,7 +256,37 @@ namespace GeonBit.Core.Utils
         /// </summary>
         static CountAndAlert()
         {
+            // start the watch to count times
             _watch.Start();
+            
+            // register the predefined default alerts
+            SetAlert(new AlertSettings()
+            {
+                CounterKey = PredefAlertTypes.AddedOrCreated,
+                PerSecondAlertThreshold = 100,
+            });
+            SetAlert(new AlertSettings()
+            {
+                CounterKey = PredefAlertTypes.HeavyUpdate,
+                PerSecondAlertThreshold = 100,
+            });
+            SetAlert(new AlertSettings()
+            {
+                CounterKey = PredefAlertTypes.VeryHeavyUpdate,
+                PerSecondAlertThreshold = 25,
+            });
+            SetAlert(new AlertSettings()
+            {
+                CounterKey = PredefAlertTypes.ValueChanged
+            });
+            SetAlert(new AlertSettings()
+            {
+                CounterKey = PredefAlertTypes.ForceUpdate
+            });
+            SetAlert(new AlertSettings()
+            {
+                CounterKey = PredefAlertTypes.Exception
+            });
         }
 
         /// <summary>
@@ -205,6 +297,16 @@ namespace GeonBit.Core.Utils
             _secondCount = _totalSeconds = 0;
             _watch.Reset();
             _alerts.Clear();
+        }
+
+        /// <summary>
+        /// Get alert by counter key.
+        /// </summary>
+        /// <param name="key">Counter key.</param>
+        /// <returns>Alert instance.</returns>
+        public static AlertSettings GetAlert(object key)
+        {
+            return _alerts[key];
         }
 
         /// <summary>
@@ -242,26 +344,50 @@ namespace GeonBit.Core.Utils
             _totalSeconds += dt;
 
             // reset alerts
-            foreach (var alert in _alerts)
+            foreach (var alert_pair in _alerts)
             {
+                var alert = alert_pair.Value;
+
+                // if got no handlers skip
+                if (!alert.GotHandlers)
+                    continue;
+
                 // reset per-frame counters
-                alert.Value._counters.PerFrame = 0;
+                alert._counters.PerFrame = 0;
+                alert.FrameAlertHandlerCalled = false;
 
                 // reset seconds counter
                 if (_secondCount >= 1f)
                 {
-                    alert.Value._counters.PerSecond = 0;
+                    alert._counters.PerSecond = 0;
+                    alert.SecondAlertHandlerCalled = false;
                 }
 
                 // reset custom time period counter
-                if (alert.Value.CustomTimeAlert != 0)
+                if (alert.CustomTimeAlert != 0)
                 {
-                    alert.Value._counters.CustomTimeCount += (float)dt;
-                    if (alert.Value._counters.CustomTimeCount >= alert.Value.CustomTimeAlert)
+                    alert._counters.CustomTimeCount += (float)dt;
+                    if (alert._counters.CustomTimeCount >= alert.CustomTimeAlert)
                     {
-                        alert.Value._counters.PerCustomTime = 0;
+                        alert._counters.PerCustomTime = 0;
+                        alert.TimePeriodAlertHandlerCalled = false;
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Register to all built-in alerts.
+        /// </summary>
+        /// <param name="callback">Callback to register.</param>
+        public static void RegisterToBuiltIns(AlertCallback callback)
+        {
+            foreach (var val in Enum.GetValues(typeof(PredefAlertTypes)))
+            {
+                var alert = _alerts[val];
+                alert.FrameAlertHandler += callback;
+                alert.SecondAlertHandler += callback;
+                alert.TimePeriodAlertHandler += callback;
             }
         }
 
@@ -270,11 +396,12 @@ namespace GeonBit.Core.Utils
         /// </summary>
         /// <param name="key">Counter key.</param>
         /// <param name="amount">By how much to increase the counter.</param>
-        public static void Count(object key, ulong amount = 1)
+        /// <returns>New counter per-frame value.</returns>
+        public static ulong Count(object key, ulong amount = 1)
         {
             // if disabled skip
             if (!Enabled)
-                return;
+                return 0;
 
             // get alert
             AlertSettings alert;
@@ -290,6 +417,10 @@ namespace GeonBit.Core.Utils
             {
                 throw new Exception(string.Format("No alert found for key %s, and there's no default alert defined.", key.ToString()));
             }
+
+            // make sure got any handlers
+            if (!alert.GotHandlers)
+                return 0;
 
             // increase counters
             alert._counters.PerCustomTime += amount;
@@ -310,10 +441,13 @@ namespace GeonBit.Core.Utils
 
                     // get frame method name
                     var frame = stackTrace.GetFrame(i);
-                    sb.Append(frame.GetType().Name);
+                    var method = frame.GetMethod();
+                    sb.Append(method.ReflectedType.Name);
                     sb.Append('.');
-                    sb.Append(frame.GetMethod().Name);
-                    sb.Append('-');
+                    sb.Append(method.Name);
+                    sb.Append(':');
+                    sb.Append(frame.GetFileLineNumber());
+                    sb.Append("->");
                 }
                 sb.Remove(sb.Length - 1, 1);
                 var stackKey = sb.ToString();
@@ -325,37 +459,79 @@ namespace GeonBit.Core.Utils
             }
 
             // trigger per-frame alert
-            if (alert.PerFrameAlertThreshold > 0 && alert._counters.PerFrame >= alert.PerFrameAlertThreshold)
+            if (alert.PerFrameAlertThreshold > 0 && alert._counters.PerFrame >= alert.PerFrameAlertThreshold && !alert.FrameAlertHandlerCalled)
+            {
                 alert.FrameAlertHandler?.Invoke(EventType.PerFrameAlert, alert, alert._counters);
+                alert.FrameAlertHandlerCalled = true;
+                if (alert.ClearStackCountsTime == EventType.PerFrameAlert && alert._counters.TraceCounts != null)
+                    alert._counters.TraceCounts.Clear();
+            }
 
             // trigger per-second alert
-            if (alert.PerSecondAlertThreshold > 0 && alert._counters.PerSecond >= alert.PerSecondAlertThreshold)
+            if (alert.PerSecondAlertThreshold > 0 && alert._counters.PerSecond >= alert.PerSecondAlertThreshold && !alert.SecondAlertHandlerCalled)
+            {
                 alert.FrameAlertHandler?.Invoke(EventType.PerSecondAlert, alert, alert._counters);
+                alert.SecondAlertHandlerCalled = true;
+                if (alert.ClearStackCountsTime == EventType.PerSecondAlert && alert._counters.TraceCounts != null)
+                    alert._counters.TraceCounts.Clear();
+            }
 
             // trigger per-custom-period alert
-            if (alert.PerCustomTimeAlertThreshold > 0 && alert._counters.PerCustomTime >= alert.PerCustomTimeAlertThreshold)
+            if (alert.PerCustomTimeAlertThreshold > 0 && alert._counters.PerCustomTime >= alert.PerCustomTimeAlertThreshold && !alert.TimePeriodAlertHandlerCalled)
+            {
                 alert.FrameAlertHandler?.Invoke(EventType.PerCustomTimeAlert, alert, alert._counters);
+                alert.TimePeriodAlertHandlerCalled = true;
+                if (alert.ClearStackCountsTime == EventType.PerCustomTimeAlert && alert._counters.TraceCounts != null)
+                    alert._counters.TraceCounts.Clear();
+            }
+
+            // return per-frame counter
+            return alert._counters.PerFrame;
         }
 
 
 #else
+
+        /// <summary>
+        /// Stab.
+        /// </summary>
         static CountAndAlert()
         {
         }
 
+        /// <summary>
+        /// Stab.
+        /// </summary>
         public static void Clear()
         {
         }
 
+        /// <summary>
+        /// Stab.
+        /// </summary>
         public static void SetAlert(AlertSettings settings)
         {
         }
 
+        /// <summary>
+        /// Stab.
+        /// </summary>
         public static void Update()
         {
         }
 
-        public static void Count(object key, ulong amount = 1)
+        /// <summary>
+        /// Stab.
+        /// </summary>
+        public static ulong Count(object key, ulong amount = 1)
+        {
+            return 0;
+        }
+
+        /// <summary>
+        /// Stab.
+        /// </summary>
+        public static void RegisterToBuiltIns(AlertCallback callback)
         {
         }
 #endif

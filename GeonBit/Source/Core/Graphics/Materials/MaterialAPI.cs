@@ -167,6 +167,15 @@ namespace GeonBit.Core.Graphics.Materials
         protected virtual int SamplersCount { get { return 1; } }
 
         /// <summary>
+        /// Create the material object.
+        /// </summary>
+        public MaterialAPI()
+        {
+            // count the object creation
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.AddedOrCreated);
+        }
+
+        /// <summary>
         /// Return if this material support dynamic lighting.
         /// </summary>
         virtual public bool LightingEnabled

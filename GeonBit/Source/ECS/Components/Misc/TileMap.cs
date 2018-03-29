@@ -307,7 +307,7 @@ namespace GeonBit.ECS.Components.Misc
             if (ret == null && createIfNeeded)
             {
                 // create the new game object and set its basic properties
-                ret = new GameObject("", SceneNodeType.BoundingBoxCulling);
+                ret = new GameObject(string.Empty, SceneNodeType.BoundingBoxCulling);
                 SetTileProperties(batch, ret, index);
 
                 // add to batch

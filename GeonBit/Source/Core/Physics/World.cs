@@ -389,6 +389,7 @@ namespace GeonBit.Core.Physics
         /// <param name="body">Physics entity to add.</param>
         public void AddBody(BasicPhysicalBody body)
         {
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.AddedOrCreated);
             body.AddSelfToBulletWorld(_world);
             body._world = this;
         }

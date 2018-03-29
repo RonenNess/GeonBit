@@ -45,6 +45,11 @@ namespace GeonBit.Core.Graphics.Lights
         /// </summary>
         /// <param name="light">Light to remove.</param>
         void RemoveLight(LightSource light);
+        
+        /// <summary>
+        /// Enable / disable all lights.
+        /// </summary>
+        bool Enabled { get; set; }
 
         /// <summary>
         /// Get all lights for a given bounding sphere and material.

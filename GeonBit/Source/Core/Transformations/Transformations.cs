@@ -150,9 +150,13 @@ namespace GeonBit.Core
         /// </summary>
         public Transformations()
         {
+            // set defaults
             Position = Vector3.Zero;
             Rotation = Vector3.Zero;
             Scale = Vector3.One;
+
+            // count the object creation
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.AddedOrCreated);
         }
 
         /// <summary>
@@ -160,12 +164,16 @@ namespace GeonBit.Core
         /// </summary>
         public Transformations(Transformations other)
         {
+            // set values from other
             Position = other.Position;
             Rotation = other.Rotation;
             Scale = other.Scale;
             TransformOrder = other.TransformOrder;
             RotationOrder = other.RotationOrder;
             RotationType = other.RotationType;
+
+            // count the object creation
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.AddedOrCreated);
         }
 
         /// <summary>

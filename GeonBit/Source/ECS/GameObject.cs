@@ -319,6 +319,9 @@ namespace GeonBit.ECS
             // increase instances counter
             Count++;
 
+            // count the event
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.AddedOrCreated);
+
             // set name (must come after creating scene node because it also set the node identifier)
             Name = name;
         }
@@ -335,6 +338,9 @@ namespace GeonBit.ECS
             // clone scene node and set name
             _sceneNode = cloneNode ? node.Clone() : node;
             Name = name;
+
+            // count the event
+            Core.Utils.CountAndAlert.Count(Core.Utils.CountAndAlert.PredefAlertTypes.AddedOrCreated);
 
             // increase instances counter
             Count++;

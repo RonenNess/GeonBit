@@ -18,6 +18,7 @@
 //-----------------------------------------------------------------------------
 #endregion
 using Microsoft.Xna.Framework;
+using GeonBit.Core.Utils;
 
 namespace GeonBit.Managers
 {
@@ -180,6 +181,9 @@ namespace GeonBit.Managers
                 _currFps = 0;
                 _secondCount = 0;
             }
+
+            // update alerts
+            CountAndAlert.Update();
         }
 
         /// <summary>

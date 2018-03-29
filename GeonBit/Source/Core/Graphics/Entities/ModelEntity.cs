@@ -131,7 +131,7 @@ namespace GeonBit.Core.Graphics
             Materials.MaterialAPI[] ret = null;
 
             // try to get global material or material for this specific mesh
-            if (_materials.TryGetValue("", out ret) || _materials.TryGetValue(meshId, out ret))
+            if (_materials.TryGetValue(string.Empty, out ret) || _materials.TryGetValue(meshId, out ret))
             {
                 // get material for effect index or null if overflow
                 return meshPartIndex < ret.Length ? ret[meshPartIndex] : null;

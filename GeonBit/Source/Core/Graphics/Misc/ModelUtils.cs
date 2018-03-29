@@ -49,6 +49,9 @@ namespace GeonBit.Core.Graphics
                 return ret;
             }
 
+            // count the bounding box calculation
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.VeryHeavyUpdate);
+
             // got here? it means we need to calculate bounding box.
             // initialize minimum and maximum corners of the bounding box to max and min values
             Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
@@ -103,6 +106,9 @@ namespace GeonBit.Core.Graphics
             {
                 return ret;
             }
+
+            // count the bounding sphere calculation
+            Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.VeryHeavyUpdate);
 
             // got here? it means we need to calculate bounding sphere.
             ret = new BoundingSphere();
