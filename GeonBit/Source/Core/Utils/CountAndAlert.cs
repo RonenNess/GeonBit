@@ -459,7 +459,9 @@ namespace GeonBit.Core.Utils
             }
 
             // trigger per-frame alert
-            if (alert.PerFrameAlertThreshold > 0 && alert._counters.PerFrame >= alert.PerFrameAlertThreshold && !alert.FrameAlertHandlerCalled)
+            if ((alert.PerFrameAlertThreshold > 0) && 
+                (alert._counters.PerFrame >= alert.PerFrameAlertThreshold) && 
+                !alert.FrameAlertHandlerCalled)
             {
                 alert.FrameAlertHandler?.Invoke(EventType.PerFrameAlert, alert, alert._counters);
                 alert.FrameAlertHandlerCalled = true;
@@ -468,7 +470,9 @@ namespace GeonBit.Core.Utils
             }
 
             // trigger per-second alert
-            if (alert.PerSecondAlertThreshold > 0 && alert._counters.PerSecond >= alert.PerSecondAlertThreshold && !alert.SecondAlertHandlerCalled)
+            if ((alert.PerSecondAlertThreshold > 0) && 
+                (alert._counters.PerSecond >= alert.PerSecondAlertThreshold) && 
+                !alert.SecondAlertHandlerCalled)
             {
                 alert.FrameAlertHandler?.Invoke(EventType.PerSecondAlert, alert, alert._counters);
                 alert.SecondAlertHandlerCalled = true;
@@ -477,7 +481,9 @@ namespace GeonBit.Core.Utils
             }
 
             // trigger per-custom-period alert
-            if (alert.PerCustomTimeAlertThreshold > 0 && alert._counters.PerCustomTime >= alert.PerCustomTimeAlertThreshold && !alert.TimePeriodAlertHandlerCalled)
+            if ((alert.PerCustomTimeAlertThreshold > 0) && 
+                (alert._counters.PerCustomTime >= alert.PerCustomTimeAlertThreshold) && 
+                !alert.TimePeriodAlertHandlerCalled)
             {
                 alert.FrameAlertHandler?.Invoke(EventType.PerCustomTimeAlert, alert, alert._counters);
                 alert.TimePeriodAlertHandlerCalled = true;

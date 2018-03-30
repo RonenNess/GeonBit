@@ -226,7 +226,7 @@ namespace GeonBit.Core.Graphics
         /// <param name="stringBuilder">String builder used to create the string.</param>
         /// <param name="depth">Current depth in scene graph.</param>
         /// <param name="prefix">Current prefix (should match depth level).</param>
-        /// <returns></returns>
+        /// <returns>Debug string with data about this node.</returns>
         protected void GetDebugString(ref System.Text.StringBuilder stringBuilder, int depth = 0, string prefix = "")
         {
             // add self
@@ -349,7 +349,13 @@ namespace GeonBit.Core.Graphics
         /// <param name="entity">Entity to add.</param>
         public void AddEntity(IEntity entity)
         {
-            if (!CanHoldEntities) { throw new Exceptions.InvalidActionException("Cannot add entities to this node type."); }
+            // make sure this node can hold entities
+            if (!CanHoldEntities)
+            {
+                throw new Exceptions.InvalidActionException("Cannot add entities to this node type.");
+            }
+
+            // add new entity to node
             _childEntities.Add(entity);
             OnEntitiesListChange(entity, true);
         }
@@ -504,8 +510,8 @@ namespace GeonBit.Core.Graphics
         {
             if (UseExternalTransformations) { return; }
             Utils.CountAndAlert.Count(Utils.CountAndAlert.PredefAlertTypes.ValueChanged);
-            _isDirty = true;
             NodesManager.AddNodeToUpdateQueue(this);
+            _isDirty = true;
         }
 
         /// <summary>

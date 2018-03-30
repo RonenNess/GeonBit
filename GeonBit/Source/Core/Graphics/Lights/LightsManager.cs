@@ -81,7 +81,7 @@ namespace GeonBit.Core.Graphics.Lights
         /// <summary>
         /// Enable / disable all lights.
         /// </summary>
-        public bool Enabled { get; set; }
+        public bool Enabled { get; set; } = true;
 
         /// <summary>
         /// Lights manager divide the world into segments, or regions, that contain lights.

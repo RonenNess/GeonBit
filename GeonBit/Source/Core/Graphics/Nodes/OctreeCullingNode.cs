@@ -455,7 +455,7 @@ namespace GeonBit.Core.Graphics
             // update transformations if needed
             DoTransformationsUpdateIfNeeded();
 
-            // if debug mode draw bounding box
+            // if debug mode - draw octree bounding box
             if (DebugRenderOctreeParts)
             {
                 if (_debugBoundingBoxEntity == null)
