@@ -23,7 +23,7 @@
 - Added debug mechanism to count and react to repeating events - will be used to test memory usage.
 - Added debug tracing.
 - Less garbage generation.
-- Option to turn off all scene lights.
+- Option to turn on / off all scene lights.
 
 ## 0.1.0.7
 
