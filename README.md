@@ -1,14 +1,17 @@
 ![GeonBit](docs/assets/GeonBit-sm.png "GeonBit")
 
+# Warning
+
+This project is a bit old and no longer maintained. Also some would argue its not a real ECS due to the structure of the components and lack of actual systems.
+It's still a pretty cool framework, just maybe not what you're looking for.
+
 # GeonBit
 
 **A 3D Entity-Component-System engine, powered by MonoGame for C# games.**
 
 # License
 
-*For the purpose of making games, educational projects, or apps with gamification properties*, GeonBit is distributed under the **MIT license** and is completely free for commercial and non commercial use.
-
-For other type of projects please see the [license file](LICENSE "license file") in this repo.
+MIT
 
 # Documentation
 
